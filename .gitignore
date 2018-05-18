@@ -1,6 +1,12 @@
-.txt
-.rar
-.Rhistory
-
 # ignore all individual and meta-analytic papers
 papers/
+literature/
+code/
+todo-effsizes
+data-per-ma/*.R
+
+*.txt
+*.rar
+*.Rhistory
+*.xlsx
+

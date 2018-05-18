@@ -1,0 +1,62 @@
+"ORIGINAL META-ANALYSIS" "X__1" "X__2" "X__3" "X__4" "X__5" "X__6" "X__7" "X__8" "X__9" "X__10" "X__11" "X__12" "X__13" "X__14" "X__15" "X__16" "X__17" "X__18"
+"author" "efftype" "effest" "model" "subgroup" "pub" "pubmet1" "pubmet2" "pubmet3" "pubmet4" "pubfound" "out" "outsep" "guidelines" "contact" "depreport" "depmeasure" "comments" "hypo"
+"Adesope" "g" "0.15" "NA" "1" "1" "Funnel plot" "Egger's regression" "fail-safe N" NA "0" "1" "1" "0" "0" "1" "0" "Model: unspecified. Outliers: Yes, but results only mentioned as a robustness test in passing without values." "same"
+"Alfieri" "d" "-0.38" "RE" "1" "1" "Fail-safe N" NA NA NA "0" "0" "0" "0" "1" "1" "0" "[model: reporsts both RE and FE and then uses RE for mdoerator analyses]" "same"
+"Babbage" "g" "-1.1100000000000001" "RE" "0" "1" "Fail-safe N" NA NA NA "0" "0" "0" "0" "0" "0" "0" NA "different, prediction is that target population performs worse than controls which is represented by a negative effect size [although this seems logical to me?]"
+"Balliet" "d" "-0.04" "RE" "1" "1" "Funnel plot" "Egger's regression" "Trim-and-Fill" NA "0" "0" "0" "0" "0" "1" "Cooper's (1998) shifting-units-of-analysis" NA "Null.  MA appears to predict only differences for subgroup analyes and  null overall effect: \" That is to say, the evolutionary perspective (like the
+sociocultural perspective) suggests that sex differences emerge in
+response to specific environmental inputs.\""
+"Benish" "d" "0.32" "RE" "1" "0" NA NA NA NA NA "0" "0" "0" "0" "1" "Dependent effects \"aggregated to account for dependence using the methods described by Wampold et al. (1997).\"" NA "same"
+"Berry 1" "r" "0.32" "NA" "1" "0" NA NA NA NA NA "0" "0" "0" "0" "1" "0" "Model unspecified." "same"
+"Berry 2" "r" "0.24" "NA" "1" "0" NA NA NA NA NA "0" "0" "0" "0" "1" "0" "Model unclear: \"Formulas presented by Hunter and Schmidt (2004) were
+used to calculate meta-analytic mean correlations, standard deviations,
+and percentage of variance due to sampling error\"" "same"
+"Card" "r" "0.04" "RE" "1" "0" NA NA NA NA NA "1" "1" "0" "0" "1" "Combined results" "Outlier: sep. analysys performed but \"available upon request\"" "same, the more extensive arguments laid out for a negative association seemingly imply that this is the authors preferred hypothesis"
+"Crook" "r" "0.17" "NA" "1" "0" NA NA NA NA NA "0" "0" "0" "0" "1" "\"if a study used multiple measures..., the correlations were averaged to yield a single estimate for the study\"" "Model unspecified." "same"
+"de Wit" "r" "-0.15" "NA" "1" "1" "Publication status used in meta-regression" NA NA NA "0" "1" "0" "0" "0" "1" "0" "Model: MA reports using both a FE and RE model for meta-analytic WLS regression, but main analysis is undefined. Outcome: uncorrected r, corrected = -.16" "different, prediction of a negative correlation which is represented by a negative orrelation"
+"Else-quest" "d" "-0.01" "ME" "1" "1" NA NA NA NA "0" "0" "0" "0" "1" "1" "\"…we used no sample more than once within an emotion in the aggregation of effect sizes.\"" "Model: \"We analyzed data using the mixed-effects model (Lipsey & Wilson, 2001), which combines fixed- and random-effects models\". Publication bias (mentioned in limitations) addressed through literature search technique" "same"
+"Farber" "r" "0.27" "RE" "1" "1" "Publication status used in meta-regression" NA NA NA "1" "0" "0" "0" "1" "1" "\"if there was more than one effect size per study, within-study aggregation was performed (see
+Del Re, 2010; Del Re & Hoyt, 2010).\"" NA "same"
+"Fischer" "g" "-0.35" "FE" "1" "1" "Fail-safe N" "Funnel plot" "Trim and Fill" NA "0" "0" "0" "0" "1" "1" "0" NA "different, predicts less helping behavior which is represented by a negative effect size"
+"Fox" "r" "7.0000000000000007E-2" "RE" "1" "1" "Funnel plot" "Fail-safe N" NA NA "0" "1" "0" "0" "1" "1" "\" The only
+remaining concern is that these separate analyses be dependent.
+This problem is addressed with moderator analyses.\"" "Outliers: \"winsorized at two standard deviations\".." "MA predicts no difference: \"there will be no
+accuracy difference in experiments comparing participants who
+verbalize their thoughts with those who perform silently. \""
+"Freund" "r" "0.33" "RE" "1" "1" "Funnel plot" NA NA NA "0" "1" "1" "0" "0" "1" "\"hierarchical linear modeling (HLM) approach to meta-analysis.\"" "Out: \"this effect size did not have much leverage, and
+omitting it from the analysis had no impact on the stability of the
+results.\"" "same"
+"Green" "d" "2.02" "RE" "1" "0" NA NA NA NA NA "0" "0" "0" "1" "1" "\"For studies that permitted multiple comparisons by
+including more than one control group and/or feigning group, the
+sample size for each duplicated group was divided in half before
+composite effect sizes were calculated\"" NA "same"
+"Hallion" "g" "0.13" "RE" "1" "1" "Funnel plot" "Trim-and-fill" NA NA "1" "1" "1" "0" "1" "1" "Several, search \"Independence of effect sizes.\" in MA" NA "same"
+"Ihle" "g" "0.03" "RE" "1" "0" NA NA NA NA NA "0" "0" "0" "1" "1" "\"arithmetic mean of multiple dependent effect sizes\"" NA "same"
+"Koenig" "g" "1.55" "RE" "1" "1" "Funnel plot" "Egger's regression" "Trim-and-Fill" "Publication status used in meta-regression" "1" "1" "1" "0" "1" "1" "\"If the same participants
+rated more than one leader category, these effect sizes were averaged
+prior to calculating study-level mean effect sizes but retained
+as separate effect sizes for moderator analyses. \"" NA "same"
+"Kolden" "r" "0.24" "RE" "1" "1" "Fail-safe N" "Adjusted Fail-safe-N" NA NA "0" "0" "0" "0" "0" "1" "aggregation" NA "same"
+"Lucassen" "r" "0.12" "RE" "1" "1" "Trim-and-fill" NA NA NA "0" "1" "NA" "0" "0" "1" "\"When samples of studies were
+overlapping, the papers that reported on the largest groups
+of participants were included in our meta-analysis.\"" "Outliers: no outliers found." "same"
+"Mol" "Fisher's Z" "0.27" "RE" "1" "1" "Publication status used in meta-regression" "Fail-safe N" "Funnel plots" "Trim-and-Fill" "1" "1" "NA" "0" "1" "1" "aggregation" "Effect-size backtransformed to r for reporting by MA authors. Outliers: no outliers found." "same"
+"Morgan" "d" "0.87" "RE" "0" "1" "Fail-safe N" NA NA NA "0" "1" "1" "0" "1" "1" "\"If a given study
+had multiple ESs for a general outcome (e.g., an ES for depression
+and an ES for obsessive compulsive disorder under the general
+outcome “mental health”), then these ESs were averaged to create
+an overall ES for that study. \"" NA "same, \"All ESs were coded so that a
+positive value indicated improvement due to treatment. \""
+"Munder" "g" "-1E-3" "RE" "1" "0" NA NA NA NA NA "0" "0" "0" "0" "1" "\"we divided the sample
+size among comparisons\"" NA "same, note hypothesis is about effect of moderator in meta-regression"
+"Piet" "g" "0.37" "RE" "1" "1" "Funnel plot" "Fail-safe N" "Egger's regression" "Trim-and-Fill" "0" "0" "0" "1" "1" "1" "aggregation" "Subgroups: separate analyses for (non)randomized studies" "same"
+"Smith" "r" "0.17299999999999999" "RE" "1" "1" "Funnel plot" "Trim-and-fill" NA NA "0" "0" "0" "0" "0" "1" "aggregation" NA "same"
+"Tillman" "r" "0.66" "RE" "1" "1" NA NA NA NA NA "0" "0" "0" "0" "1" "aggregation" "eff: beta from Table 3." "same"
+"Toosi" "r" "0.09" "RE" "1" "1" "Publication status used in meta-regression" "Egger's regression" "Trim-and-fill" NA "0" "1" "0" "0" "1" "1" "aggregation" "outlier: winsorized" "same"
+"van Iddekinge" "r" "0.23" "NA" "1" "0" NA NA NA NA NA "0" "0" "0" "1" "1" "0" "Model: unspecified." "same"
+"Webb" "d" "0.61" "RE" "1" "1" "Funnel plot" "Egger's regression" "Fail-safe N" NA "0" "0" "0" "0" "1" "1" "adjusted N" NA "same [regulation success]"
+"Woodin" "d" "-0.63" "FE" "1" "1" "Fail-safe N" NA NA NA "0" "1" "0" "0" "0" "1" "\"To ensure that effect sizes were independent, only one
+publication and only one coding system was chosen for each
+set of participants. \"" "Outlier: windsorized" "different, hostility -> dissatisfaction, but represented by negative correlation"
+"Woodley" "r" "2.3E-2" "NA" "0" "0" NA NA NA NA NA "0" "0" "0" "0" "0" "0" "Model: unspecified." "Unclear, prediction of independence (no effect)"
+"Yoon" "r" "-7.0000000000000007E-2" "RE" "1" "0" NA NA NA NA NA "1" "1" "0" "0" "1" "aggregation" NA "distinct [very unclear]"
