@@ -1,12 +1,14 @@
+
 # ignore all individual and meta-analytic papers
 papers/
+# ignore all literature for paper
 literature/
-code/
-todo-effsizes
-data-per-ma/*.R
+# ignore all .xlsx files (all data is in .csv files)
+xlsxfiles/
 
 *.txt
 *.rar
 *.Rhistory
-*.xlsx
 
+# ignore thesis files 
+thesis/
