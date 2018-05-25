@@ -1,10 +1,12 @@
 
 # ignore all individual and meta-analytic papers
-papers/
+mapapers/
 # ignore all literature for paper
 literature/
 # ignore all .xlsx files (all data is in .csv files)
 xlsxfiles/
+# ignore writing paper files
+paper/
 
 *.txt
 *.rar
