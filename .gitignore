@@ -1,16 +1,10 @@
+# individual and meta-analytic papers
+/primary-ma-papers/
 
-# ignore all individual and meta-analytic papers
-mapapers/
-# ignore all literature for paper
-literature/
-# ignore all .xlsx files (all data is in .csv files)
-xlsxfiles/
-# ignore writing paper files
-paper/
+# misc files
+*.xlsx
+!/codebooks/codebook-primary-studies-final-empty.xlsx
 
 *.txt
 *.rar
 *.Rhistory
-
-# ignore thesis files 
-thesis/
