@@ -2,11 +2,11 @@
 /primary-ma-papers/
 
 # misc files
-*.txt
-*.rar
-*.Rhistory
-*.aux
-*.log
-*.gz
-*.synctex.gz
-*.tex
+**/*.txt
+**/*.rar
+**/*.Rhistory
+**/*.aux
+**/*.log
+**/*.gz
+**/*.synctex.gz
+**/*.tex
