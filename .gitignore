@@ -1,6 +1,9 @@
 # individual and meta-analytic papers
 /primary-ma-papers/
 
+# dependency of effect sizes
+/dependency/
+
 # misc files
 *.txt
 *.rar
@@ -11,3 +14,4 @@
 *.synctex.gz
 *.tex
 *.bib
+*.docx
