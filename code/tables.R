@@ -1,5 +1,5 @@
 rm(list = ls())
-setwd("C:/Users/s421506/tiu/research/effectsizes/study-1/")
+setwd("C:/Users/s421506/tiu/research/effectsizes/codebooks/")
 packages <- c("metafor","readxl","knitr","kableExtra")
 options(scipen=999)
 #lapply(packages,install.packages(packages),character.only=T)     # if packages are not yet installed
@@ -38,7 +38,7 @@ npub.nodisc <- sum(pub.info[2,1])
 # Table 1
 table.1 <- data.frame(matrix(ncol = 6, nrow = 3))
 col <- c("SMD", "correlation", "outlier", "non-outlier", "published", "non-published")
-row <- c("Discrepancy","No discrepancy","Total")
+row <- c("Irreproducible","Reproducible","Total")
 colnames(table.1) <- col
 rownames(table.1) <- row
 
@@ -49,7 +49,7 @@ table.1[1,4] <- nout.disc; table.1[2,4] <- nout.nodisc; table.1[3,4] <- sum(tabl
 table.1[1,5] <- pub.disc; table.1[2,5] <- pub.nodisc; table.1[3,5] <- sum(table.1[1,5]+table.1[2,5])
 table.1[1,6] <- npub.disc; table.1[2,6] <- npub.nodisc; table.1[3,6] <- sum(table.1[1,6]+table.1[2,6])
 
-kable(table.1) %>%
+kable(table.1, caption = "Table 1. Descriptive statistics on the reproducibility and characteristics of primary studies.") %>%
   kable_styling(bootstrap_options = c("striped", full_width = F)) %>%
   column_spec(3, border_right = T) %>% 
   column_spec(5, border_right = T) %>% 

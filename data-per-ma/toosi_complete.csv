@@ -1,0 +1,38 @@
+"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"design";"pub";"race";"mode";"lab";"partner";"struct";"race.1";"id";"vr"
+"Apfelbaum et al. exp 1";"Apfelbaum";"Sommers";"Norton";"";"";NA;NA;2008;101;0.26;"b";"p";"majW";"f2f";"l";"confP";1;"n";28;0.0086936976
+"Apfelbaum et al. exp 2";"Apfelbaum";"Sommers";"Norton";"";"";NA;NA;2008;47;0;"b";"p";"majW";"f2f";"l";"confP";1;"n";28;0.0217391304347826
+"Avery et al. exp 1";"Avery";"Richeson";"Hebl";"Ambady";"";NA;NA;2009;46;0.19;"b";"p";"majW";"vid";"l";"confP";0;"n";28;0.020646738
+"Avery et al. exp 2";"Avery";"Richeson";"Hebl";"Ambady";"";NA;NA;2009;56;0.12;"b";"p";"majW";"f2f";"l";"NaiveP";0;"n";28;0.017661952
+"Babbit & Sommers";"Babbit";"Sommers";"";"";"";NA;NA;2011;176;0.02;"b";"u";"majW";"f2f";"l";"NaiveP";1;"y";28;0.0057097152
+"Bishop";"Bishop";"";"";"";"";NA;NA;1979;63;0;"b";"p";"majW";"f2f";"l";"ConfP";0;"n";28;0.0161290322580645
+"Colliver et al exp 2";"Colliver";"Swartz";"Robbs";"";"";NA;NA;2001;1248;0.07;"m";"p";"majW";"f2f";"f";"ConfO";1;"n";28;0.000794085012028869
+"Colliver et al. exp 1";"Colliver";"Swartz";"Robbs";"";"";NA;NA;2001;114;0.05;"m";"p";"minB";"f2f";"f";"ConfO";1;"n";28;0.00880536504424779
+"Conley et al.";"Conley";"Hardin";"Rabinowitz";"";"";NA;NA;2010;61;0.01;"b";"u";"all";"f2f";"l";"NaiveP";1;"n";28;0.0166633335
+"Dovidio et al. ";"Dovidio";"Kawakami";"Johnson";"Johnson";"Howard";NA;NA;1997;33;0.16;"w";"p";"majW";"f2f";"l";"ConfP";0;"n";28;0.02967048
+"Feldman & Donohoe exp 1";"Feldman";"Donohoe";"";"";"";NA;NA;1978;36;0.61;"b";"p";"majW";"f2f";"l";"ConfP";1;"n";28;0.011264526
+"Feldman & Donohoe exp 2";"Feldman";"Donohoe";"";"";"";NA;NA;1978;20;0.06;"b";"p";"minB";"f2f";"l";"ConfO";1;"n";28;0.0522533136842105
+"Feldman & Donohoe exp 3";"Feldman";"Donohoe";"";"";"";NA;NA;1978;20;0.49;"b";"p";"majW";"f2f";"l";"ConfO";1;"n";28;0.0303920005263158
+"Grossman (1996)";"Grossman";"";"";"";"";NA;NA;1996;120;0;"b";"u";"majW";"vid";"l";"ConfP";1;"n";28;0.00840336134453781
+"Heider & Skowronski (2007)";"Heider";"Skowronksi";"";"";"";NA;NA;2007;55;0.45;"w";"p";"majW";"f2f";"l";"ConfP";0;"n";28;0.0117778935185185
+"Heider & Skowronski (2010)";"Heider";"Skowronksi";"";"";"";NA;NA;2007;74;0.18;"w";"u";"majW";"f2f";"l";"ConfP";1;"n";28;0.0128253391780822
+"Hofmann et al. exp 1";"Hofmann";"Gschwendner";"Castelli";"Schmitt";"";NA;NA;2008;86;-0.04;"w";"p";"majW";"f2f";"l";"ConfO";0;"n";28;0.0117270889411765
+"Hofmann et al. exp 2";"Hofmann";"Gschwendner";"Castelli";"Schmitt";"";NA;NA;2008;77;0.01;"w";"p";"majW";"f2f";"l";"ConfO";0;"n";28;0.0131552632894737
+"Holloway";"Holloway";"Waldrip";"Ickes";"";"";NA;NA;2009;63;-0.06;"b";"p";"all";"f2f";"l";"NaiveP";0;"n";28;0.0160131122580645
+"Littleford et al (2005); Sayoc-Parial (2001)";"Littleford";"Wright";"Sayoc-Parial";"";"";NA;NA;2001;123;-0.13;"b";"p";"majW";"f2f";"l";"NaiveP";1;"y";28;0.00792201319672131
+"Mallet et al. exp 1";"Mallett";"Wilson";"Gilbert";"";"";NA;NA;2008;63;-0.12;"b";"p";"majW";"f2f";"l";"NaiveP";0;"y";28;0.0156678606451613
+"Mallet et al. exp 2";"Mallett";"Wilson";"Gilbert";"";"";NA;NA;2008;81;-0.11;"b";"p";"majW";"f2f";"l";"ConfP";0;"y";28;0.012199330125
+"Mendes et al. exp 1";"Mendes";"Major";"McCoy";"Blascovich";"";NA;NA;2008;60;0.28;"b";"p";"minB";"aud";"l";"ConfP";1;"y";28;0.0143957044067797
+"Mendes et al. exp 2";"Mendes";"Major";"McCoy";"Blascovich";"";NA;NA;2008;62;-0.02;"b";"p";"majW";"aud";"l";"ConfP";0;"y";28;0.0163803304918033
+"Norton et al. (2006)";"Norton";"Sommers";"Apfelbaum";"Pura";"Ariely";NA;NA;2006;30;0.22;"b";"p";"majW";"f2f";"l";"ConfP";1;"y";28;0.0312256055172414
+"Norton et al. (2010) exp 1";"Norton";"Dunn";"Carney";"Ariely";"";NA;NA;2010;44;-0.4;"b";"u";"majW";"f2f";"l";"ConfP";0;"y";28;0.0164093023255814
+"Norton et al. (2010) exp 2";"Norton";"Dunn";"Carney";"Ariely";"";NA;NA;2010;76;-0.36;"b";"u";"majW";"f2f";"l";"ConfP";0;"y";28;0.0101012821333333
+"Richeson & Shelton";"Richeson";"Shelton";"";"";"";NA;NA;2003;50;0.44;"b";"p";"majW";"f2f";"l";"Exptr";0;"y";28;0.01327104
+"Sanchez-Burks et al. (2009)";"Sanchez-Burks";"Bartel";"Blount";"";"";NA;NA;2009;45;0.06;"b";"p";"all";"f2f";"f";"ConfO";0;"n";28;0.0225639309090909
+"Schreer et al. (2009)";"Schreer";"Smith";"Thomas";"";"";NA;NA;2009;33;0.35;"b";"p";"majW";"f2f";"f";"ConfO";1;"n";28;0.0240626953125
+"Simpson & Erickson exp 1";"Simpson";"Erickson";"";"";"";NA;NA;1983;16;-0.05;"b";"p";"minB";"f2f";"f";"Other";1;"n";28;0.06633375
+"Simpson & Erickson exp 2";"Simpson";"Erickson";"";"";"";NA;NA;1983;16;-0.14;"b";"p";"majW";"f2f";"f";"Other";1;"n";28;0.064078944
+"Townsend et al.";"Townsend";"Sawyer";"Major";"Mendes";"";NA;NA;2010;135;-0.21;"b";"u";"minL";"f2f";"l";"ConfO";0;"n";28;0.00681899111940298
+"Trawalter & Richeson ";"Trawalter";"Richeson";"";"";"";NA;NA;2008;36;0.41;"b";"p";"majW";"f2f";"l";"NaiveP";0;"y";28;0.0197730745714286
+"Vorauer & Turpie";"Vorauer";"Kumhyr";"";"";"";NA;NA;2004;84;0.22;"b";"p";"majW";"vid";"l";"ConfP";0;"n";28;0.0109101513253012
+"Winslow ";"Winslow";"";"";"";"";NA;NA;1998;80;0.25;"b";"u";"majW";"f2f";"l";"ConfP";0;"y";28;0.0111253955696203
+"Word et al.";"Word";"Zanna";"Cooper";"";"";NA;NA;1974;14;0.61;"w";"p";"majW";"f2f";"l";"ConfO";0;"n";28;0.03032757

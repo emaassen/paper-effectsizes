@@ -3,8 +3,12 @@
 
 # misc files
 *.xlsx
-!/codebooks/codebook-primary-studies-final-empty.xlsx
-
 *.txt
 *.rar
 *.Rhistory
+.aux
+.log
+.gz
+.synctex.gz
+.tex
+

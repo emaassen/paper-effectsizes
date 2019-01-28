@@ -4,31 +4,104 @@ rm(list=ls())
 library(readxl);library(ggplot2);library(gridExtra)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 
-df <- read_excel("C:/Users/s421506/tiu/research/effectsizes/study-1/codebook-primary-studies-final-complete.xlsx", 1)
-
+df <- read_excel("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-primary-studies-final-complete.xlsx", 1)
 
 # Figure 4. ---------------------------------------------------------------
 df$discrepancy <- as.character(df$info)
 table(df$discrepancy)
 
-df$discrepancy[df$discrepancy=="0"]<-"No discrepancy, k = 280, 56%"
-df$discrepancy[df$discrepancy=="2"]<-"Not enough information, k = 49, 10%"
-df$discrepancy[df$discrepancy=="1"]<-"Different effect, k = 73, 15%"
-df$discrepancy[df$discrepancy=="3"]<-"Ambiguous effect, k = 98, 20%"
+df$discrepancy[df$discrepancy=="0"]<-a<-"No discrepancy, k = 291, 58%"
+df$discrepancy[df$discrepancy=="2"]<-b<-"Not enough information, k = 49, 10%"
+df$discrepancy[df$discrepancy=="1"]<-c<-"Different effect, k = 62, 12%"
+df$discrepancy[df$discrepancy=="3"]<-d<-"Ambiguous effect, k = 98, 20%"
 
-df$discrepancy <- factor(df$discrepancy, levels = c("No discrepancy, k = 280, 56%", "Not enough information, k = 49, 10%", "Different effect, k = 73, 15%", "Ambiguous effect, k = 98, 20%"))
+df$discrepancy <- factor(df$discrepancy, levels = c(a,b,c,d))
 mycolors <- c("#FFFFFF", "#FFFF00", "#FFa500", "#FF0000")
 
+#df$discrepancy <- factor(df$discrepancy, levels = c("No discrepancy, k = 280, 56%", "Not enough information, k = 49, 10%", "Different effect, k = 73, 15%", "Ambiguous effect, k = 98, 20%"))
+#mycolors <- c("#FFFFFF", "#FFFF00", "#FFa500", "#FF0000")
+
 ggplot(df, aes(znew.exp, z.exp, col=discrepancy)) + 
-  geom_point(size = 5) +
+  geom_point(alpha = 0.9, size = 3, stroke=0.2) +
+  theme_dark() +
   geom_abline() + 
   scale_shape(solid = FALSE) +
-    scale_x_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
+  scale_x_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
   scale_y_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
-  scale_color_manual(values=mycolors, name = "") + 
+  scale_color_manual(values=mycolors, name = "") +
   expand_limits(x = c(-1.2, 1.5), y = c(-0.75, 1.5)) +
-  theme(legend.text=element_text(size=15)) +
-  theme(legend.position=c(.82, .1))
+  theme(legend.text=element_text(size=11)) +
+  theme(legend.position=c(.85, .1)) +
+  theme(legend.title=element_blank()) 
+
+ggplot(df, aes(znew.exp, z.exp, col=discrepancy)) + 
+  geom_point(alpha = 0.9, size = 3, stroke=0.2) +
+  theme_dark() +
+  theme(legend.key=element_blank()) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
+  scale_y_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
+  scale_color_manual(values=mycolors, name = "") +
+  expand_limits(x = c(-1.2, 1.5), y = c(-0.75, 1.5)) +
+  theme(legend.text=element_text(size=11)) +
+  theme(legend.position=c(.85, .1)) +
+  theme(legend.title=element_blank())  +
+  theme(legend.background = element_rect(colour = 'black', fill = 'lightgrey', linetype='solid'))
+
+ggplot(df, aes(znew.exp, z.exp, col=discrepancy)) + 
+  geom_point(alpha = 0.9, size = 3, stroke=0.2) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
+  scale_y_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
+  scale_fill_manual(values=cbbPalette) +
+  expand_limits(x = c(-1.2, 1.5), y = c(-0.75, 1.5)) +
+  theme(legend.text=element_text(size=11)) +
+  theme(legend.position=c(.85, .1)) +
+  theme(legend.title=element_blank())
+
+
+
+
+# Scatterplot 500 effect sizes.
+library(readxl);library(ggplot2);library(gridExtra)
+number_ticks <- function(n) {function(limits) pretty(limits, n)}
+
+df <- read_excel("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-primary-studies-final-complete.xlsx", 1)
+
+
+library(ggplot2)
+# Figure 4. ---------------------------------------------------------------
+df$discrepancy <- as.character(df$info)
+table(df$discrepancy)
+
+df$discrepancy[df$discrepancy=="0"]<-a<-"No discrepancy, k = 288, 58%"
+df$discrepancy[df$discrepancy=="2"]<-b<-"Not enough information, k = 49, 10%"
+df$discrepancy[df$discrepancy=="1"]<-c<-"Different effect, k = 65, 13%"
+df$discrepancy[df$discrepancy=="3"]<-d<-"Ambiguous effect, k = 98, 20%"
+
+df$discrepancy <- factor(df$discrepancy, levels = c(a,b,c,d))
+mycolors <- c("#FFFFFF", "#FFFF00", "#FFa500", "#FF0000")
+
+#df$discrepancy <- factor(df$discrepancy, levels = c("No discrepancy, k = 280, 56%", "Not enough information, k = 49, 10%", "Different effect, k = 73, 15%", "Ambiguous effect, k = 98, 20%"))
+#mycolors <- c("#FFFFFF", "#FFFF00", "#FFa500", "#FF0000")
+
+ggplot(df, aes(znew.exp, z.exp, col=discrepancy)) + 
+  geom_point(shape = 19, alpha = 0.9, size = 3, stroke=0.2) +
+  geom_abline() + 
+  scale_x_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
+  scale_y_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
+  expand_limits(x = c(-1.2, 1.5), y = c(-0.75, 1.5)) +
+  theme(legend.text=element_text(size=11)) +
+  theme(legend.position=c(.85, .1)) +
+  scale_fill_manual(values=cbbPalette, name = "") 
+scale_color_manual(values=mycolors, name = "") 
+
+
+
+
+#  scale_color_manual(values=mycolors, name = "") + 
 
 
 # Figure 5. ---------------------------------------------------------------
@@ -180,16 +253,6 @@ dfma %>%
 
 dat <- read.table("C:/Users/s421506/tiu/research/effectsizes/codebook-meta-analyses-finalbackup.csv", header=T, sep = '')
 
-df$discrepancy <- as.character(df$info)
-table(df$discrepancy)
-
-df$discrepancy[df$discrepancy=="0"]<-"No discrepancy, k = 280, 56%"
-df$discrepancy[df$discrepancy=="2"]<-"Not enough information, k = 49, 10%"
-df$discrepancy[df$discrepancy=="1"]<-"Different effect, k = 73, 15%"
-df$discrepancy[df$discrepancy=="3"]<-"Ambiguous effect, k = 98, 20%"
-
-df$discrepancy <- factor(df$discrepancy, levels = c("No discrepancy, k = 280, 56%", "Not enough information, k = 49, 10%", "Different effect, k = 73, 15%", "Ambiguous effect, k = 98, 20%"))
-mycolors <- c("#FFFFFF", "#FFFF00", "#FFa500", "#FF0000")
 
 ## EFFECT SIZE ESIMATES
 library(randomcoloR)
