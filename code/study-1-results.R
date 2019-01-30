@@ -126,6 +126,7 @@ for (i in 1:nrow(datp)) {
 
 
 # Make list with matrices for all MA seperately
+datp$metano <- as.numeric(datp$meta)
 reg.ma.err <- reg.ma.nerr <- out.ma.err <- out.ma.nerr <- c()
 mats <- list()
 
@@ -148,12 +149,6 @@ for (i in 1:33) {
 # Within each sample, the proportion of non-outliers and outliers will come to represent the proportion in the 
 # individual MA population
 
-
-# EG: in MA1 population, 65% is regular (37), 35% is outlier (20), tot = 50
-N1/N;N2/N
-# But in MA1 sample, 50% is regular and 50% outlier (10/10/tot=20)
-n1/n;n2/n
-
 p1 <- p2 <- d1 <- d2 <- g1 <- g2 <- w1 <- w2 <- c()
 
 for (i in 1:33) {
@@ -166,18 +161,10 @@ for (i in 1:33) {
   # correction weight for all regs / outliers
   g1[i] <- (N1 / N) / (n1 / n)
   g2[i] <- (N2 / N) / (n2 / n)
-  # inclusion weights
-  d1[i] <- 1 / (n1 / N1)
-  d2[i] <- 1 / (n2 / N2)
-  if (d2[i] == "NaN" | d2[i] == "Inf") { d2[i] <- 0 }
-  if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
-  # weights
-  w1[i] <- g1[i] * d1[i]
-  w2[i] <- g2[i] * d2[i]
-  # population weights
-  p1[i] <- n1/N1 # number of regular studies in sample vs regular studies in population of MA
-  p2[i] <- n2/N2 # number of outliers in sample vs outliers in population of MA
+
+    if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
 }
+
 
 # by multiplying all 33 MA matrices with g1 (for the reg row) and g2 (for the outlier row), the proportions within
 # the sample are restored to the population samples.
@@ -192,6 +179,108 @@ for (i in 1:33) {
 # now MA1, which had a 50/50 sample has a 65/35 sample:
 sum(mats[[1]][1,])/sum(mats[[1]])
 mats[[1]]
+
+# Probability of finding an error in meta-analysis
+p.x <- p.x.a <- p.x.b <- c()
+for (i in 1:33) {
+  
+  p.x[i] <- sum(mats[[i]][,2]) / sum(mats[[i]])
+  p.x.a[i] <- mats[[i]][3] / sum(mats[[i]][1,])
+  p.x.b[i] <- mats[[i]][4] / sum(mats[[i]][2,])
+  if (p.x.b[i] == "NaN") { p.x.b[i] <- 0 
+  }
+}
+
+a <-mats[[1]]+mats[[2]]+mats[[3]]+mats[[4]]+mats[[5]]+mats[[6]]+mats[[7]]+mats[[8]]+mats[[9]]+
+  mats[[10]]+mats[[11]]+mats[[12]]+mats[[13]]+mats[[14]]+mats[[15]]+mats[[16]]+mats[[17]]+
+  mats[[18]]+mats[[19]]+mats[[20]]+mats[[21]]+mats[[22]]+mats[[23]]+mats[[24]]+mats[[25]]+
+  mats[[26]]+mats[[27]]+mats[[28]]+mats[[29]]+mats[[30]]+mats[[31]]+mats[[32]]+mats[[33]]
+
+(a[3]+a[4])/sum(a)
+(a[3]/(a[1]+a[3]))
+(a[4]/(a[2]+a[4]))
+
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # So now, within each meta-analysis, the proportions are adjusted to the population.
 # Now, we want to generalize the sample to the population
@@ -614,4 +703,29 @@ p1 <- N2/N #   population proportion reg
 
   
 p.x.corrected <- (p.x * r0 * p1) / ((1 - p.x) * r1 * p0 + (p.x * r0 * p1))
+p1 <- p2 <- d1 <- d2 <- g1 <- g2 <- w1 <- w2 <- c()
+
+for (i in 1:33) {
+  N2 <- out <- sum(as.numeric(df.out$type[df.out$id %in% i]))
+  N1 <- reg <- sum(as.numeric(df.reg$type[df.reg$id %in% i]))
+  N <- tot <- sum(df.studies$id %in% i)
+  n2 <- sel.out <-  sum(c(out.ma.err[i],out.ma.nerr[i]))
+  n1 <- sel.reg <- sum(c(reg.ma.err[i],reg.ma.nerr[i]))
+  n <- sel.tot <- sum(c(reg.ma.err[i],reg.ma.nerr[i],out.ma.err[i],out.ma.nerr[i]))
+  # correction weight for all regs / outliers
+  g1[i] <- (N1 / N) / (n1 / n)
+  g2[i] <- (N2 / N) / (n2 / n)
+  # inclusion weights
+  d1[i] <- 1 / (n1 / N1)
+  d2[i] <- 1 / (n2 / N2)
+  if (d2[i] == "NaN" | d2[i] == "Inf") { d2[i] <- 0 }
+  if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
+  # weights
+  w1[i] <- g1[i] * d1[i]
+  w2[i] <- g2[i] * d2[i]
+  # population weights
+  p1[i] <- n1/N1 # number of regular studies in sample vs regular studies in population of MA
+  p2[i] <- n2/N2 # number of outliers in sample vs outliers in population of MA
+}
+
 

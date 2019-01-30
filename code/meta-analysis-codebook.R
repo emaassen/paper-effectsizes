@@ -10,35 +10,38 @@ dat <- read_excel("codebook-meta-analyses-final-empty.xlsx", 2)
 # Recalculated effect size based on original estimates --------------------
 setwd("C:/Users/s421506/tiu/research/effectsizes/data-per-ma")
 
-est <- k <- c() # empty vector to store results
+est.fe <- est.re <- k.sub <- c() # empty vector to store results
 
 # Adesope
 df <- read.table("adesope_subset.csv", header=T, sep=';')
 res.fe <- rma(g, vg, data=df, method="FE")
 res.re <- rma(g, vg, data=df) 
-est <- c(est,paste("FE ",res.fe$b,"RE",res.re$b))
-k <- c(k,nrow(df))
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.sub <- c(k.sub,nrow(df))
 rm(df)
 
 #Alfieri
 df <- read.table("alfieri_subset.csv", header=T, sep=';')
-res <- rma(g, vg, data=df)
-est <- c(est,res$b)
-k <- c(k,nrow(df))
+res.fe <- rma(g, vg, data=df, method="FE")
+res.re <- rma(g, vg, data=df) 
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.sub <- c(k.sub,nrow(df))
 rm(df)
-
-
-
-
-
-
 
 #Babbage
-df <- read.table("babbage_complete.csv", header=T, sep=';')
-res <- rma(g, vg, data=df)
-dat[3,"recalc"] <- res$b
-dat[3, "k"] <- nrow(df)
+df <- read.table("babbage_subset.csv", header=T, sep=';')
+res.re <- rma(g, vg, data=df) 
+est.re <- c(est.re,res.re$b)
+k.sub <- c(k.sub,nrow(df))
 rm(df)
+
+
+
+
+
+
 
 #Balliet
 df <- read.table("balliet_complete.csv", header=T, sep=';')
