@@ -4,6 +4,9 @@
 # dependency of effect sizes
 /dependency/
 
+# writing files
+/writing/
+
 # misc files
 *.txt
 *.rar

@@ -1,0 +1,63 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.0 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/global//global/global}
+    \entry{Schmidt2015}{book}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=815423931da5bf3d960e4fa9de4e6860}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Frank\bibnamedelima L.},
+           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=68a4867fb99b21b6f8276b96ff1ebcaa}{%
+           family={Hunter},
+           familyi={H\bibinitperiod},
+           given={John\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {{SAGE} Publications, Ltd}%
+      }
+      \strng{namehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{fullhash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{bibnamehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{authorbibnamehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{authornamehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{authorfullhash}{1f8e968f25432a50814511dc6a35a70c}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{p.64}
+      \field{title}{Methods of Meta-Analysis: Correcting Error and Bias in Research Findings}
+      \field{year}{2015}
+      \verb{doi}
+      \verb 10.4135/9781483398105
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
