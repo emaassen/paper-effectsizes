@@ -1,0 +1,18 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'd-dependency-samples.blg'
+[32] biber-MSWIN32:315> INFO - === 
+[61] Biber.pm:371> INFO - Reading 'd-dependency-samples.bcf'
+[171] Biber.pm:889> INFO - Found 3 citekeys in bib section 0
+[188] Biber.pm:4093> INFO - Processing section 0
+[203] Biber.pm:4254> INFO - Looking for bibtex format file 'appendices-bib.bib' for section 0
+[206] bibtex.pm:1523> INFO - LaTeX decoding ...
+[272] bibtex.pm:1340> INFO - Found BibTeX data source 'appendices-bib.bib'
+[287] Utils.pm:193> WARN - month field 'nov' in entry 'Moeyaert2016' is not an integer - this will probably not sort properly.
+[293] Utils.pm:193> WARN - month field 'dec' in entry 'Ahn2012' is not an integer - this will probably not sort properly.
+[315] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[316] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[316] Biber.pm:3921> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[316] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[321] bbl.pm:636> INFO - Writing 'd-dependency-samples.bbl' with encoding 'UTF-8'
+[326] bbl.pm:739> INFO - Output to d-dependency-samples.bbl
+[326] Biber.pm:110> INFO - WARNINGS: 2

@@ -403,7 +403,7 @@ ggplot(df.z, aes(effestnew.exp, effest.exp, col=discrepancy)) +
 
 # Bar graph
 library(ggplot2); library(plyr); library(readxl); library(reshape2); library(dplyr);library(scales)
-df <- read_excel("C:/Users/s421506/tiu/research/effectsizes/xlsxfiles/codebook-primary-studies-final.xlsx", 2)
+df <- read_excel("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-primary-studies-final-complete.xlsx", 1)
 df$discrepancy <- as.character(df$info)
 
 metaauthors <- levels(factor(df$meta))
@@ -432,7 +432,7 @@ dfma %>%
   theme(legend.title=element_blank()) +
   theme(axis.title.y=element_blank()) +
   theme(axis.title.x=element_blank()) +
-  theme(legend.text=element_text(size=14)) +
+  theme(legend.text=element_text(size=12)) +
   theme(legend.position="bottom") +
   scale_fill_manual(values=mycolors, guide = guide_legend(reverse=TRUE))
 

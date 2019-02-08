@@ -68,6 +68,108 @@
       \verb 10.1177/1745691612459060
       \endverb
     \endentry
+    \entry{R2018}{misc}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=dcdebb6b35bff7c0568bf8c50ef8626d}{%
+           family={{R Core Team}},
+           familyi={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{fullhash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{bibnamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authorbibnamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authornamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authorfullhash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \field{sortinit}{R}
+      \field{sortinithash}{da6b42bd3ab22fee61abed031ee405f7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{R: A Language and Environment for Statistical Computing}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://www.R-project.org
+      \endverb
+      \verb{url}
+      \verb https://www.R-project.org
+      \endverb
+    \endentry
+    \entry{Schmidt2015}{book}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=815423931da5bf3d960e4fa9de4e6860}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Frank\bibnamedelima L.},
+           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=68a4867fb99b21b6f8276b96ff1ebcaa}{%
+           family={Hunter},
+           familyi={H\bibinitperiod},
+           given={John\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {{SAGE} Publications, Ltd}%
+      }
+      \strng{namehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{fullhash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{bibnamehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{authorbibnamehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{authornamehash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{authorfullhash}{1f8e968f25432a50814511dc6a35a70c}
+      \field{sortinit}{S}
+      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{p.64}
+      \field{title}{Methods of Meta-Analysis: Correcting Error and Bias in Research Findings}
+      \field{year}{2015}
+      \verb{doi}
+      \verb 10.4135/9781483398105
+      \endverb
+    \endentry
+    \entry{Viechtbauer2010}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=8fb2046b93076a185201e54f9ef91d63}{%
+           family={Viechtbauer},
+           familyi={V\bibinitperiod},
+           given={Wolfgang},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8fb2046b93076a185201e54f9ef91d63}
+      \strng{fullhash}{8fb2046b93076a185201e54f9ef91d63}
+      \strng{bibnamehash}{8fb2046b93076a185201e54f9ef91d63}
+      \strng{authorbibnamehash}{8fb2046b93076a185201e54f9ef91d63}
+      \strng{authornamehash}{8fb2046b93076a185201e54f9ef91d63}
+      \strng{authorfullhash}{8fb2046b93076a185201e54f9ef91d63}
+      \field{sortinit}{V}
+      \field{sortinithash}{75dd7385c90b2252c3ae853a80ca853b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Statistical Software}
+      \field{number}{3}
+      \field{title}{Conducting meta-analyses in {R} with the {metafor} package}
+      \field{volume}{36}
+      \field{year}{2010}
+      \field{pages}{1\bibrangedash 48}
+      \range{pages}{48}
+      \verb{urlraw}
+      \verb http://www.jstatsoft.org/v36/i03/
+      \endverb
+      \verb{url}
+      \verb http://www.jstatsoft.org/v36/i03/
+      \endverb
+    \endentry
     \entry{Wijsen2015}{unpublished}{}
       \name{author}{1}{}{%
         {{uniquename=0,uniquepart=base,hash=df5f7286f3d84d32eadad15ceda3a455}{%
@@ -95,7 +197,6 @@
       \field{year}{2015}
     \endentry
   \enddatalist
-  \missing{@Wijsen2015}
 \endrefsection
 \endinput
 

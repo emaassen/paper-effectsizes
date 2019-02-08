@@ -2145,14 +2145,9 @@
     <bcf:datasource type="file" datatype="bibtex">appendices-bib.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Bakker2012</bcf:citekey>
-    <bcf:citekey order="2">Wijsen2015</bcf:citekey>
-    <bcf:citekey order="3">Wijsen2015</bcf:citekey>
-    <bcf:citekey order="4">Wijsen2015</bcf:citekey>
-    <bcf:citekey order="5">Bakker2012</bcf:citekey>
-    <bcf:citekey order="6">Schmidt2015</bcf:citekey>
-    <bcf:citekey order="7">R2018</bcf:citekey>
-    <bcf:citekey order="8">Viechtbauer2010</bcf:citekey>
+    <bcf:citekey order="1">Moeyaert2016</bcf:citekey>
+    <bcf:citekey order="2">Ahn2012</bcf:citekey>
+    <bcf:citekey order="3">Cheung2004</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">

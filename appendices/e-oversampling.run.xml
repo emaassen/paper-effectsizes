@@ -44,10 +44,10 @@
   <internal package="biblatex" priority="9" active="1">
     <generic>latex</generic>
     <provides type="dynamic">
-      <file>a-sampling-scheme.bcf</file>
+      <file>e-oversampling.bcf</file>
     </provides>
     <requires type="dynamic">
-      <file>a-sampling-scheme.bbl</file>
+      <file>e-oversampling.bbl</file>
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
@@ -64,23 +64,23 @@
       <file>english-apa.lbx</file>
     </requires>
   </internal>
-  <external package="biblatex" priority="5" active="0">
+  <external package="biblatex" priority="5" active="1">
     <generic>biber</generic>
     <cmdline>
       <binary>biber</binary>
-      <infile>a-sampling-scheme</infile>
+      <infile>e-oversampling</infile>
     </cmdline>
     <input>
-      <file>a-sampling-scheme.bcf</file>
+      <file>e-oversampling.bcf</file>
     </input>
     <output>
-      <file>a-sampling-scheme.bbl</file>
+      <file>e-oversampling.bbl</file>
     </output>
     <provides type="dynamic">
-      <file>a-sampling-scheme.bbl</file>
+      <file>e-oversampling.bbl</file>
     </provides>
     <requires type="dynamic">
-      <file>a-sampling-scheme.bcf</file>
+      <file>e-oversampling.bcf</file>
     </requires>
     <requires type="editable">
       <file>appendices-bib.bib</file>

@@ -213,7 +213,6 @@ write.table(df, file = "benish_subset.csv", row.names=FALSE, sep=";")
 
 
 # Berry1 ------------------------------------------------------------------
-
 df <- read.table("berry1_complete.csv", header=T, sep=";")
 
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
@@ -236,7 +235,6 @@ write.table(df, file = "berry1_subset.csv", row.names=FALSE, sep=";")
 
 
 # Berry2 ------------------------------------------------------------------
-
 df <- read.table("berry2_complete.csv", header=T, sep=";")
 
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
@@ -258,7 +256,6 @@ write.table(df, file = "berry2_subset.csv", row.names=FALSE, sep=";")
 
 
 # Card --------------------------------------------------------------------
-
 df <- read.table("card_complete.csv", header=T, sep=";")
 
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
@@ -280,7 +277,6 @@ write.table(df, file = "card_subset.csv", row.names=FALSE, sep=";")
 
 
 # Crook -------------------------------------------------------------------
-
 df <- read.table("crook_complete.csv", header=T, sep=";")
 
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
@@ -302,7 +298,6 @@ write.table(df, file = "crook_subset.csv", row.names=FALSE, sep=";")
 
 
 # DeWit -------------------------------------------------------------------
-
 df <- read.table("dewit_complete.csv", header=T, sep=";")
 
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
@@ -323,7 +318,6 @@ write.table(df, file = "dewit_subset.csv", row.names=FALSE, sep=";")
 
 
 # Elsequest ---------------------------------------------------------------
-
 df <- read.table("elsequest_complete.csv", header=T, sep=";")
 
 df$n <- df$n1 + df$n2
@@ -346,7 +340,6 @@ df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
 write.table(df, file = "elsequest_subset.csv", row.names=FALSE, sep=";")
 
 # Farber ------------------------------------------------------------------
-
 df <- read.table("farber_complete.csv", header=T, sep=";")
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
@@ -368,9 +361,7 @@ write.table(df, file = "farber_subset.csv", row.names=FALSE, sep=";")
 
 
 # Fisher -----------------------------------------------------------------
-
 df <- read.table("fischer_complete.csv", header=T, sep=";")
-
 df$n <- df$n1 + df$n2
 dfs <- df$n1 + df$n2 - 2
 J <- 1 - (3 / (4 * dfs - 1))
@@ -402,7 +393,6 @@ write.table(df, file = "fischer_subset.csv", row.names=FALSE, sep=";")
 
 
 # Fox ---------------------------------------------------------------------
-
 df <- read.table("fox_complete.csv", header=T, sep=";")
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
@@ -423,7 +413,6 @@ write.table(df, file = "fox_subset.csv", row.names=FALSE, sep=";")
 
 
 # Freund ------------------------------------------------------------------
-
 df <- read.table("freund_complete.csv", header=T, sep=";")
 df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
@@ -444,7 +433,6 @@ write.table(df, file = "freund_subset.csv", row.names=FALSE, sep=";")
 
 
 # Green -------------------------------------------------------------------
-
 df <- read.table("green_complete.csv", header=T, sep=";")
 df$n <- df$n1 + df$n2
 df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
@@ -467,9 +455,7 @@ write.table(df, file = "green_subset.csv", row.names=FALSE, sep=";")
 
 
 # Hallion -----------------------------------------------------------------
-
 df <- read.table("hallion_complete.csv", header=T, sep=";")
-
 J <- 1 - (3 / (4 * (df$n - 1)))
 df$d <- df$g / J   
 df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
@@ -496,7 +482,6 @@ write.table(df, file = "hallion_subset.csv", row.names=FALSE, sep=";")
 
 
 # Ihle --------------------------------------------------------------------
-
 df <- read.table("ihle_complete.csv", header=T, sep=";")
 
 df$n <- df$n1 + df$n2
@@ -527,9 +512,7 @@ df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
 df$vg <- J^2 * df$vd
 write.table(df, file = "ihle_subset.csv", row.names=FALSE, sep=";")
 
-
 # Koenig ------------------------------------------------------------------
-
 df <- read.table("koenig_complete.csv", header=T, sep=";")
 dfs <- df$n - 2
 J <- 1 - (3 / (4 * dfs - 1))
@@ -544,7 +527,6 @@ regular <- df[which(q < 3.84), ]                   # subset of studies that are 
 outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
 regular.total <- bind_rows(regular.total,select(regular, id, study, g))
 
-
 # Dependency check with g
 depdf <- as.data.frame(dependency(df$g,df$vg)) 
 write.table(df, file = "koenig_complete.csv", row.names=FALSE, sep=";")
@@ -556,7 +538,6 @@ df$d <- df$g / J
 df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
 df$vg <- J^2 * df$vd 
 write.table(df, file = "koenig_subset.csv", row.names=FALSE, sep=";")
-
 
 
 # Kolden ------------------------------------------------------------------
@@ -601,7 +582,6 @@ write.table(df, file = "lucassen_subset.csv", row.names=FALSE, sep=";")
 
 
 # Mol ---------------------------------------------------------------------
-
 df <- read.table("mol_complete.csv", header=T, sep=";")
 df$vz <- 1 / (df$n - 3)                              # variance fisher's z 
 res <- rma(z, vz, data=df)                         # random effects meta-analysis

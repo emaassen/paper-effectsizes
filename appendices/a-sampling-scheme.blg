@@ -1,18 +1,17 @@
 [0] Config.pm:304> INFO - This is Biber 2.12
 [0] Config.pm:307> INFO - Logfile is 'a-sampling-scheme.blg'
-[33] biber-MSWIN32:315> INFO - === 
-[69] Biber.pm:371> INFO - Reading 'a-sampling-scheme.bcf'
-[178] Biber.pm:889> INFO - Found 3 citekeys in bib section 0
-[194] Biber.pm:4093> INFO - Processing section 0
-[210] Biber.pm:4254> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
-[214] bibtex.pm:1523> INFO - LaTeX decoding ...
-[278] bibtex.pm:1340> INFO - Found BibTeX data source 'bibliography.bib'
-[289] Utils.pm:193> WARN - month field 'nov' in entry 'Bakker2012' is not an integer - this will probably not sort properly.
-[294] Utils.pm:193> WARN - I didn't find a database entry for '@Wijsen2015' (section 0)
-[305] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[305] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[305] Biber.pm:3921> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'en-US'
-[305] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
-[309] bbl.pm:636> INFO - Writing 'a-sampling-scheme.bbl' with encoding 'UTF-8'
-[311] bbl.pm:739> INFO - Output to a-sampling-scheme.bbl
-[311] Biber.pm:110> INFO - WARNINGS: 2
+[42] biber-MSWIN32:315> INFO - === 
+[85] Biber.pm:371> INFO - Reading 'a-sampling-scheme.bcf'
+[195] Biber.pm:889> INFO - Found 5 citekeys in bib section 0
+[213] Biber.pm:4093> INFO - Processing section 0
+[233] Biber.pm:4254> INFO - Looking for bibtex format file 'appendices-bib.bib' for section 0
+[239] bibtex.pm:1523> INFO - LaTeX decoding ...
+[302] bibtex.pm:1340> INFO - Found BibTeX data source 'appendices-bib.bib'
+[313] Utils.pm:193> WARN - month field 'nov' in entry 'Bakker2012' is not an integer - this will probably not sort properly.
+[345] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[345] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[345] Biber.pm:3921> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[345] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[373] bbl.pm:636> INFO - Writing 'a-sampling-scheme.bbl' with encoding 'UTF-8'
+[377] bbl.pm:739> INFO - Output to a-sampling-scheme.bbl
+[378] Biber.pm:110> INFO - WARNINGS: 1

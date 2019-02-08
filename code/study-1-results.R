@@ -6,6 +6,7 @@ options(scipen=999)
 lapply(packages,library,character.only=T)
 
 datp <- read.table("codebook-primary-studies-final.csv", header=T, sep = '')
+datm <- read.table("codebook-meta-analyses-final.csv", header=T, sep = '')
 df.studies <- read.table("studies-all.csv", header=T, sep = ';')
 df.out <- read.table("studies-outliers.csv", header=T, sep = ';')
 df.reg <- read.table("studies-nonoutliers.csv", header=T, sep = ';')
@@ -190,6 +191,26 @@ for (i in 1:33) {
   if (p.x.b[i] == "NaN") { p.x.b[i] <- 0 
   }
 }
+
+# weight each probability with the number of studies in that meta-analysis and divide by the total no. of studies
+ss <- as.numeric(table(df.studies$id))
+p.x.tot <- sum((p.x * ss)) / nrow(df.studies)
+p.x.a.tot <- sum((p.x.a * ss)) / nrow(df.studies)
+p.x.b.tot <- sum((p.x.b * ss)) / nrow(df.studies)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 a <-mats[[1]]+mats[[2]]+mats[[3]]+mats[[4]]+mats[[5]]+mats[[6]]+mats[[7]]+mats[[8]]+mats[[9]]+
   mats[[10]]+mats[[11]]+mats[[12]]+mats[[13]]+mats[[14]]+mats[[15]]+mats[[16]]+mats[[17]]+

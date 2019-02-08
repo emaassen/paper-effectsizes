@@ -41,13 +41,13 @@
   >
 ]>
 <requests version="1.0">
-  <internal package="biblatex" priority="9" active="1">
+  <internal package="biblatex" priority="9" active="0">
     <generic>latex</generic>
     <provides type="dynamic">
-      <file>a-sampling-scheme.bcf</file>
+      <file>d-dependency-samples.bcf</file>
     </provides>
     <requires type="dynamic">
-      <file>a-sampling-scheme.bbl</file>
+      <file>d-dependency-samples.bbl</file>
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
@@ -68,19 +68,19 @@
     <generic>biber</generic>
     <cmdline>
       <binary>biber</binary>
-      <infile>a-sampling-scheme</infile>
+      <infile>d-dependency-samples</infile>
     </cmdline>
     <input>
-      <file>a-sampling-scheme.bcf</file>
+      <file>d-dependency-samples.bcf</file>
     </input>
     <output>
-      <file>a-sampling-scheme.bbl</file>
+      <file>d-dependency-samples.bbl</file>
     </output>
     <provides type="dynamic">
-      <file>a-sampling-scheme.bbl</file>
+      <file>d-dependency-samples.bbl</file>
     </provides>
     <requires type="dynamic">
-      <file>a-sampling-scheme.bcf</file>
+      <file>d-dependency-samples.bcf</file>
     </requires>
     <requires type="editable">
       <file>appendices-bib.bib</file>

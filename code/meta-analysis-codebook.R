@@ -1,276 +1,355 @@
 rm(list = ls())
-setwd("C:/Users/s421506/tiu/research/effectsizes/codebooks/")
 x <- c("metafor","readxl")
 #lapply(x,install.packages(x),character.only=T)
 lapply(x,library,character.only=T)
-
-#dat <- read.table("codebook-meta-analyses-final.csv", header=T, sep = '')
-dat <- read_excel("codebook-meta-analyses-final-empty.xlsx", 2)
-
-# Recalculated effect size based on original estimates --------------------
 setwd("C:/Users/s421506/tiu/research/effectsizes/data-per-ma")
+est.fe <- est.re <- k.tot <- c() # empty vector to store results 
 
-est.fe <- est.re <- k.sub <- c() # empty vector to store results
-
-# Adesope
-df <- read.table("adesope_subset.csv", header=T, sep=';')
+# Adesope -----------------------------------------------------------------
+df <- read.table("adesope_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(g, vg, data=df, method="FE")
-res.re <- rma(g, vg, data=df) 
+res.re <- rma(g, vg, data=df, method="DL") 
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
-k.sub <- c(k.sub,nrow(df))
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
+df <- read.table("adesope_subset.csv", header=T, sep=';') # reproduced results subset
+Jo <- 1 - (3 / (4 * df$n - 9))
+Jc <- 1 - (3 / (4 * df$nnew - 9))          
+d.temp <- df$effest.exp / J                                        # cohen's d
+df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
+df$vg <- J^2 * df$vd                                    # variance hedges' g 
+res.so <- rma(effest.exp, vg, data=df, method="DL")                   # subset original
+res.sc <- rma(effestnew.exp, vg, data=df, method="DL")                # subset reproduced
+
+res.so = tryCatch ({ res.so = rma(zexp, vz, data=df) }, error = function(err) { res.so = rma(zexp, vz, data=df, method="ML") })
+
+dat$z.so[i] <- res.so$b           # MA subset original effect size estimate
+dat$ci.li.so[i] <- res.so$ci.lb   # MA subset original effect size LB
+dat$ci.ul.so[i] <- res.so$ci.ub   # MA subset original effect size UB
+dat$tau.so[i] <- res.so$tau2      # MA subset original tau2 estimate
+
+dat$krep1[i] <- nrow(df)             # no of reproduced studies
+dat$percent[i] <- nrow(df)/dat$k[i]  # percentage of studies from original MA that were reproduced
+dat$krep2[i] <- sum(as.numeric(df$disccat == 0)) # no of reproduced studies that could be reproduced without a discrepancy
+dat$percent2[i] <- sum(as.numeric(df$disccat == 0)) / nrow(df) # percentage of studies that could be reproduced without a discrepancy, out of all reproduced studies
+
+# Subset checked MAs ------------------------------------------------------
+df$newvz <- 1 / (df$nnew-3) 
+write.table(df, file = paste(authors_subset[i]), row.names=FALSE, sep=";")
+
+res.sc = tryCatch ({ res.sc = rma(znewexp, newvz, data=df) }, error = function(err) { res.sc = rma(znewexp, newvz, data=df, method="ML") })
+
+dat$z.sc[i] <- res.sc$b           # MA subset checked effect size estimate
+dat$ci.li.sc[i] <- res.sc$ci.lb   # MA subset checked effect size LB
+dat$ci.ul.sc[i] <- res.sc$ci.ub   # MA subset checked effect size LB
+dat$tau.sc[i] <- res.sc$tau2      # MA subset checked tau2 estimate
+dat$disc.s[i] <- res.so$b - res.sc$b # Difference subset original and subset checked effect size estimate
+
+pval.so <- c(pval.so,res.so$pval)
+pval.sc <- c(pval.sc,res.sc$pval)
+
+
 #Alfieri
-df <- read.table("alfieri_subset.csv", header=T, sep=';')
+df <- read.table("alfieri_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(g, vg, data=df, method="FE")
-res.re <- rma(g, vg, data=df) 
+res.re <- rma(g, vg, data=df, method="DL") 
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
-k.sub <- c(k.sub,nrow(df))
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Babbage
-df <- read.table("babbage_subset.csv", header=T, sep=';')
-res.re <- rma(g, vg, data=df) 
+df <- read.table("babbage_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="DL") 
+est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
-k.sub <- c(k.sub,nrow(df))
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
-
-
-
-
-
-
-#Balliet
-df <- read.table("balliet_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[4,"recalc"] <- res$b
-dat[4, "k"] <- nrow(df)
+# Balliet
+df <- read.table("balliet_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.fe <- rma(g, vg, data=df, method="FE")
+res.re <- rma(g, vg, data=df, method="DL") 
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
-#Benish
-df <- read.table("benish_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[5,"recalc"] <- res$b
-dat[5, "k"] <- nrow(df)
+# Benish
+df <- read.table("benish_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="HE") 
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Berry1
-df <- read.table("berry1_complete.csv", header=T, sep=';')
+df <- read.table("berry1_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(r, vr, data=df, method="FE")
-res.re <- rma(r, vr, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[6,"recalc"] <- est
-dat[6, "k"] <- nrow(df)
+res.re <- rma(r, vr, data=df, method="HS") 
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Berry2
-df <- read.table("berry2_complete.csv", header=T, sep=';')
+df <- read.table("berry2_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(r, vr, data=df, method="FE")
-res.re <- rma(r, vr, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[7,"recalc"] <- est
-dat[7, "k"] <- nrow(df)
+res.re <- rma(r, vr, data=df, method="HS") 
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Card
-df <- read.table("card_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[8,"recalc"] <- res$b
-dat[8, "k"] <- nrow(df)
+df <- read.table("card_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+# transform all effect sizes to fisher's z
+z <- 0.5 * log((1 + df$r) / (1 - df$r))
+vz <- 1 / (df$n - 3)    
+res.re <- rma(z, vz, data=df, method="DL") 
+# transform estimate back to correlation
+res.re <-tanh(res.re$b)
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
-#Crook
-df <- read.table("crook_complete.csv", header=T, sep=';')
-res.fe <- rma(r, vr, data=df,method="FE")
-res.re <- rma(r, vr, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[9,"recalc"] <- est
-dat[9, "k"] <- nrow(df)
+# Crook
+df <- read.table("crook_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.fe <- sum(df$n * df$r)/sum(df$n)
+res.re <- sum(df$n * df$r)/sum(df$n) 
+est.fe <- c(est.fe,res.fe)
+est.re <- c(est.re,res.re)
+# estimate confidence interval (see formula sheet):
+r.bar <- res.re
+N <- sum(df$n)
+K <- nrow(df)
+sd2.res <- var(df$r)
+se <- ((1 - r.bar^2)^2 / (N - K)) + (sd2.res / K)^1/2
+ci.lb <- r.bar - (1.96 * se)
+ci.ub <- r.bar + (1.96 * se)
+# mean estimate corrected for attenuation (see formula sheet):
+res.fe <- res.fe / 0.82
+res.re <- res.re / 0.82
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #DeWit
-df <- read.table("dewit_complete.csv", header=T, sep=';')
-res.fe <- rma(r, vr, data=df,method="FE")
-res.re <- rma(r, vr, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[10,"recalc"] <- est
-dat[10, "k"] <- nrow(df)
+df <- read.table("dewit_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.fe <- rma(r, vr, data=df, method="FE")
+res.re <- rma(r, vr, data=df, method="HS") 
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Elsequest
-df <- read.table("elsequest_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[11,"recalc"] <- res$b
-dat[11, "k"] <- nrow(df)
+df <- read.table("elsequest_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(d, vd, data=df, method="DL") 
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Farber
-df <- read.table("farber_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[12,"recalc"] <- res$b
-dat[12, "k"] <- nrow(df)
+df <- read.table("farber_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(r, vr, data=df, method="DL") 
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Fischer
-df <- read.table("fischer_complete.csv", header=T, sep=';')
+df <- read.table("fischer_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(g, vg, data=df, method="FE")
-res.re <- rma(g, vg, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[13,"recalc"] <- est
-dat[13, "k"] <- nrow(df)
+res.re <- rma(g, vg, data=df, method="DL")
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Fox
-df <- read.table("fox_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[14,"recalc"] <- res$b
-dat[14, "k"] <- nrow(df)
+df <- read.table("fox_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+# transform all effect sizes to fisher's z
+z <- 0.5 * log((1 + df$r) / (1 - df$r))
+vz <- 1 / (df$n - 3)    
+res.re <- rma(z, vz, data=df, method="ML") 
+# transform estimate back to correlation
+res.re <- tanh(res.re$b)
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Freund
-df <- read.table("freund_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[15,"recalc"] <- res$b
-dat[15, "k"] <- nrow(df)
+df <- read.table("freund_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma.mv(r, vr, data=df)
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Green
-df <- read.table("green_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[16,"recalc"] <- res$b
-dat[16, "k"] <- nrow(df)
+df <- read.table("green_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(d, vd, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Hallion
-df <- read.table("hallion_complete.csv", header=T, sep=';')
-res <- rma(g, vg, data=df)
-dat[17,"recalc"] <- res$b
-dat[17, "k"] <- nrow(df)
+df <- read.table("hallion_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Ihle
-df <- read.table("ihle_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[18,"recalc"] <- res$b
-dat[18, "k"] <- nrow(df)
+df <- read.table("ihle_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="HE")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Koenig
-df <- read.table("koenig_complete.csv", header=T, sep=';')
-res <- rma(g, vg, data=df)
-dat[19,"recalc"] <- res$b
-dat[19, "k"] <- nrow(df)
+df <- read.table("koenig_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Kolden
-df <- read.table("kolden_complete.csv", header=T, sep=';')
-res <- rma (r, vr, data=df)
-dat[20,"recalc"] <- res$b
-dat[20, "k"] <- nrow(df)
+df <- read.table("kolden_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(r, vr, data=df, method="HE")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Lucassen
-df <- read.table("lucassen_complete.csv", header=T, sep=';')
-res <- rma (r, vr, data=df)
-dat[21,"recalc"] <- res$b
-dat[21, "k"] <- nrow(df)
+df <- read.table("lucassen_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(r, vr, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Mol
-df <- read.table("mol_complete.csv", header=T, sep=';')
-res <- rma (z, vz, data=df)
-dat[22,"recalc"] <- res$b
-dat[22, "k"] <- nrow(df)
+df <- read.table("mol_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(z, vz, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Morgan
-df <- read.table("morgan_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[23,"recalc"] <- res$b
-dat[23, "k"] <- nrow(df)
+df <- read.table("morgan_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(d, vd, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Munder
-df <- read.table("munder_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[24,"recalc"] <- res$b
-dat[24, "k"] <- nrow(df)
+df <- read.table("munder_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Piet
-df <- read.table("piet_complete.csv", header=T, sep=';')
-res <- rma(g, vg, data=df)
-dat[25,"recalc"] <- res$b
-dat[25, "k"] <- nrow(df)
+df <- read.table("piet_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(g, vg, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Smith
-df <- read.table("smith_complete.csv", header=T, sep=';')
-res <- rma (r, vr, data=df)
-dat[26,"recalc"] <- res$b
-dat[26, "k"] <- nrow(df)
+df <- read.table("smith_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(r, vr, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Tillman
-df <- read.table("tillman_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[27,"recalc"] <- res$b
-dat[27, "k"] <- nrow(df)
+df <- read.table("tillman_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(r, vr, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Toosi
-df <- read.table("toosi_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[28,"recalc"] <- res$b
-dat[28, "k"] <- nrow(df)
+df <- read.table("toosi_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(r, vr, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #vanIddekinge
-df <- read.table("vaniddekinge_complete.csv", header=T, sep=';')
+df <- read.table("vaniddekinge_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(r, vr, data=df, method="FE")
-res.re <- rma(r, vr, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[29,"recalc"] <- est
-dat[29, "k"] <- nrow(df)
+res.re <- rma(r, vr, data=df, method="HS")
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Webb
-df <- read.table("webb_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df)
-dat[30,"recalc"] <- res$b
-dat[30, "k"] <- nrow(df)
+df <- read.table("webb_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.re <- rma(d, vd, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Woodin
-df <- read.table("woodin_complete.csv", header=T, sep=';')
-res <- rma(d, vd, data=df, method="FE")
-dat[31,"recalc"] <- res$b
-dat[31, "k"] <- nrow(df)
+df <- read.table("woodin_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+res.fe <- rma(d, vd, data=df, method="FE")
+est.fe <- c(est.fe,res.fe$b)
+est.re <- c(est.re,NA)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Woodley
-df <- read.table("woodley_complete.csv", header=T, sep=';')
+df <- read.table("woodley_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 res.fe <- rma(r, vr, data=df, method="FE")
-res.re <- rma(r, vr, data=df)
-est <- paste("FE ",res.fe$b,"RE",res.re$b)
-dat[32,"recalc"] <- est
-dat[32, "k"] <- nrow(df)
+res.re <- rma(r, vr, data=df, method="DL")
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re$b)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
 #Yoon
-df <- read.table("yoon_complete.csv", header=T, sep=';')
-res <- rma(r, vr, data=df)
-dat[33,"recalc"] <- res$b
-dat[33, "k"] <- nrow(df)
+df <- read.table("yoon_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
+# transform all effect sizes to fisher's z
+z <- 0.5 * log((1 + df$r) / (1 - df$r))
+vz <- 1 / (df$n - 3)    
+res.re <- rma(z, vz, data=df, method="DL") 
+# transform estimate back to correlation
+res.re <- tanh(res.re$b)
+est.fe <- c(est.fe,NA)
+est.re <- c(est.re,res.re)
+k.tot <- c(k.tot,nrow(df))
 rm(df)
 
+setwd("C:/Users/s421506/tiu/research/effectsizes/codebooks/")
+dat <- read_excel("codebook-meta-analyses-final-empty.xlsx", 2)
+dat$k <- k.tot
+dat$recalc.fe <- est.fe
+dat$recalc.re <- est.re
 
 
 
-dat[[i],"recalc"] <- est
 
 # Save results k + recalc column
 setwd("C:/Users/s421506/tiu/research/effectsizes/")
@@ -286,7 +365,7 @@ pval.co <- pval.cc <- pval.so <- pval.sc <- c()
 for (i in 1:nrow(dat)) {
   
   # Complete original MAs ---------------------------------------------------
-  df <- read.table(paste(authors_complete[i]), header=T, sep=';')
+  df <- read.table(paste(authors_complete[i]), header=T, sep=';') # recalculated effect size based on reported effect sizes
   
   #trycatch because Card doesn't converge with method REML, so ML is used. All other meta-analyses use method=REML
   res.co = tryCatch ({ res.co = rma(zexp, vz, data=df) }, error = function() { res.co = rma(zexp, vz, data=df, method="ML") })
@@ -394,34 +473,7 @@ for (i in 1:nrow(dat)) {
   dat$cor[i] <- cortest$estimate                      # correlation year of publication and standard error
 
   # Subset original MAs -----------------------------------------------------
-  df <- read.table(paste(authors_subset[i]), header=T, sep=';')
   
-  res.so = tryCatch ({ res.so = rma(zexp, vz, data=df) }, error = function(err) { res.so = rma(zexp, vz, data=df, method="ML") })
-  
-  dat$z.so[i] <- res.so$b           # MA subset original effect size estimate
-  dat$ci.li.so[i] <- res.so$ci.lb   # MA subset original effect size LB
-  dat$ci.ul.so[i] <- res.so$ci.ub   # MA subset original effect size UB
-  dat$tau.so[i] <- res.so$tau2      # MA subset original tau2 estimate
-  
-  dat$krep1[i] <- nrow(df)             # no of reproduced studies
-  dat$percent[i] <- nrow(df)/dat$k[i]  # percentage of studies from original MA that were reproduced
-  dat$krep2[i] <- sum(as.numeric(df$disccat == 0)) # no of reproduced studies that could be reproduced without a discrepancy
-  dat$percent2[i] <- sum(as.numeric(df$disccat == 0)) / nrow(df) # percentage of studies that could be reproduced without a discrepancy, out of all reproduced studies
-  
-  # Subset checked MAs ------------------------------------------------------
-  df$newvz <- 1 / (df$nnew-3) 
-  write.table(df, file = paste(authors_subset[i]), row.names=FALSE, sep=";")
-  
-  res.sc = tryCatch ({ res.sc = rma(znewexp, newvz, data=df) }, error = function(err) { res.sc = rma(znewexp, newvz, data=df, method="ML") })
-  
-  dat$z.sc[i] <- res.sc$b           # MA subset checked effect size estimate
-  dat$ci.li.sc[i] <- res.sc$ci.lb   # MA subset checked effect size LB
-  dat$ci.ul.sc[i] <- res.sc$ci.ub   # MA subset checked effect size LB
-  dat$tau.sc[i] <- res.sc$tau2      # MA subset checked tau2 estimate
-  dat$disc.s[i] <- res.so$b - res.sc$b # Difference subset original and subset checked effect size estimate
-  
-  pval.so <- c(pval.so,res.so$pval)
-  pval.sc <- c(pval.sc,res.sc$pval)
   
   # Fill in discrepancy category for effect sizes on subset checked MAs
   if (abs(dat$disc.s[i]) < 0.020) {
