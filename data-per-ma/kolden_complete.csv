@@ -1,17 +1,17 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"id";"vr"
-"Althay";"Athay";"";"";"";"";"";NA;1973;150;0.24;20;0.00596052187919463
-"Buckley et al.";"Buckley";"Karasu";"Charles";"";"";"";NA;1981;71;0.06;20;0.0141830422857143
-"Fretz";"Fretz";"";"";"";"";"";NA;1966;17;0.25;20;0.054931640625
-"Fuertes et al.";"Fuertes";"Mislowach";"Brown";"Gur-Arie";"Wilkinson";"Gelso";NA;2007;59;0.34;20;0.0134855751724138
-"Garfield & Bergin";"Garfield";"Bergin";"";"";"";"";NA;1971;38;-0.26;20;0.02349648
-"Hansen et al.";"Hansen";"Moore";"Carkhuff";"";"";"";NA;1968;70;0.69;20;0.00397784362318841
-"Jones & Zoppel";"Jones";"Zoppel";"";"";"";"";NA;1982;99;-0.02;20;0.01019592
-"Maramarosh et al.";"Marmarosh";"Gelso";"Majors";"Markin";"Mallery";"Choi";NA;2009;31;0.41;20;0.023068587
-"Melnick & Pierce";"Melnick";"Pierce";"";"";"";"";NA;1971;18;0.42;20;0.0399009976470588
-"Ritter et al.";"Ritter";"Bowden";"Murray";"Ross";"Greeley";"Pead";NA;2002;37;0.21;20;0.0253818002777778
-"Rothman";"Rothman";"";"";"";"";"";NA;2007;44;0.5;20;0.0130813953488372
-"Staples et al.";"Staples";"Sloane";"";"";"";"";NA;1976;17;0.16;20;0.05934096
-"Truax";"Truax";"";"";"";"";"";NA;1966;63;0.38;20;0.01180728
-"Truax";"Truax";"";"";"";"";"";NA;1971;34;-0.02;20;0.0302787927272727
-"Truax";"Truax";"";"";"";"";"";NA;1971;72;0.28;20;0.0119626276056338
-"Truax";"Truax";"";"";"";"";"";NA;1971;43;0.11;20;0.0232368192857143
+study;a1;a2;a3;a4;a5;a6;a7;yop;n;r;id;vr;nnew;effest.exp;effestnew.exp
+Althay;Athay;;;;;;NA;1973;150;0.24;20;0.005960522;150;0.24;0.24
+Buckley et al.;Buckley;Karasu;Charles;;;;NA;1981;71;0.06;20;0.014183042;71;0.06;0.056367393
+Fretz;Fretz;;;;;;NA;1966;17;0.25;20;0.054931641;17;0.25;0.155535427
+Fuertes et al.;Fuertes;Mislowach;Brown;Gur-Arie;Wilkinson;Gelso;NA;2007;59;0.34;20;0.013485575;59;0.34;0.34
+Garfield & Bergin;Garfield;Bergin;;;;;NA;1971;38;-0.26;20;0.02349648;38;-0.26;-0.038435284
+Hansen et al.;Hansen;Moore;Carkhuff;;;;NA;1968;70;0.69;20;0.003977844;70;0.69;0.40239015
+Jones & Zoppel;Jones;Zoppel;;;;;NA;1982;99;-0.02;20;0.01019592;99;-0.02;-0.052407445
+Maramarosh et al.;Marmarosh;Gelso;Majors;Markin;Mallery;Choi;NA;2009;31;0.41;20;0.023068587;31;0.41;0.430504745
+Melnick & Pierce;Melnick;Pierce;;;;;NA;1971;18;0.42;20;0.039900998;18;0.42;0.398539181
+Ritter et al.;Ritter;Bowden;Murray;Ross;Greeley;Pead;NA;2002;37;0.21;20;0.0253818;37;0.21;0.204787499
+Rothman;Rothman;;;;;;NA;2007;44;0.5;20;0.013081395;44;0.5;0.5
+Staples et al.;Staples;Sloane;;;;;NA;1976;17;0.16;20;0.05934096;17;0.16;0.157
+Truax;Truax;;;;;;NA;1966;63;0.38;20;0.01180728;63;0.38;0.405046358
+Truax;Truax;;;;;;NA;1971;34;-0.02;20;0.030278793;34;-0.02;-0.02
+Truax;Truax;;;;;;NA;1971;72;0.28;20;0.011962628;72;0.28;0.28
+Truax;Truax;;;;;;NA;1971;43;0.11;20;0.023236819;43;0.11;0.11

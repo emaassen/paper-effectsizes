@@ -1,69 +1,69 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"performance";"id";"vr"
-"Bae & Lawyer";"Bae";"Lawler";"";"";"";"";"";2000;138;0.31;"G";9;0.00596376065693431
-"Batjargal";"Batjargal";"";"";"";"";"";"";2005;56;0.16;"G";9;0.0172628247272727
-"Bergh";"Bergh";"";"";"";"";"";"";2001;104;0.09;"G";9;0.00955209330097087
-"Berman et al";"Berman";"Down";"Hill";"";"";"";"";2002;23;0.19;"G";9;0.0422319640909091
-"Brown et al.";"Brown";"Adams";"Amjad";"";"";"";"";2007;28;0.28;"G";9;0.03145728
-"Brush & Chaganti";"Brush";"Chaganti";"";"";"";"";"";1999;195;0.01;"G";9;0.00515360829896907
-"Carmeli";"Carmeli";"";"";"";"";"";"";2004;98;0.4;"G";9;0.00727422680412371
-"Carmeli & Tishler";"Carmeli";"Tishler";"";"";"";"";"";2004;99;0.22;"G";9;0.00924023020408163
-"Carpenter et al.";"Carpenter";"Sanders";"Gregersen";"";"";"";"";2001;245;0.11;"G";9;0.00399978036885246
-"Chandler & Lyon";"Chandler";"Lyon";"";"";"";"";"";2009;124;0.19;"G";9;0.00755368463414634
-"Combs & Ketchen";"Combs";"Ketchen";"";"";"";"";"";1999;94;0.06;"G";9;0.010675408172043
-"De Carolis";"De Carolis";"";"";"";"";"";"";2003;14;0.01;"G";9;0.0769076930769231
-"De Carolis & Deeds";"De Carolis";"Deeds";"";"";"";"";"";1999;98;0.14;"G";9;0.00990911505154639
-"De Carolis et al.";"De Carolis";"Litzky";"Eddleston";"";"";"";"";2009;269;0.22;"G";9;0.00337889014925373
-"Dimov & Shepherd";"Dimov";"Shepherd";"";"";"";"";"";2005;112;-0.13;"G";9;0.00870707756756757
-"Edelman et al.";"Edelman";"Brush";"Manolova";"";"";"";"";2005;192;0.01;"G";9;0.00523455502617801
-"Etjiraj et al. ";"Ethiraj";"Kale";"Krishnan";"Singh";"";"";"";2005;1;0.1;"O";9;Inf
-"Fasci & Valdez";"Fasci";"Valdez";"";"";"";"";"";1998;604;0.13;"G";9;0.00160279537313433
-"Frese et al., exp 1";"Frese";"Krauss";"Keith";"Escher";"Grabarkiewicz";"Luneng";"Friedrich";2007;117;0.38;"G";9;0.0063107875862069
-"Frese et al., exp 2";"Frese";"Krauss";"Keith";"Escher";"Grabarkiewicz";"Luneng";"Friedrich";2007;215;0.23;"G";9;0.00419158135514019
-"Frese et al., exp 3";"Frese";"Krauss";"Keith";"Escher";"Grabarkiewicz";"Luneng";"Friedrich";2007;73;0.29;"G";9;0.01165101125
-"Garg et al.";"Garg";"Walters";"Priem";"";"";"";"";2003;105;0.09;"G";9;0.00946024625
-"Gong";"Gong";"";"";"";"";"";"";2003;695;0.42;"O";9;0.000977401959654179
-"Harber & Reichel";"Haber";"Reichel";"";"";"";"";"";2007;305;0.1;"Both";9;0.00322401315789474
-"Hatch & Deyer";"Hatch";"Dyer";"";"";"";"";"";2004;25;0.25;"O";9;0.03662109375
-"Hitt et al.";"Hitt";"Bierman";"Uhlenbruck";"Shimizu";"";"";"";2006;72;0.13;"G";9;0.0136124733802817
-"Hitt et al.";"Hitt";"Bierman";"Shimizu";"Kochhar";"";"";"";2001;93;0.16;"G";9;0.0103201669565217
-"Hmieleski ";"Hmieleski";"Baron";"";"";"";"";"";2009;201;0.05;"G";9;0.00497503125
-"Hult & Ketchen";"Hult";"Ketchen";"";"";"";"";"";2001;181;0.21;"G";9;0.00507636005555556
-"Huselid et al.";"Huselid";"Jackson";"Schuler";"";"";"";"";1997;293;0.06;"G";9;0.00340004438356164
-"Keller";"Keller";"";"";"";"";"";"";2004;94;0.3;"Both";9;0.00890430107526882
-"Kor";"Kor";"";"";"";"";"";"";2006;77;0.26;"G";9;0.0114390757894737
-"Kor & Leblbici";"Kor";"Leblebici";"";"";"";"";"";2005;105;0.56;"G";9;0.00453024
-"Kor & Mahoney";"Kor";"Mahoney";"";"";"";"";"";2005;60;-0.07;"G";9;0.0167834577966102
-"Lee & Miller";"Lee";"Miller";"";"";"";"";"";1999;129;0.23;"G";9;0.007007800078125
-"Lee et al.";"Lee";"Lee";"Pennings";"";"";"";"";2001;137;0.47;"G";9;0.00446321183823529
-"Lopez";"Lopez";"";"";"";"";"";"";2003;72;0.57;"G";9;0.00641915507042254
-"Luneborg & Nielsen";"Luneborg";"Nielsen";"";"";"";"";"";2003;259;0.15;"G";9;0.00370351259689923
-"Macher & Boerner";"Macher";"Boerner";"";"";"";"";"";2006;26;-0.06;"O";9;0.0397125184
-"Manev et al.";"Manev";"Gyoshev";"Manolova";"";"";"";"";2005;160;0.03;"G";9;0.00627799251572327
-"Menguc & Barker";"Menguc";"Barker";"";"";"";"";"";2005;102;0.22;"O";9;0.00896576792079208
-"Miller & Shamsie";"Miller";"Shamsie";"";"";"";"";"";1996;7;0.12;"G";9;0.161901226666667
-"Nixon et al.";"Nixon";"Hitt";"Lee";"Jeong";"";"";"";2004;364;0.18;"G";9;0.00257920044077135
-"Park & Luo";"Park";"Luo";"";"";"";"";"";2001;128;0.33;"G";9;0.00625243472440945
-"Park et al.";"Park";"Mitsuhashi";"Fey";"Bjorkman";"";"";"";2003;52;0.09;"G";9;0.0192914825490196
-"Ployhart et al.";"Ployhart";"Weekley";"Ramsey";"";"";"";"";2009;1255;0.02;"G";9;0.00079681033492823
-"Ployhart et al. - in press-";"Ployhart";"Van Iddekinge";"MacKenzie";"";"";"";"";2011;238;0.16;"G";9;0.00400614075949367
-"Powell & Dent-Micallef";"Powell";"Dent-Micallef";"";"";"";"";"";1997;65;0.38;"Both";9;0.0114383025
-"Roth";"Roth";"";"";"";"";"";"";1995;74;0.01;"G";9;0.0136958905479452
-"Schlemmer & Web";"Schlemmer";"Webb";"";"";"";"";"";2006;106;0.38;"G";9;0.00697191771428571
-"Shrader & Siegel";"Shrader";"Siegel";"";"";"";"";"";2007;198;0.05;"G";9;0.00505079314720812
-"Simonin";"Simonin";"";"";"";"";"";"";1997;151;0.23;"G";9;0.0059799894
-"Skaggs & Youndt";"Skaggs";"Youndt";"";"";"";"";"";2004;234;0.27;"G";9;0.0036889030472103
-"Smith et al.";"Smith";"Collins";"Clark";"";"";"";"";2005;72;0.19;"O";9;0.0130859607042254
-"Takeuchi et al.";"Takeuchi";"Lepak";"Wang";"Takeuchi";"";"";"";2007;76;0.56;"G";9;0.0062819328
-"Tanriverdi & Venkatraman";"Tanriverdi";"Venkatraman";"";"";"";"";"";2005;303;0.12;"G";9;0.00321658066225166
-"Thompson & Heron";"Thompson";"Heron";"";"";"";"";"";2005;78;0.01;"G";9;0.0129844157142857
-"Tippens & Sohi";"Tippins";"Sohi";"";"";"";"";"";2003;271;0.18;"G";9;0.0034675917037037
-"Van Iddekinge et al.";"Van Iddekinge";"Ferris";"Perrewe";"Perryman";"Blass";"Heetderks";"";2009;861;0.14;"Both";9;0.001117656
-"Wang et al.";"Wang";"Heron";"Mahoney";"";"";"";"";2009;211;0.15;"G";9;0.00455002976190476
-"West & Noel";"West";"Noel";"";"";"";"";"";2009;177;0.19;"G";9;0.00527899551136364
-"Wright et al.";"Wright";"Liu";"Buck";"Filatotchev";"";"";"";1999;38;-0.02;"G";9;0.0270054097297297
-"Wright et al.";"Wright";"Liu";"Buck";"Filatotchev";"";"";"";2008;349;0.04;"G";9;0.00286437517241379
-"Wright et al.";"Wright";"Liu";"Buck";"Filatotchev";"";"";"";1995;134;0.2;"G";9;0.00692932330827068
-"Yeoh";"Yeoh";"";"";"";"";"";"";2004;258;0.3;"G";9;0.00322217898832685
-"Yip et al.";"Yip";"Biscarri";"Monti";"";"";"";"";2000;68;0.2;"O";9;0.013755223880597
-"Youndt & Snell";"Youndt";"Snell";"";"";"";"";"";2004;208;0.35;"G";9;0.00371983695652174
-"Zahra & Nielsen";"Zahra";"Nielsen";"";"";"";"";"";2002;97;0.29;"O";9;0.0087382584375
+study;a1;a2;a3;a4;a5;a6;a7;yop;n;r;performance;id;vr;nnew;effest.exp;effestnew.exp
+Bae & Lawyer;Bae;Lawler;;;;;;2000;138;0.31;G;9;0.005963761;138;0.31;0.31
+Batjargal;Batjargal;;;;;;;2005;56;0.16;G;9;0.017262825;56;0.16;0.16
+Bergh;Bergh;;;;;;;2001;104;0.09;G;9;0.009552093;104;0.09;0.09
+Berman et al;Berman;Down;Hill;;;;;2002;23;0.19;G;9;0.042231964;23;0.19;0.19
+Brown et al.;Brown;Adams;Amjad;;;;;2007;28;0.28;G;9;0.03145728;28;0.28;0.28
+Brush & Chaganti;Brush;Chaganti;;;;;;1999;195;0.01;G;9;0.005153608;195;0.01;0.01
+Carmeli;Carmeli;;;;;;;2004;98;0.4;G;9;0.007274227;98;0.4;0.4
+Carmeli & Tishler;Carmeli;Tishler;;;;;;2004;99;0.22;G;9;0.00924023;99;0.22;0.22
+Carpenter et al.;Carpenter;Sanders;Gregersen;;;;;2001;245;0.11;G;9;0.00399978;245;0.11;0.105
+Chandler & Lyon;Chandler;Lyon;;;;;;2009;124;0.19;G;9;0.007553685;124;0.19;0.19
+Combs & Ketchen;Combs;Ketchen;;;;;;1999;94;0.06;G;9;0.010675408;94;0.06;0.06
+De Carolis;De Carolis;;;;;;;2003;14;0.01;G;9;0.076907693;14;0.01;0.01
+De Carolis & Deeds;De Carolis;Deeds;;;;;;1999;98;0.14;G;9;0.009909115;98;0.14;0.14
+De Carolis et al.;De Carolis;Litzky;Eddleston;;;;;2009;269;0.22;G;9;0.00337889;269;0.22;0.205
+Dimov & Shepherd;Dimov;Shepherd;;;;;;2005;112;-0.13;G;9;0.008707078;112;-0.13;-0.13
+Edelman et al.;Edelman;Brush;Manolova;;;;;2005;192;0.01;G;9;0.005234555;192;0.01;0.0125
+Etjiraj et al. ;Ethiraj;Kale;Krishnan;Singh;;;;2005;1;0.1;O;9;Inf;1;0.1;0.1
+Fasci & Valdez;Fasci;Valdez;;;;;;1998;604;0.13;G;9;0.001602795;604;0.13;0.13
+Frese et al., exp 1;Frese;Krauss;Keith;Escher;Grabarkiewicz;Luneng;Friedrich;2007;117;0.38;G;9;0.006310788;117;0.38;0.38
+Frese et al., exp 2;Frese;Krauss;Keith;Escher;Grabarkiewicz;Luneng;Friedrich;2007;215;0.23;G;9;0.004191581;215;0.23;0.23
+Frese et al., exp 3;Frese;Krauss;Keith;Escher;Grabarkiewicz;Luneng;Friedrich;2007;73;0.29;G;9;0.011651011;73;0.29;0.29
+Garg et al.;Garg;Walters;Priem;;;;;2003;105;0.09;G;9;0.009460246;105;0.09;0.093333333
+Gong;Gong;;;;;;;2003;695;0.42;O;9;0.000977402;695;0.42;0.42
+Harber & Reichel;Haber;Reichel;;;;;;2007;305;0.1;Both;9;0.003224013;305;0.1;0.1
+Hatch & Deyer;Hatch;Dyer;;;;;;2004;25;0.25;O;9;0.036621094;25;0.25;0.25
+Hitt et al.;Hitt;Bierman;Uhlenbruck;Shimizu;;;;2006;72;0.13;G;9;0.013612473;72;0.13;0.13
+Hitt et al.;Hitt;Bierman;Shimizu;Kochhar;;;;2001;93;0.16;G;9;0.010320167;93;0.16;0.16
+Hmieleski ;Hmieleski;Baron;;;;;;2009;201;0.05;G;9;0.004975031;201;0.05;0.0525
+Hult & Ketchen;Hult;Ketchen;;;;;;2001;181;0.21;G;9;0.00507636;181;0.21;0.21
+Huselid et al.;Huselid;Jackson;Schuler;;;;;1997;293;0.06;G;9;0.003400044;293;0.06;0.06
+Keller;Keller;;;;;;;2004;94;0.3;Both;9;0.008904301;94;0.3;0.3
+Kor;Kor;;;;;;;2006;77;0.26;G;9;0.011439076;77;0.26;0.26
+Kor & Leblbici;Kor;Leblebici;;;;;;2005;105;0.56;G;9;0.00453024;105;0.56;0.56
+Kor & Mahoney;Kor;Mahoney;;;;;;2005;60;-0.07;G;9;0.016783458;60;-0.07;-0.07
+Lee & Miller;Lee;Miller;;;;;;1999;129;0.23;G;9;0.0070078;129;0.23;0.23
+Lee et al.;Lee;Lee;Pennings;;;;;2001;137;0.47;G;9;0.004463212;137;0.47;0.56
+Lopez;Lopez;;;;;;;2003;72;0.57;G;9;0.006419155;72;0.57;0.57
+Luneborg & Nielsen;Luneborg;Nielsen;;;;;;2003;259;0.15;G;9;0.003703513;259;0.15;0.15
+Macher & Boerner;Macher;Boerner;;;;;;2006;26;-0.06;O;9;0.039712518;26;-0.06;-0.06
+Manev et al.;Manev;Gyoshev;Manolova;;;;;2005;160;0.03;G;9;0.006277993;160;0.03;0.03
+Menguc & Barker;Menguc;Barker;;;;;;2005;102;0.22;O;9;0.008965768;102;0.22;0.22
+Miller & Shamsie;Miller;Shamsie;;;;;;1996;7;0.12;G;9;0.161901227;7;0.12;0.12
+Nixon et al.;Nixon;Hitt;Lee;Jeong;;;;2004;364;0.18;G;9;0.0025792;364;0.18;0.023333333
+Park & Luo;Park;Luo;;;;;;2001;128;0.33;G;9;0.006252435;128;0.33;0.33
+Park et al.;Park;Mitsuhashi;Fey;Bjorkman;;;;2003;52;0.09;G;9;0.019291483;52;0.09;0.09
+Ployhart et al.;Ployhart;Weekley;Ramsey;;;;;2009;1255;0.02;G;9;0.00079681;1255;0.02;0.020740741
+Ployhart et al. - in press-;Ployhart;Van Iddekinge;MacKenzie;;;;;2011;238;0.16;G;9;0.004006141;238;0.16;0.16
+Powell & Dent-Micallef;Powell;Dent-Micallef;;;;;;1997;65;0.38;Both;9;0.011438303;65;0.38;0.38
+Roth;Roth;;;;;;;1995;74;0.01;G;9;0.013695891;74;0.01;0.0125
+Schlemmer & Web;Schlemmer;Webb;;;;;;2006;106;0.38;G;9;0.006971918;106;0.38;0.381
+Shrader & Siegel;Shrader;Siegel;;;;;;2007;198;0.05;G;9;0.005050793;198;0.05;0.05
+Simonin;Simonin;;;;;;;1997;151;0.23;G;9;0.005979989;151;0.23;0.23
+Skaggs & Youndt;Skaggs;Youndt;;;;;;2004;234;0.27;G;9;0.003688903;234;0.27;0.27
+Smith et al.;Smith;Collins;Clark;;;;;2005;72;0.19;O;9;0.013085961;72;0.19;0.19
+Takeuchi et al.;Takeuchi;Lepak;Wang;Takeuchi;;;;2007;76;0.56;G;9;0.006281933;76;0.56;0.56
+Tanriverdi & Venkatraman;Tanriverdi;Venkatraman;;;;;;2005;303;0.12;G;9;0.003216581;303;0.12;0.12
+Thompson & Heron;Thompson;Heron;;;;;;2005;78;0.01;G;9;0.012984416;78;0.01;0.01
+Tippens & Sohi;Tippins;Sohi;;;;;;2003;271;0.18;G;9;0.003467592;271;0.18;0.18
+Van Iddekinge et al.;Van Iddekinge;Ferris;Perrewe;Perryman;Blass;Heetderks;;2009;861;0.14;Both;9;0.001117656;861;0.14;0.160833333
+Wang et al.;Wang;Heron;Mahoney;;;;;2009;211;0.15;G;9;0.00455003;211;0.15;0.15
+West & Noel;West;Noel;;;;;;2009;177;0.19;G;9;0.005278996;177;0.19;0.19
+Wright et al.;Wright;Liu;Buck;Filatotchev;;;;1999;38;-0.02;G;9;0.02700541;38;-0.02;-0.02
+Wright et al.;Wright;Liu;Buck;Filatotchev;;;;2008;349;0.04;G;9;0.002864375;349;0.04;0.0482
+Wright et al.;Wright;Liu;Buck;Filatotchev;;;;1995;134;0.2;G;9;0.006929323;134;0.2;0.2
+Yeoh;Yeoh;;;;;;;2004;258;0.3;G;9;0.003222179;258;0.3;0.3
+Yip et al.;Yip;Biscarri;Monti;;;;;2000;68;0.2;O;9;0.013755224;68;0.2;0.2
+Youndt & Snell;Youndt;Snell;;;;;;2004;208;0.35;G;9;0.003719837;208;0.35;0.35
+Zahra & Nielsen;Zahra;Nielsen;;;;;;2002;97;0.29;O;9;0.008738258;97;0.29;0.29

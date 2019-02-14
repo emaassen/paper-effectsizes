@@ -1,19 +1,19 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"id";"vr"
-"Bachelor (1991)";"Bachelor";"";"";"";"";NA;NA;1991;47;0.49;12;0.0125532176086957
-"Bergin & Garfield (1971)";"Bergin";"Garfield";"";"";"";NA;NA;1971;38;-0.15;12;0.0258244932432432
-"Chisholm (1998)";"Chisholm";"";"";"";"";NA;NA;1998;173;-0.04;12;0.00579536372093023
-"Coady (1991)";"Coady ";"";"";"";"";NA;NA;1991;9;0.71;12;0.03073960125
-"Conte, Ratto, Clutz, & Karasu (1995)";"Conte ";"Ratto";"Clutz";"Karasu";"";NA;NA;1995;138;0.29;12;0.00612315919708029
-"Cramer & Takens (1992)";"Cramer";"Takens";"";"";"";NA;NA;1992;37;0.37;12;0.0206928225
-"Eckert, Abeles, & Graham, Jr. (1988)";"Eckert";"Abeles";"Graham";"";"";NA;NA;1988;77;0.35;12;0.0101316611842105
-"Green & Herget (1991)";"Green";"Herget";"";"";"";NA;NA;1991;11;0.83;12;0.009678321
-"Hayes & Strauss (1998)";"Hayes";"Strauss";"";"";"";NA;NA;1998;32;0.31;12;0.026355974516129
-"Henry, Schacht, & Strupp (1990)";"Henry";"Schacht";"Strupp";"";"";NA;NA;1990;14;0;12;0.0769230769230769
-"Keijsers, Hoogduin, & Schaap (1994)";"Keijsers";"Hoogduin";"Schaap";"";"";NA;NA;1994;40;0.12;12;0.024907881025641
-"Litter (2004)";"Litter";"";"";"";"";NA;NA;2004;8;0.53;12;0.0738721157142857
-"Najavits & Strupp (1994)";"Najavits & Strupp";"Strupp";"";"";"";NA;NA;1994;12;0.75;12;0.0174005681818182
-"Quintana & Meara (1990)";"Quintana";"Meara";"";"";"";NA;NA;1990;48;0.02;12;0.0212595778723404
-"Rabavilas, Boulougouris, & Perissaki (1979)";"Rabavilas";"Boulougouris";"Perissaki";"";"";NA;NA;1979;36;0.09;12;0.028110446
-"Sells, Davidson, Jewell, Falzer, & Rowe (2006)";"Sells";"Davidson";"Jewell";"Falzer";"Rowe";NA;NA;2006;83;0.33;12;0.00968364890243902
-"Williams & Chambless (1990)";"Williams";"Chambless";"";"";"";NA;NA;1990;33;0.2;12;0.0288
-"Zuroff & Blatt (2006)";"Zuroff";"Blatt";"";"";"";NA;NA;2006;191;0.2;12;0.00485052631578947
+study;a1;a2;a3;a4;a5;a6;a7;yop;n;r;id;vr;nnew;effest.exp;effestnew.exp
+Bachelor (1991);Bachelor;;;;;NA;NA;1991;47;0.49;12;0.012553218;47;0.49;0.49
+Bergin & Garfield (1971);Bergin;Garfield;;;;NA;NA;1971;38;-0.15;12;0.025824493;38;-0.15;-0.15
+Chisholm (1998);Chisholm;;;;;NA;NA;1998;173;-0.04;12;0.005795364;173;-0.04;-0.04
+Coady (1991);Coady ;;;;;NA;NA;1991;9;0.71;12;0.030739601;9;0.71;0.71
+Conte, Ratto, Clutz, & Karasu (1995);Conte ;Ratto;Clutz;Karasu;;NA;NA;1995;138;0.29;12;0.006123159;138;0.29;0.23
+Cramer & Takens (1992);Cramer;Takens;;;;NA;NA;1992;37;0.37;12;0.020692823;37;0.37;0.407933818
+Eckert, Abeles, & Graham, Jr. (1988);Eckert;Abeles;Graham;;;NA;NA;1988;77;0.35;12;0.010131661;77;0.35;0.352183664
+Green & Herget (1991);Green;Herget;;;;NA;NA;1991;11;0.83;12;0.009678321;11;0.83;0.83
+Hayes & Strauss (1998);Hayes;Strauss;;;;NA;NA;1998;32;0.31;12;0.026355975;30;0.31;0.29
+Henry, Schacht, & Strupp (1990);Henry;Schacht;Strupp;;;NA;NA;1990;14;0;12;0.076923077;14;0;0
+Keijsers, Hoogduin, & Schaap (1994);Keijsers;Hoogduin;Schaap;;;NA;NA;1994;40;0.12;12;0.024907881;40;0.12;0.12
+Litter (2004);Litter;;;;;NA;NA;2004;8;0.53;12;0.073872116;8;0.53;0.53
+Najavits & Strupp (1994);Najavits & Strupp;Strupp;;;;NA;NA;1994;12;0.75;12;0.017400568;12;0.75;0.844670273
+Quintana & Meara (1990);Quintana;Meara;;;;NA;NA;1990;48;0.02;12;0.021259578;48;0.02;0.04669061
+Rabavilas, Boulougouris, & Perissaki (1979);Rabavilas;Boulougouris;Perissaki;;;NA;NA;1979;36;0.09;12;0.028110446;36;0.09;0.089752747
+Sells, Davidson, Jewell, Falzer, & Rowe (2006);Sells;Davidson;Jewell;Falzer;Rowe;NA;NA;2006;83;0.33;12;0.009683649;68;0.33;0.3
+Williams & Chambless (1990);Williams;Chambless;;;;NA;NA;1990;33;0.2;12;0.0288;31;0.2;0.202072594
+Zuroff & Blatt (2006);Zuroff;Blatt;;;;NA;NA;2006;191;0.2;12;0.004850526;191;0.2;0.2

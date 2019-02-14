@@ -2449,7 +2449,7 @@ df$effestnew.exp[which(df$meta %in% reverse)] <- df$effestnew.exp[which(df$meta 
 write_xlsx(df,"codebook-primary-studies-final-complete.xlsx",col_names=T)
 
 # Save file in csv --------------------------------------------------------
-write.table(df, file = "codebook-primary-studies-final.csv", row.names=F, col.names=T, sep=' ')
+write.table(df, file = "codebook-primary-studies-final-complete.csv", row.names=F, col.names=T, sep=' ')
 
 
 

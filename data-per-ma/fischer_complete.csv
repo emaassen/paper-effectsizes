@@ -1,106 +1,106 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n1";"n2";"n";"g";"type";"design";"setting";"perpetrator";"dv";"id";"d";"vd";"vg"
-"Darley et al.";"Darley";"Teger";"Lewis";"";"";NA;NA;1973;5;10;15;-1.859;"lab";"exp";"emerg";"no";"helping rate";13;-1.9751875;0.266051576601609;0.23567198480973
-"Darley et al.";"Darley";"Teger";"Lewis";"";"";NA;NA;1973;5;10;15;-0.421;"lab";"exp";"emerg";"no";"helping rate";13;-0.4473125;0.266635051496172;0.236188834543322
-"Clark & World (1974) (2) exp 1";"Clark";"World";"";"";"";NA;NA;1974;8;8;16;0.736;"lab";"exp";"emerg";"no";"helping rate";13;0.778461538461538;0.249926046984368;0.223404968940738
-"Clark & World (1974) (2) exp 2";"Clark";"World";"";"";"";NA;NA;1974;8;8;16;0;"lab";"exp";"emerg";"no";"helping rate";13;0;0.25;0.223471074380165
-"Clark & World (1974) (2) exp 3";"Clark";"World";"";"";"";NA;NA;1974;8;8;16;0.626;"lab";"exp";"emerg";"no";"helping rate";13;0.662115384615385;0.249946496220825;0.223423248192102
-"Shaffer et al.";"Shaffer";"Rogel";"Hendrick";"";"";NA;NA;1975;8;8;16;-1.26;"field";"exp";"villain act";"yes";"helping rate";13;-1.33269230769231;0.249783382583343;0.223277443472846
-"Shaffer et al.";"Shaffer";"Rogel";"Hendrick";"";"";NA;NA;1975;8;8;16;-1.039;"field";"exp";"villain act";"yes";"helping rate";13;-1.09894230769231;0.24985266571431;0.2233393745757
-"Shaffer et al.";"Shaffer";"Rogel";"Hendrick";"";"";NA;NA;1975;8;8;16;-0.986;"field";"exp";"villain act";"yes";"helping rate";13;-1.04288461538462;0.249867305780803;0.223352461101254
-"Shaffer et al.";"Shaffer";"Rogel";"Hendrick";"";"";NA;NA;1975;8;8;16;-0.277;"field";"exp";"villain act";"yes";"helping rate";13;-0.292980769230769;0.249989522200491;0.223461708439712
-"Ross";"Ross";"";"";"";"";NA;NA;1971;6;12;18;-1.668;"lab";"exp";"bystander danger";"no";"helping rate";13;-1.7514;0.221988707614255;0.201350301690934
-"Ross";"Ross";"";"";"";"";NA;NA;1971;6;12;18;-1.229;"lab";"exp";"emerg";"no";"helping rate";13;-1.29045;0.222095388602917;0.201447064492442
-"Clark & World (1974) (1) exp 1";"Clark";"World";"";"";"";NA;NA;1974;11;8;19;0.799;"lab";"exp";"emerg";"no";"helping rate";13;0.836453125;0.210483374981914;0.192056115822214
-"Clark & World (1974) (1) exp 2";"Clark";"World";"";"";"";NA;NA;1974;11;8;19;0.303;"lab";"exp";"emerg";"no";"helping rate";13;0.317203125;0.21052013935617;0.192089661573373
-"Clark & World (1974) (1) exp 3";"Clark";"World";"";"";"";NA;NA;1974;11;8;19;0.466;"lab";"exp";"emerg";"no";"helping rate";13;0.48784375;0.210511707245338;0.192081967671397
-"Clark & World (1974) (1) exp 4";"Clark";"World";"";"";"";NA;NA;1974;11;8;19;-0.169;"lab";"exp";"emerg";"no";"helping rate";13;-0.176921875;0.210524394314705;0.192093544021615
-"Darley & Latané";"Darley";"Latane";"";"";"";NA;NA;1968;6;13;19;-0.578;"lab";"exp";"emerg";"no";"combined";13;-0.60509375;0.210503842090777;0.192074791090181
-"Gaertner";"Gaertner";"";"";"";"";NA;NA;1975;10;10;20;-2.019;"lab";"exp";"emerg";"no";"helping rate";13;-2.10807352941176;0.199778047887085;0.183252071698052
-"Gaertner";"Gaertner";"";"";"";"";NA;NA;1975;10;10;20;-0.636;"lab";"exp";"emerg";"no";"helping rate";13;-0.664058823529412;0.199977953724404;0.183435440988225
-"Horowitz";"Horowitz";"";"";"";"";NA;NA;1971;10;10;20;-1.007;"lab";"exp";"emerg";"no";"interv score";13;-1.05142647058824;0.199944740391189;0.183404975117805
-"Horowitz";"Horowitz";"";"";"";"";NA;NA;1971;10;10;20;-0.595;"lab";"exp";"emerg";"no";"interv score";13;-0.62125;0.199980704283678;0.183437964016609
-"Horowitz";"Horowitz";"";"";"";"";NA;NA;1971;10;10;20;-0.435;"lab";"exp";"emerg";"no";"interv score";13;-0.454191176470588;0.199989686050676;0.183446202796732
-"Horowitz";"Horowitz";"";"";"";"";NA;NA;1971;10;10;20;-0.229;"lab";"exp";"emerg";"no";"interv score";13;-0.239102941176471;0.199997141530031;0.183453041546293
-"Latane & Darley";"Latane";"Darley";"";"";"";NA;NA;1968;12;8;20;-0.839;"lab";"exp";"bystander danger";"no";"helping rate";13;-0.876014705882353;0.19996163727166;0.1834204742599
-"Wiesenthal et al. 2";"Wiesenthal";"Austrom";"Silverman";"";"";NA;NA;1983;7;13;20;-0.885;"field";"qexp";"non emerg";"no";"other";13;-0.924044117647059;0.199957316234896;0.183416510666566
-"Bickman";"Bickman";"";"";"";"";NA;NA;1971;7;15;22;-0.945;"lab";"exp";"emerg";"no";"helping rate";13;-0.982302631578947;0.181785235174835;0.168240909849359
-"Latane & Darley";"Latane";"Darley";"";"";"";NA;NA;1968;12;10;22;-1.748;"lab";"exp";"bystander danger";"no";"helping rate";13;-1.817;0.181705503621066;0.168167118877628
-"Bickman";"Bickman";"";"";"";"";NA;NA;1971;8;15;23;-0.311;"lab";"exp";"emerg";"no";"helping rate";13;-0.3226625;0.173910067236546;0.161565456570459
-"Latané & Rodin";"Latane";"Rodin";"";"";"";NA;NA;1969;9;14;23;-1.825;"lab";"exp";"emerg";"no";"helping rate";13;-1.8934375;0.173810614054418;0.161473062846317
-"Campbell, exp 1";"Campbell";"";"";"";"";NA;NA;1974;12;12;24;-1.798;"field";"qexp";"non emerg";"no";"interv score";13;-1.86221428571429;0.166583089721835;0.155292678171128
-"Campbell, exp 2";"Campbell";"";"";"";"";NA;NA;1974;12;12;24;-0.673;"field";"qexp";"non emerg";"no";"interv score";13;-0.697035714285714;0.166654952145125;0.155359670014005
-"Campbell, exp 3";"Campbell";"";"";"";"";NA;NA;1974;12;12;24;-0.908;"field";"qexp";"non emerg";"no";"interv score";13;-0.940428571428571;0.16664534402125;0.155350713094721
-"Campbell, exp 4";"Campbell";"";"";"";"";NA;NA;1974;12;12;24;-0.671;"field";"qexp";"non emerg";"no";"interv score";13;-0.694964285714286;0.166655021662497;0.155359734819736
-"Schwartz & Gottlieb";"Schwartz";"Gottlieb";"";"";"";NA;NA;1976;11;13;24;-1.407;"lab";"exp";"emerg";"yes";"helping rate";13;-1.45725;0.166615477301915;0.155322870635792
-"Clark & World (1972) (1) exp 1";"Clark";"World";"";"";"";NA;NA;1972;5;20;25;-0.246;"lab";"qexp";"emerg";"no";"latency";13;-0.254386363636364;0.159998674700575;0.149623202135159
-"Clark & World (1972) (1) exp 2";"Clark";"World";"";"";"";NA;NA;1972;5;20;25;0.621;"lab";"qexp";"emerg";"no";"latency";13;0.642170454545455;0.159991554844135;0.149616543981764
-"van den Bos";"van den Bos";"Muller";"van Bussel";"";"";NA;NA;2009;13;13;26;-1.511;"lab";"exp";"emerg";"no";"combined";13;-1.56027173913043;0.15380354725505;0.144243016506011
-"van den Bos";"van den Bos";"Muller";"van Bussel";"";"";NA;NA;2009;13;13;26;-0.814;"lab";"exp";"emerg";"no";"combined";13;-0.84054347826087;0.153833786342511;0.144271375911691
-"Cramer et al.";"Cramer";"McMaster";"Bartell";"Dragna";"";NA;NA;1988;14;14;28;-0.805;"lab";"exp";"emerg";"no";"helping rate";13;-0.82915;0.142848195456792;0.134648124664711
-"Cramer et al.";"Cramer";"McMaster";"Bartell";"Dragna";"";NA;NA;1988;14;14;28;-0.207;"lab";"exp";"emerg";"no";"helping rate";13;-0.21321;0.142856551198513;0.134656000752675
-"Latané & Rodin";"Latane";"Rodin";"";"";"";NA;NA;1969;8;20;28;-0.671;"lab";"exp";"emerg";"no";"helping rate";13;-0.69113;0.142850926178016;0.134650698631366
-"Latané & Rodin";"Latane";"Rodin";"";"";"";NA;NA;1969;9;20;29;0;"lab";"exp";"emerg";"no";"helping rate";13;0;0.137931034482759;0.130305010827628
-"Clark & World (1972) (2) exp 1";"Clark";"World";"";"";"";NA;NA;1972;10;20;30;-0.148;"lab";"exp";"emerg";"no";"helping rate";13;-0.152111111111111;0.133333104812341;0.126223304482684
-"Clark & World (1972) (2) exp 2";"Clark";"World";"";"";"";NA;NA;1972;10;20;30;0.111;"lab";"exp";"emerg";"no";"helping rate";13;0.114083333333333;0.133333204790179;0.126223399129344
-"Smith et al.";"Smith";"Smythe";"Lien";"";"";NA;NA;1972;10;20;30;-1.912;"lab";"exp";"emerg";"no";"helping rate";13;-1.96511111111111;0.13329520437165;0.1261874250297
-"Smith et al.";"Smith";"Smythe";"Lien";"";"";NA;NA;1972;10;20;30;-0.664;"lab";"exp";"emerg";"no";"helping rate";13;-0.682444444444444;0.1333287336854;0.12621916643994
-"Gertner & Dovidio";"Gaertner";"Dovidio";"";"";"";NA;NA;1977;16;16;32;-1.735;"lab";"exp";"emerg";"no";"helping rate";13;-1.77987068965517;0.124975835210791;0.118753960779352
-"Gertner & Dovidio";"Gaertner";"Dovidio";"";"";"";NA;NA;1977;16;16;32;-0.199;"lab";"exp";"emerg";"no";"helping rate";13;-0.204146551724138;0.124999682039577;0.118776620402835
-"Solomon et al.";"Solomon";"Solomon";"Stone";"";"";NA;NA;1978;16;16;32;-0.275;"field";"qexp";"emerg";"no";"helping rate";13;-0.282112068965517;0.124999392800653;0.118776345563561
-"Darley & Latané";"Darley";"Latane";"";"";"";NA;NA;1968;7;26;33;-1.165;"lab";"exp";"emerg";"no";"combined";13;-1.194125;0.121202502889376;0.1153622871047
-"Howard & Crano";"Howard";"Crano";"";"";"";NA;NA;1974;18;18;36;-0.395;"field";"qexp";"villain act";"yes";"helping rate";13;-0.403977272727273;0.111110333807274;0.106226966049819
-"Howard & Crano";"Howard";"Crano";"";"";"";NA;NA;1974;18;18;36;-0.12;"field";"qexp";"villain act";"yes";"helping rate";13;-0.122727272727273;0.111111039371029;0.106227640603611
-"Howard & Crano";"Howard";"Crano";"";"";"";NA;NA;1974;18;18;36;0;"field";"qexp";"villain act";"yes";"helping rate";13;0;0.111111111111111;0.106227709190672
-"Howard & Crano";"Howard";"Crano";"";"";"";NA;NA;1974;18;18;36;0.244;"field";"qexp";"villain act";"yes";"helping rate";13;0.249545454545455;0.111110814506327;0.106227425621851
-"Chekroun & Brauer";"Chekroun";"Brauer";"";"";"";NA;NA;2002;18;22;40;0.842;"field";"qexp";"villain act";"yes";"interv rate";13;0.859067567567568;0.0999976938122936;0.0960637465578036
-"Chekroun & Brauer 2";"Chekroun";"Brauer";"";"";"";NA;NA;2002;20;21;41;1.036;"field";"qexp";"villain act";"yes";"interv rate";13;1.05644736842105;0.0975578159797757;0.0938179305055875
-"Fischer et al.";"Fischer";"Greitemeyer";"Pollozek";"Frey";"";NA;NA;2006;24;17;41;-1.497;"lab";"exp";"emerg";"yes";"helping rate";13;-1.52654605263158;0.0975543786320915;0.0938146249288592
-"Ross & Braband";"Ross";"Braband";"";"";"";NA;NA;1973;14;28;42;-0.726;"lab";"exp";"emerg";"no";"helping rate";13;-0.739961538461538;0.0952366875556343;0.0916767544145373
-"Ross & Braband";"Ross";"Braband";"";"";"";NA;NA;1973;14;28;42;-0.332;"lab";"exp";"bystander danger";"no";"helping rate";13;-0.338384615384615;0.0952378008551118;0.0916778260990468
-"Fischer et al.";"Fischer";"Greitemeyer";"Pollozek";"Frey";"";NA;NA;2006;18;25;43;0.339;"lab";"exp";"emerg";"yes";"combined";13;0.34535625;0.0930229767205951;0.0896303287307477
-"Gaertner et al.";"Gaertner";"Dovidio";"Johnson";"";"";NA;NA;1982;22;21;43;-0.809;"lab";"exp";"emerg";"no";"latency";13;-0.82416875;0.0930216663853263;0.0896290661848152
-"Konecni & Ebbesen";"Konecni";"Ebbesen";"";"";"";NA;NA;1975;14;29;43;0.094;"field";"qexp";"emerg";"no";"combined";13;0.0957625;0.0930232343550753;0.0896305769690213
-"Pantin & Carver";"Pantin";"Carver";"";"";"";NA;NA;1982;20;24;44;-0.861;"lab";"exp";"emerg";"no";"latency";13;-0.87675;0.0909074502324602;0.0876706508462924
-"Harris & Robinson";"Harris";"Robinson";"";"";"";NA;NA;1973;23;23;46;-0.584;"lab";"exp";"emerg";"no";"latency";13;-0.594186046511628;0.0869558909264606;0.0840001004789685
-"Konecni & Ebbesen";"Konecni";"Ebbesen";"";"";"";NA;NA;1975;19;29;48;-0.428;"field";"qexp";"emerg";"no";"combined";13;-0.435133333333333;0.0833330479896535;0.0806232122447602
-"Wegner & Schaefer";"Wegner";"Schaefer";"";"";"";NA;NA;1978;24;24;48;-0.572;"lab";"exp";"non emerg";"no";"other";13;-0.581533333333333;0.0833328236838265;0.0806229952329416
-"Pantin & Carver";"Pantin";"Carver";"";"";"";NA;NA;1982;30;24;54;0.445;"lab";"exp";"emerg";"no";"latency";13;0.451544117647059;0.0740738822451014;0.0719423716658998
-"Valentine";"Valentine";"";"";"";"";NA;NA;1980;27;27;54;-0.751;"field";"exp";"non emerg";"no";"helping rate";13;-0.762044117647059;0.074073527722782;0.0719420273451258
-"Valentine";"Valentine";"";"";"";"";NA;NA;1980;28;28;56;0.671;"field";"exp";"non emerg";"no";"helping rate";13;0.680495283018868;0.0714281947370659;0.0694487568255855
-"Rutkowski et al.";"Rutkowski";"Gruder";"Romer";"";"";NA;NA;1983;30;29;59;0.467;"lab";"exp";"emerg";"no";"combined";13;0.473254464285714;0.067796462302774;0.0660163265831666
-"Becker-Haven & Lindskold, exp 1";"Becker-Haven";"Lindskold";"";"";"";NA;NA;1978;30;30;60;0.298;"lab";"exp";"emerg";"no";"combined";13;0.301921052631579;0.0666666103973796;0.0649462542849156
-"Becker-Haven & Lindskold, exp 2";"Becker-Haven";"Lindskold";"";"";"";NA;NA;1978;30;30;60;-1.198;"lab";"exp";"emerg";"no";"combined";13;-1.21376315789474;0.0666657572833904;0.0649454231858429
-"Chekroun & Brauer";"Chekroun";"Brauer";"";"";"";NA;NA;2002;18;42;60;0.361;"field";"qexp";"villain act";"yes";"interv rate";13;0.36575;0.0666665840908044;0.0649462286571912
-"Rutkowski et al.";"Rutkowski";"Gruder";"Romer";"";"";NA;NA;1983;29;31;60;-0.595;"lab";"exp";"emerg";"no";"combined";13;-0.602828947368421;0.0666664423447426;0.064946090568938
-"Wilson";"Wilson";"";"";"";"";NA;NA;1976;22;42;64;-0.294;"lab";"exp";"emerg";"no";"helping rate";13;-0.297614754098361;0.0624999577643957;0.0609909601118042
-"Chekroun & Brauer 2";"Chekroun";"Brauer";"";"";"";NA;NA;2002;19;46;65;0.764;"field";"qexp";"villain act";"yes";"interv rate";13;0.773241935483871;0.0615381935812388;0.0600759520963241
-"Wilson";"Wilson";"";"";"";"";NA;NA;1976;23;42;65;0.134;"lab";"exp";"emerg";"no";"helping rate";13;0.135620967741935;0.0615384532953689;0.0600762056392497
-"Chekroun & Brauer";"Chekroun";"Brauer";"";"";"";NA;NA;2002;33;34;67;0.746;"field";"qexp";"villain act";"yes";"interv rate";13;0.7547421875;0.0597012663926292;0.0583262353618364
-"Wilson";"Wilson";"";"";"";"";NA;NA;1976;24;43;67;-0.987;"lab";"exp";"emerg";"no";"helping rate";13;-0.99856640625;0.0597010966771502;0.05832606955522
-"Borges & Penta";"Borges";"Penta";"";"";"";NA;NA;1977;36;36;72;0.309;"field";"qexp";"emerg";"no";"helping rate";13;0.312358695652174;0.0555555265108502;0.0543672073520449
-"Chekroun & Brauer";"Chekroun";"Brauer";"";"";"";NA;NA;2002;33;44;77;0.217;"field";"qexp";"villain act";"yes";"interv rate";13;0.219199324324324;0.0519480410133886;0.0509108350178304
-"Harari et al.";"Harari";"Harari";"White";"";"";NA;NA;1985;40;40;80;0.609;"field";"qexp";"emerg";"yes";"helping rate";13;0.614931818181818;0.0499999261444175;0.049039949894687
-"Senneker & Hendrick";"Senneker";"Hendrick";"";"";"";NA;NA;1983;26;54;80;-0.471;"lab";"exp";"emerg";"no";"latency";13;-0.475587662337662;0.0499999558235499;0.0490399790039933
-"Senneker & Hendrick";"Senneker";"Hendrick";"";"";"";NA;NA;1983;26;54;80;-0.471;"lab";"exp";"emerg";"no";"latency";13;-0.475587662337662;0.0499999558235499;0.0490399790039933
-"Shotland & Heinold";"Shotland";"Heinold";"";"";"";NA;NA;1985;40;40;80;-0.422;"field";"exp";"emerg";"no";"helping rate";13;-0.42611038961039;0.049999964537122;0.0490399875502687
-"Karakashian et al.";"Karakashian";"Walter";"Christopher";"Lucas";"";NA;NA;2006;41.5;41.5;83;-0.775;"lab";"exp";"non emerg";"no";"helping rate";13;-0.782265625;0.0481926679305493;0.0473016054604975
-"Shotland & Heinold";"Shotland";"Heinold";"";"";"";NA;NA;1985;43;40;83;-0.358;"field";"exp";"emerg";"no";"helping rate";13;-0.36135625;0.048192749072892;0.047301685102552
-"Schwartz & Clausen";"Schwartz";"Clausen";"";"";"";NA;NA;1970;29;60;89;-0.685;"lab";"qexp";"emerg";"no";"speed score";13;-0.690973837209302;0.044943759347812;0.0441699931581749
-"Schwartz & Clausen";"Schwartz";"Clausen";"";"";"";NA;NA;1970;30;60;90;-0.296;"lab";"qexp";"emerg";"no";"speed score";13;-0.298551724137931;0.0444444335762097;0.0436879463950236
-"Voelpel";"Voelpel";"Eckhoff";"Forster";"";"";NA;NA;2008;28;68;96;-0.268;"field";"exp";"non emerg";"no";"helping rate";13;-0.270161290322581;0.0416666597920066;0.0410026599015612
-"Gottlieb & Carver";"Gottlieb";"Carver";"";"";"";NA;NA;1980;33;65;98;-0.375;"lab";"exp";"emerg";"no";"latency";13;-0.377960526315789;0.0408163141404087;0.0401793983316746
-"Peterson";"Peterson";"";"";"";"";NA;NA;1983;50;51;101;-0.67;"lab";"exp";"emerg";"no";"helping rate";13;-0.675127551020408;0.0396039253550978;0.0390046312178545
-"Voelpel";"Voelpel";"Eckhoff";"Forster";"";"";NA;NA;2008;28;77;105;-0.781;"field";"exp";"non emerg";"no";"helping rate";13;-0.786742647058824;0.038095197357425;0.0375410927765428
-"Barryon & Yechiam";"Barron";"Yechiam";"";"";"";NA;NA;2002;35;74;109;-0.176;"field";"exp";"non emerg";"no";"helping rate";13;-0.177245283018868;0.0366972459259574;0.0361834051828558
-"Barryon & Yechiam";"Barron";"Yechiam";"";"";"";NA;NA;2002;35;81;116;-0.264;"field";"exp";"non emerg";"no";"helping rate";13;-0.265752212389381;0.0344827555002789;0.0340295369145223
-"Gottlieb & Schwarz";"Gottlieb";"Schwartz";"";"";"";NA;NA;1976;60;60;120;-0.377;"lab";"exp";"emerg";"no";"latency rank";13;-0.379416666666667;0.0333333277794374;0.032910051719761
-"Voelpel";"Voelpel";"Eckhoff";"Forster";"";"";NA;NA;2008;28;101;129;-0.154;"field";"exp";"non emerg";"no";"helping rate";13;-0.154916666666667;0.0310077512446746;0.0306418812762051
-"Kalafat et al.";"Kalafat";"Elias";"Gara";"";"";NA;NA;1993;79;75;154;-0.677;"lab";"exp";"non emerg";"no";"helping rate";13;-0.680362582781457;0.0259740193900561;0.0257179090126522
-"Staub";"Staub";"";"";"";"";NA;NA;1970;83;73;156;0.671;"lab";"qexp";"emerg";"no";"helping rate";13;0.674289215686275;0.0256410194993918;0.0253914733488802
-"Kalafat et al.";"Kalafat";"Elias";"Gara";"";"";NA;NA;1993;81;79;160;-1.111;"lab";"exp";"non emerg";"no";"helping rate";13;-1.11630732484076;0.0249999847883144;0.02476283212257
-"Lewis et al.";"Lewis";"Thompson";"Wuensch";"Grossnickle";"Cope";NA;NA;2004;49;134;183;0.89;"field";"exp";"non emerg";"no";"combined";13;0.893708333333333;0.0218579177998623;0.02167690062623
-"Lewis et al.";"Lewis";"Thompson";"Wuensch";"Grossnickle";"Cope";NA;NA;2004;48;153;201;0.136;"field";"exp";"non emerg";"no";"combined";13;0.136515151515152;0.0199004974210965;0.0197505883696794
-"Lewis et al.";"Lewis";"Thompson";"Wuensch";"Grossnickle";"Cope";NA;NA;2004;48;158;206;-0.007;"field";"exp";"non emerg";"no";"combined";13;-0.00702586206896552;0.019417475727936;0.019274788085905
-"Wiesenthal et al. 2";"Wiesenthal";"Austrom";"Silverman";"";"";NA;NA;1983;208;4;212;-0.493;"field";"qexp";"non emerg";"no";"other";13;-0.494769138755981;0.0188679235587932;0.0187332332797946
-"Blair et al.";"Blair";"Thompson";"Wuensch";"";"";NA;NA;2005;200;200;400;-0.601;"field";"exp";"non emerg";"no";"combined";13;-0.602135390428212;0.0099999998866978;0.00996232331150942
-"Hurley & Allen";"Hurley";"Allen";"";"";"";NA;NA;1974;500;2000;2500;-0.442;"field";"qexp";"non emerg";"no";"helping rate";13;-0.442132759311173;0.00159999999995997;0.00159903927944124
+study;a1;a2;a3;a4;a5;a6;a7;yop;n1;n2;n;g;type;design;setting;perpetrator;dv;id;d;vd;vg;nnew;effest.exp;effestnew.exp;ncnew;ntnew
+Barryon & Yechiam;Barron;Yechiam;;;;NA;NA;2002;35;74;109;-0.176;field;exp;non emerg;no;helping rate;13;-0.177245283;0.036697246;0.036183405;109;0.176;0.176202069;35;74
+Barryon & Yechiam;Barron;Yechiam;;;;NA;NA;2002;35;81;116;-0.264;field;exp;non emerg;no;helping rate;13;-0.265752212;0.034482756;0.034029537;116;0.264;0.264;35;81
+Becker-Haven & Lindskold, exp 1;Becker-Haven;Lindskold;;;;NA;NA;1978;30;30;60;0.298;lab;exp;emerg;no;combined;13;0.301921053;0.06666661;0.064946254;60;-0.298;-0.298;30;30
+Becker-Haven & Lindskold, exp 2;Becker-Haven;Lindskold;;;;NA;NA;1978;30;30;60;-1.198;lab;exp;emerg;no;combined;13;-1.213763158;0.066665757;0.064945423;60;1.198;1.198;30;30
+Bickman;Bickman;;;;;NA;NA;1971;7;15;22;-0.945;lab;exp;emerg;no;helping rate;13;-0.982302632;0.181785235;0.16824091;22;0.945;0.945;7;15
+Bickman;Bickman;;;;;NA;NA;1971;8;15;23;-0.311;lab;exp;emerg;no;helping rate;13;-0.3226625;0.173910067;0.161565457;23;0.311;0.311;8;15
+Blair et al.;Blair;Thompson;Wuensch;;;NA;NA;2005;200;200;400;-0.601;field;exp;non emerg;no;combined;13;-0.60213539;0.01;0.009962323;400;0.601;0.670339012;200;200
+Borges & Penta;Borges;Penta;;;;NA;NA;1977;36;36;72;0.309;field;qexp;emerg;no;helping rate;13;0.312358696;0.055555527;0.054367207;72;-0.309;-0.309;36;36
+Campbell, exp 1;Campbell;;;;;NA;NA;1974;12;12;24;-1.798;field;qexp;non emerg;no;interv score;13;-1.862214286;0.16658309;0.155292678;24;1.798;1.798;12;12
+Campbell, exp 2;Campbell;;;;;NA;NA;1974;12;12;24;-0.673;field;qexp;non emerg;no;interv score;13;-0.697035714;0.166654952;0.15535967;24;0.673;0.6726477;12;12
+Campbell, exp 3;Campbell;;;;;NA;NA;1974;12;12;24;-0.908;field;qexp;non emerg;no;interv score;13;-0.940428571;0.166645344;0.155350713;24;0.908;0.908;12;12
+Campbell, exp 4;Campbell;;;;;NA;NA;1974;12;12;24;-0.671;field;qexp;non emerg;no;interv score;13;-0.694964286;0.166655022;0.155359735;24;0.671;0.671;12;12
+Chekroun & Brauer;Chekroun;Brauer;;;;NA;NA;2002;18;22;40;0.842;field;qexp;villain act;yes;interv rate;13;0.859067568;0.099997694;0.096063747;20;-0.842;-0.823056664;18;22
+Chekroun & Brauer;Chekroun;Brauer;;;;NA;NA;2002;18;42;60;0.361;field;qexp;villain act;yes;interv rate;13;0.36575;0.066666584;0.064946229;60;-0.361;-0.361;18;42
+Chekroun & Brauer;Chekroun;Brauer;;;;NA;NA;2002;33;34;67;0.746;field;qexp;villain act;yes;interv rate;13;0.754742188;0.059701266;0.058326235;67;-0.746;-0.746;33;34
+Chekroun & Brauer;Chekroun;Brauer;;;;NA;NA;2002;33;44;77;0.217;field;qexp;villain act;yes;interv rate;13;0.219199324;0.051948041;0.050910835;77;-0.217;-0.217;33;44
+Chekroun & Brauer 2;Chekroun;Brauer;;;;NA;NA;2002;20;21;41;1.036;field;qexp;villain act;yes;interv rate;13;1.056447368;0.097557816;0.093817931;41;-1.036;-1.036;20;21
+Chekroun & Brauer 2;Chekroun;Brauer;;;;NA;NA;2002;19;46;65;0.764;field;qexp;villain act;yes;interv rate;13;0.773241935;0.061538194;0.060075952;65;-0.764;-0.764;19;46
+Clark & World (1972) (1) exp 1;Clark;World;;;;NA;NA;1972;5;20;25;-0.246;lab;qexp;emerg;no;latency;13;-0.254386364;0.159998675;0.149623202;25;0.246;0.246;5;20
+Clark & World (1972) (1) exp 2;Clark;World;;;;NA;NA;1972;5;20;25;0.621;lab;qexp;emerg;no;latency;13;0.642170455;0.159991555;0.149616544;25;-0.621;-0.621;5;20
+Clark & World (1972) (2) exp 1;Clark;World;;;;NA;NA;1972;10;20;30;-0.148;lab;exp;emerg;no;helping rate;13;-0.152111111;0.133333105;0.126223304;30;0.148;0.148;10;20
+Clark & World (1972) (2) exp 2;Clark;World;;;;NA;NA;1972;10;20;30;0.111;lab;exp;emerg;no;helping rate;13;0.114083333;0.133333205;0.126223399;30;-0.111;-0.23701151;10;20
+Clark & World (1974) (1) exp 1;Clark;World;;;;NA;NA;1974;11;8;19;0.799;lab;exp;emerg;no;helping rate;13;0.836453125;0.210483375;0.192056116;19;-0.799;-0.799;11;8
+Clark & World (1974) (1) exp 2;Clark;World;;;;NA;NA;1974;11;8;19;0.303;lab;exp;emerg;no;helping rate;13;0.317203125;0.210520139;0.192089662;19;-0.303;-0.303;11;8
+Clark & World (1974) (1) exp 3;Clark;World;;;;NA;NA;1974;11;8;19;0.466;lab;exp;emerg;no;helping rate;13;0.48784375;0.210511707;0.192081968;19;-0.466;-0.466;11;8
+Clark & World (1974) (1) exp 4;Clark;World;;;;NA;NA;1974;11;8;19;-0.169;lab;exp;emerg;no;helping rate;13;-0.176921875;0.210524394;0.192093544;19;0.169;0.169;11;8
+Clark & World (1974) (2) exp 1;Clark;World;;;;NA;NA;1974;8;8;16;0.736;lab;exp;emerg;no;helping rate;13;0.778461538;0.249926047;0.223404969;16;-0.736;-0.736;8;8
+Clark & World (1974) (2) exp 2;Clark;World;;;;NA;NA;1974;8;8;16;0;lab;exp;emerg;no;helping rate;13;0;0.25;0.223471074;16;0;0;8;8
+Clark & World (1974) (2) exp 3;Clark;World;;;;NA;NA;1974;8;8;16;0.626;lab;exp;emerg;no;helping rate;13;0.662115385;0.249946496;0.223423248;16;-0.626;-0.626;8;8
+Cramer et al.;Cramer;McMaster;Bartell;Dragna;;NA;NA;1988;14;14;28;-0.805;lab;exp;emerg;no;helping rate;13;-0.82915;0.142848195;0.134648125;28;0.805;0.805;14;14
+Cramer et al.;Cramer;McMaster;Bartell;Dragna;;NA;NA;1988;14;14;28;-0.207;lab;exp;emerg;no;helping rate;13;-0.21321;0.142856551;0.134656001;28;0.207;0.207;14;14
+Darley & Latané;Darley;Latane;;;;NA;NA;1968;6;13;19;-0.578;lab;exp;emerg;no;combined;13;-0.60509375;0.210503842;0.192074791;19;0.578;0.578;6;13
+Darley & Latané;Darley;Latane;;;;NA;NA;1968;7;26;33;-1.165;lab;exp;emerg;no;combined;13;-1.194125;0.121202503;0.115362287;33;1.165;1.165;7;26
+Darley et al.;Darley;Teger;Lewis;;;NA;NA;1973;5;10;15;-1.859;lab;exp;emerg;no;helping rate;13;-1.9751875;0.266051577;0.235671985;15;1.859;1.859;5;10
+Darley et al.;Darley;Teger;Lewis;;;NA;NA;1973;5;10;15;-0.421;lab;exp;emerg;no;helping rate;13;-0.4473125;0.266635051;0.236188835;15;0.421;0.421;5;10
+Fischer et al.;Fischer;Greitemeyer;Pollozek;Frey;;NA;NA;2006;24;17;41;-1.497;lab;exp;emerg;yes;helping rate;13;-1.526546053;0.097554379;0.093814625;41;1.497;1.497301382;24;17
+Fischer et al.;Fischer;Greitemeyer;Pollozek;Frey;;NA;NA;2006;18;25;43;0.339;lab;exp;emerg;yes;combined;13;0.34535625;0.093022977;0.089630329;43;-0.339;-0.339;18;25
+Gaertner;Gaertner;;;;;NA;NA;1975;10;10;20;-2.019;lab;exp;emerg;no;helping rate;13;-2.108073529;0.199778048;0.183252072;20;2.019;2.010044588;10;10
+Gaertner;Gaertner;;;;;NA;NA;1975;10;10;20;-0.636;lab;exp;emerg;no;helping rate;13;-0.664058824;0.199977954;0.183435441;20;0.636;0.636;10;10
+Gaertner et al.;Gaertner;Dovidio;Johnson;;;NA;NA;1982;22;21;43;-0.809;lab;exp;emerg;no;latency;13;-0.82416875;0.093021666;0.089629066;43;0.809;0.809;22;21
+Gertner & Dovidio;Gaertner;Dovidio;;;;NA;NA;1977;16;16;32;-1.735;lab;exp;emerg;no;helping rate;13;-1.77987069;0.124975835;0.118753961;32;1.735;1.734523226;16;16
+Gertner & Dovidio;Gaertner;Dovidio;;;;NA;NA;1977;16;16;32;-0.199;lab;exp;emerg;no;helping rate;13;-0.204146552;0.124999682;0.11877662;32;0.199;0.199;16;16
+Gottlieb & Carver;Gottlieb;Carver;;;;NA;NA;1980;33;65;98;-0.375;lab;exp;emerg;no;latency;13;-0.377960526;0.040816314;0.040179398;98;0.375;0.375;33;65
+Gottlieb & Schwarz;Gottlieb;Schwartz;;;;NA;NA;1976;60;60;120;-0.377;lab;exp;emerg;no;latency rank;13;-0.379416667;0.033333328;0.032910052;120;0.377;0.393924451;60;60
+Harari et al.;Harari;Harari;White;;;NA;NA;1985;40;40;80;0.609;field;qexp;emerg;yes;helping rate;13;0.614931818;0.049999926;0.04903995;80;-0.609;-0.609;40;40
+Harris & Robinson;Harris;Robinson;;;;NA;NA;1973;23;23;46;-0.584;lab;exp;emerg;no;latency;13;-0.594186047;0.086955891;0.0840001;46;0.584;0.584;23;23
+Horowitz;Horowitz;;;;;NA;NA;1971;10;10;20;-1.007;lab;exp;emerg;no;interv score;13;-1.051426471;0.19994474;0.183404975;20;1.007;1.007;10;10
+Horowitz;Horowitz;;;;;NA;NA;1971;10;10;20;-0.595;lab;exp;emerg;no;interv score;13;-0.62125;0.199980704;0.183437964;20;0.595;0.435169096;10;10
+Horowitz;Horowitz;;;;;NA;NA;1971;10;10;20;-0.435;lab;exp;emerg;no;interv score;13;-0.454191176;0.199989686;0.183446203;20;0.435;0.435;10;10
+Horowitz;Horowitz;;;;;NA;NA;1971;10;10;20;-0.229;lab;exp;emerg;no;interv score;13;-0.239102941;0.199997142;0.183453042;20;0.229;0.229;10;10
+Howard & Crano;Howard;Crano;;;;NA;NA;1974;18;18;36;-0.395;field;qexp;villain act;yes;helping rate;13;-0.403977273;0.111110334;0.106226966;36;0.395;0.395;18;18
+Howard & Crano;Howard;Crano;;;;NA;NA;1974;18;18;36;-0.12;field;qexp;villain act;yes;helping rate;13;-0.122727273;0.111111039;0.106227641;36;0.12;0.120279459;18;18
+Howard & Crano;Howard;Crano;;;;NA;NA;1974;18;18;36;0;field;qexp;villain act;yes;helping rate;13;0;0.111111111;0.106227709;36;0;0;18;18
+Howard & Crano;Howard;Crano;;;;NA;NA;1974;18;18;36;0.244;field;qexp;villain act;yes;helping rate;13;0.249545455;0.111110815;0.106227426;36;-0.244;-0.244;18;18
+Hurley & Allen;Hurley;Allen;;;;NA;NA;1974;500;2000;2500;-0.442;field;qexp;non emerg;no;helping rate;13;-0.442132759;0.0016;0.001599039;2500;0.442;0.442;500;2000
+Kalafat et al.;Kalafat;Elias;Gara;;;NA;NA;1993;79;75;154;-0.677;lab;exp;non emerg;no;helping rate;13;-0.680362583;0.025974019;0.025717909;154;0.677;0.677;79;75
+Kalafat et al.;Kalafat;Elias;Gara;;;NA;NA;1993;81;79;160;-1.111;lab;exp;non emerg;no;helping rate;13;-1.116307325;0.024999985;0.024762832;160;1.111;1.111338445;81;79
+Karakashian et al.;Karakashian;Walter;Christopher;Lucas;;NA;NA;2006;41.5;41.5;83;-0.775;lab;exp;non emerg;no;helping rate;13;-0.782265625;0.048192668;0.047301605;83;0.775;-0.573967382;41.5;41.5
+Konecni & Ebbesen;Konecni;Ebbesen;;;;NA;NA;1975;14;29;43;0.094;field;qexp;emerg;no;combined;13;0.0957625;0.093023234;0.089630577;43;-0.094;-0.094;14;29
+Konecni & Ebbesen;Konecni;Ebbesen;;;;NA;NA;1975;19;29;48;-0.428;field;qexp;emerg;no;combined;13;-0.435133333;0.083333048;0.080623212;48;0.428;0.428;19;29
+Latane & Darley;Latane;Darley;;;;NA;NA;1968;12;8;20;-0.839;lab;exp;bystander danger;no;helping rate;13;-0.876014706;0.199961637;0.183420474;20;0.839;0.83860165;12;8
+Latane & Darley;Latane;Darley;;;;NA;NA;1968;12;10;22;-1.748;lab;exp;bystander danger;no;helping rate;13;-1.817;0.181705504;0.168167119;22;1.748;1.748;12;10
+Latané & Rodin;Latane;Rodin;;;;NA;NA;1969;9;14;23;-1.825;lab;exp;emerg;no;helping rate;13;-1.8934375;0.173810614;0.161473063;23;1.825;1.825;9;14
+Latané & Rodin;Latane;Rodin;;;;NA;NA;1969;8;20;28;-0.671;lab;exp;emerg;no;helping rate;13;-0.69113;0.142850926;0.134650699;28;0.671;0.671;8;20
+Latané & Rodin;Latane;Rodin;;;;NA;NA;1969;9;20;29;0;lab;exp;emerg;no;helping rate;13;0;0.137931034;0.130305011;29;0;0;9;20
+Lewis et al.;Lewis;Thompson;Wuensch;Grossnickle;Cope;NA;NA;2004;49;134;183;0.89;field;exp;non emerg;no;combined;13;0.893708333;0.021857918;0.021676901;183;-0.89;-0.580654168;49;134
+Lewis et al.;Lewis;Thompson;Wuensch;Grossnickle;Cope;NA;NA;2004;48;153;201;0.136;field;exp;non emerg;no;combined;13;0.136515152;0.019900497;0.019750588;201;-0.136;-0.136;48;153
+Lewis et al.;Lewis;Thompson;Wuensch;Grossnickle;Cope;NA;NA;2004;48;158;206;-0.007;field;exp;non emerg;no;combined;13;-0.007025862;0.019417476;0.019274788;206;0.007;0.007;48;158
+Pantin & Carver;Pantin;Carver;;;;NA;NA;1982;20;24;44;-0.861;lab;exp;emerg;no;latency;13;-0.87675;0.09090745;0.087670651;44;0.861;0.861;20;24
+Pantin & Carver;Pantin;Carver;;;;NA;NA;1982;30;24;54;0.445;lab;exp;emerg;no;latency;13;0.451544118;0.074073882;0.071942372;54;-0.445;-0.445;30;24
+Peterson;Peterson;;;;;NA;NA;1983;50;51;101;-0.67;lab;exp;emerg;no;helping rate;13;-0.675127551;0.039603925;0.039004631;101;0.67;0.67;50;51
+Ross;Ross;;;;;NA;NA;1971;6;12;18;-1.668;lab;exp;bystander danger;no;helping rate;13;-1.7514;0.221988708;0.201350302;18;1.668;1.668;6;12
+Ross;Ross;;;;;NA;NA;1971;6;12;18;-1.229;lab;exp;emerg;no;helping rate;13;-1.29045;0.222095389;0.201447064;18;1.229;1.229;6;12
+Ross & Braband;Ross;Braband;;;;NA;NA;1973;14;28;42;-0.726;lab;exp;emerg;no;helping rate;13;-0.739961538;0.095236688;0.091676754;42;0.726;0.726;14;28
+Ross & Braband;Ross;Braband;;;;NA;NA;1973;14;28;42;-0.332;lab;exp;bystander danger;no;helping rate;13;-0.338384615;0.095237801;0.091677826;42;0.332;0.332;14;28
+Rutkowski et al.;Rutkowski;Gruder;Romer;;;NA;NA;1983;30;29;59;0.467;lab;exp;emerg;no;combined;13;0.473254464;0.067796462;0.066016327;59;-0.467;-0.467;30;29
+Rutkowski et al.;Rutkowski;Gruder;Romer;;;NA;NA;1983;29;31;60;-0.595;lab;exp;emerg;no;combined;13;-0.602828947;0.066666442;0.064946091;60;0.595;0.595;29;31
+Schwartz & Clausen;Schwartz;Clausen;;;;NA;NA;1970;29;60;89;-0.685;lab;qexp;emerg;no;speed score;13;-0.690973837;0.044943759;0.044169993;89;0.685;0.685;29;60
+Schwartz & Clausen;Schwartz;Clausen;;;;NA;NA;1970;30;60;90;-0.296;lab;qexp;emerg;no;speed score;13;-0.298551724;0.044444434;0.043687946;90;0.296;0.296;30;60
+Schwartz & Gottlieb;Schwartz;Gottlieb;;;;NA;NA;1976;11;13;24;-1.407;lab;exp;emerg;yes;helping rate;13;-1.45725;0.166615477;0.155322871;24;1.407;1.406924734;11;13
+Senneker & Hendrick;Senneker;Hendrick;;;;NA;NA;1983;26;54;80;-0.471;lab;exp;emerg;no;latency;13;-0.475587662;0.049999956;0.049039979;80;0.471;0.471;26;54
+Senneker & Hendrick;Senneker;Hendrick;;;;NA;NA;1983;26;54;80;-0.471;lab;exp;emerg;no;latency;13;-0.475587662;0.049999956;0.049039979;80;0.471;0.471;26;54
+Shaffer et al.;Shaffer;Rogel;Hendrick;;;NA;NA;1975;8;8;16;-1.26;field;exp;villain act;yes;helping rate;13;-1.332692308;0.249783383;0.223277443;16;1.26;1.26;8;8
+Shaffer et al.;Shaffer;Rogel;Hendrick;;;NA;NA;1975;8;8;16;-1.039;field;exp;villain act;yes;helping rate;13;-1.098942308;0.249852666;0.223339375;16;1.039;1.039;8;8
+Shaffer et al.;Shaffer;Rogel;Hendrick;;;NA;NA;1975;8;8;16;-0.986;field;exp;villain act;yes;helping rate;13;-1.042884615;0.249867306;0.223352461;16;0.986;0.986;8;8
+Shaffer et al.;Shaffer;Rogel;Hendrick;;;NA;NA;1975;8;8;16;-0.277;field;exp;villain act;yes;helping rate;13;-0.292980769;0.249989522;0.223461708;16;0.277;0.277;8;8
+Shotland & Heinold;Shotland;Heinold;;;;NA;NA;1985;40;40;80;-0.422;field;exp;emerg;no;helping rate;13;-0.42611039;0.049999965;0.049039988;80;0.422;0.422;40;40
+Shotland & Heinold;Shotland;Heinold;;;;NA;NA;1985;43;40;83;-0.358;field;exp;emerg;no;helping rate;13;-0.36135625;0.048192749;0.047301685;83;0.358;0.358;43;40
+Smith et al.;Smith;Smythe;Lien;;;NA;NA;1972;10;20;30;-1.912;lab;exp;emerg;no;helping rate;13;-1.965111111;0.133295204;0.126187425;30;1.912;1.912;10;20
+Smith et al.;Smith;Smythe;Lien;;;NA;NA;1972;10;20;30;-0.664;lab;exp;emerg;no;helping rate;13;-0.682444444;0.133328734;0.126219166;30;0.664;0.664;10;20
+Solomon et al.;Solomon;Solomon;Stone;;;NA;NA;1978;16;16;32;-0.275;field;qexp;emerg;no;helping rate;13;-0.282112069;0.124999393;0.118776346;32;0.275;0.275;16;16
+Staub;Staub;;;;;NA;NA;1970;83;73;156;0.671;lab;qexp;emerg;no;helping rate;13;0.674289216;0.025641019;0.025391473;156;-0.671;-0.671;83;73
+Valentine;Valentine;;;;;NA;NA;1980;27;27;54;-0.751;field;exp;non emerg;no;helping rate;13;-0.762044118;0.074073528;0.071942027;54;0.751;0.751196092;27;27
+Valentine;Valentine;;;;;NA;NA;1980;28;28;56;0.671;field;exp;non emerg;no;helping rate;13;0.680495283;0.071428195;0.069448757;56;-0.671;-0.671116569;28;28
+van den Bos;van den Bos;Muller;van Bussel;;;NA;NA;2009;13;13;26;-1.511;lab;exp;emerg;no;combined;13;-1.560271739;0.153803547;0.144243017;26;1.511;1.511;13;13
+van den Bos;van den Bos;Muller;van Bussel;;;NA;NA;2009;13;13;26;-0.814;lab;exp;emerg;no;combined;13;-0.840543478;0.153833786;0.144271376;26;0.814;0.814;13;13
+Voelpel;Voelpel;Eckhoff;Forster;;;NA;NA;2008;28;68;96;-0.268;field;exp;non emerg;no;helping rate;13;-0.27016129;0.04166666;0.04100266;97;0.268;0.267676536;28;68
+Voelpel;Voelpel;Eckhoff;Forster;;;NA;NA;2008;28;77;105;-0.781;field;exp;non emerg;no;helping rate;13;-0.786742647;0.038095197;0.037541093;105;0.781;0.781;28;77
+Voelpel;Voelpel;Eckhoff;Forster;;;NA;NA;2008;28;101;129;-0.154;field;exp;non emerg;no;helping rate;13;-0.154916667;0.031007751;0.030641881;129;0.154;0.154;28;101
+Wegner & Schaefer;Wegner;Schaefer;;;;NA;NA;1978;24;24;48;-0.572;lab;exp;non emerg;no;other;13;-0.581533333;0.083332824;0.080622995;48;0.572;0.572;24;24
+Wiesenthal et al. 2;Wiesenthal;Austrom;Silverman;;;NA;NA;1983;7;13;20;-0.885;field;qexp;non emerg;no;other;13;-0.924044118;0.199957316;0.183416511;20;0.885;0.885;7;13
+Wiesenthal et al. 2;Wiesenthal;Austrom;Silverman;;;NA;NA;1983;208;4;212;-0.493;field;qexp;non emerg;no;other;13;-0.494769139;0.018867924;0.018733233;212;0.493;0.493;208;4
+Wilson;Wilson;;;;;NA;NA;1976;22;42;64;-0.294;lab;exp;emerg;no;helping rate;13;-0.297614754;0.062499958;0.06099096;64;0.294;0.294;22;42
+Wilson;Wilson;;;;;NA;NA;1976;23;42;65;0.134;lab;exp;emerg;no;helping rate;13;0.135620968;0.061538453;0.060076206;65;-0.134;-0.134;23;42
+Wilson;Wilson;;;;;NA;NA;1976;24;43;67;-0.987;lab;exp;emerg;no;helping rate;13;-0.998566406;0.059701097;0.05832607;67;0.987;0.987;24;43

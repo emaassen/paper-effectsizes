@@ -41,7 +41,7 @@
   >
 ]>
 <requests version="1.0">
-  <internal package="biblatex" priority="9" active="0">
+  <internal package="biblatex" priority="9" active="1">
     <generic>latex</generic>
     <provides type="dynamic">
       <file>d-dependency-samples.bcf</file>
@@ -83,7 +83,7 @@
       <file>d-dependency-samples.bcf</file>
     </requires>
     <requires type="editable">
-      <file>appendices-bib.bib</file>
+      <file>C:/Users/s421506/tiu/research/bibliography.bib</file>
     </requires>
   </external>
 </requests>

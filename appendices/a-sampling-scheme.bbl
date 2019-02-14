@@ -98,28 +98,28 @@
     \endentry
     \entry{Schmidt2015}{book}{}
       \name{author}{2}{}{%
-        {{uniquename=0,uniquepart=base,hash=815423931da5bf3d960e4fa9de4e6860}{%
-           family={Schmidt},
+        {{uniquename=0,uniquepart=base,hash=aee5d2d62da89d50318f673880417827}{%
+           family={{Schmidt}},
            familyi={S\bibinitperiod},
-           given={Frank\bibnamedelima L.},
+           given={F.\bibnamedelimi L.},
            giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod},
            givenun=0}}%
-        {{uniquename=0,uniquepart=base,hash=68a4867fb99b21b6f8276b96ff1ebcaa}{%
-           family={Hunter},
+        {{uniquename=0,uniquepart=base,hash=014293e8411a82a88f3967263a0aff33}{%
+           family={{Hunter}},
            familyi={H\bibinitperiod},
-           given={John\bibnamedelima E.},
+           given={J.\bibnamedelimi E.},
            giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
            givenun=0}}%
       }
       \list{publisher}{1}{%
         {{SAGE} Publications, Ltd}%
       }
-      \strng{namehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{fullhash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{bibnamehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{authorbibnamehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{authornamehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{authorfullhash}{1f8e968f25432a50814511dc6a35a70c}
+      \strng{namehash}{69ead3c089b905beb21cd730bbcb1103}
+      \strng{fullhash}{69ead3c089b905beb21cd730bbcb1103}
+      \strng{bibnamehash}{69ead3c089b905beb21cd730bbcb1103}
+      \strng{authorbibnamehash}{69ead3c089b905beb21cd730bbcb1103}
+      \strng{authornamehash}{69ead3c089b905beb21cd730bbcb1103}
+      \strng{authorfullhash}{69ead3c089b905beb21cd730bbcb1103}
       \field{sortinit}{S}
       \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
       \field{extradatescope}{labelyear}
@@ -127,7 +127,7 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{note}{p.64}
+      \field{note}{(pp.64)}
       \field{title}{Methods of Meta-Analysis: Correcting Error and Bias in Research Findings}
       \field{year}{2015}
       \verb{doi}
@@ -164,10 +164,10 @@
       \field{pages}{1\bibrangedash 48}
       \range{pages}{48}
       \verb{urlraw}
-      \verb http://www.jstatsoft.org/v36/i03/
+      \verb https://www.jstatsoft.org/v36/i03/
       \endverb
       \verb{url}
-      \verb http://www.jstatsoft.org/v36/i03/
+      \verb https://www.jstatsoft.org/v36/i03/
       \endverb
     \endentry
     \entry{Wijsen2015}{unpublished}{}
@@ -192,7 +192,7 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{note}{(Unpublished research report). University of Amsterdam, Amsterdam, the Netherlands.�}
+      \field{note}{(Unpublished research report). University of Amsterdam, Amsterdam, the Netherlands.}
       \field{title}{Do psychological effects fade away? Meta-analyzing the decline effect.}
       \field{year}{2015}
     \endentry

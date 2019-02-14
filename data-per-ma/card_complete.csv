@@ -1,12 +1,12 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"age";"design";"informant";"id";"vr"
-"Chandra et al. (2010)";"Chandra";"Lara-Cinisomo";"Jaycox";"Tanielian";"Burns";"Ruder";"Han";2010;1495;-0.03;"13";"Nondeployed service members";"child";8;0.000668139765729585
-"Chartrand et al. (2008)";"Chartrand";"Frank";"White";"Shope";"";"";"";2008;169;0.04;"3.1";"Nondeployed service members";"several";8;0.00593334857142857
-"Flake et al. (2009)";"Flake";"Davis";"Johnson";"Middleton";"";"";"";2009;101;0.03;"8.5";"Civilian (standardized norm)";"nondeployed parent";8;0.0099820081
-"Jensen et al. (1988)";"Jensen";"Grogan";"Xenakis";"Bain";"";"";"";1988;180;-0.01;"8.8";"Nondeployed service members";"several";8;0.00558547491620112
-"Jensen et al. (1996)";"Jensen";"Martin";"Watanabe";"";"";"";"";1996;382;0.05;"4 to 17";"Nondeployed service members";"nondeployed parent";8;0.00261156496062992
-"Kelley (1994)";"Kelley";"";"";"";"";"";"";1994;61;-0.05;"8.5";"During vs prior";"nondeployed parent";8;0.0165834375
-"Kelley et al. (2001)";"Kelley";"Hock";"Smith";"Jarvis";"Bonney";"Gaffney";"";2001;127;0.04;"3.1";"Several";"several";8;0.00791113142857143
-"Lester et al. (2010)";"Lester";"Peterson";"Reeves";"Knauss";"Glover";"Mogil";"Beardslee";2010;138;0.03;"8.5";"Nondeployed service members";"several";8;0.00728613729927007
-"Medway et al. (1995)";"Medwey";"Davis";"Cafferty";"Chappell";"Ohern";"";"";1995;154;0.47;"11";"other";"nondeployed parent";8;0.00396729941176471
-"Morris & Age (2009)";"Morris";"Age";"";"";"";"";"";2009;65;0.06;"11.8";"civilian (control group)";"child";8;0.0155127025
-"Nice (1978)";"Nice";"";"";"";"";"";"";1978;53;-0.33;"9";"During vs prior";"child";8;0.0152703694230769
+study;a1;a2;a3;a4;a5;a6;a7;yop;n;r;age;design;informant;id;vr;nnew;effest.exp;effestnew.exp
+Chandra et al. (2010);Chandra;Lara-Cinisomo;Jaycox;Tanielian;Burns;Ruder;Han;2010;1495;-0.03;13;Nondeployed service members;child;8;0.00066814;1495;-0.03;-0.03
+Chartrand et al. (2008);Chartrand;Frank;White;Shope;;;;2008;169;0.04;3.1;Nondeployed service members;several;8;0.005933349;169;0.04;0.042143324
+Flake et al. (2009);Flake;Davis;Johnson;Middleton;;;;2009;101;0.03;8.5;Civilian (standardized norm);nondeployed parent;8;0.009982008;20266;0.03;0.004404296
+Jensen et al. (1988);Jensen;Grogan;Xenakis;Bain;;;;1988;180;-0.01;8.8;Nondeployed service members;several;8;0.005585475;180;-0.01;-0.015909043
+Jensen et al. (1996);Jensen;Martin;Watanabe;;;;;1996;382;0.05;4 to 17;Nondeployed service members;nondeployed parent;8;0.002611565;382;0.05;0.045697369
+Kelley (1994);Kelley;;;;;;;1994;61;-0.05;8.5;During vs prior;nondeployed parent;8;0.016583438;61;-0.05;-0.05
+Kelley et al. (2001);Kelley;Hock;Smith;Jarvis;Bonney;Gaffney;;2001;127;0.04;3.1;Several;several;8;0.007911131;127;0.04;0.095937944
+Lester et al. (2010);Lester;Peterson;Reeves;Knauss;Glover;Mogil;Beardslee;2010;138;0.03;8.5;Nondeployed service members;several;8;0.007286137;272;0.03;0.050302033
+Medway et al. (1995);Medwey;Davis;Cafferty;Chappell;Ohern;;;1995;154;0.47;11;other;nondeployed parent;8;0.003967299;154;0.47;0.47
+Morris & Age (2009);Morris;Age;;;;;;2009;65;0.06;11.8;civilian (control group);child;8;0.015512703;65;0.06;0.062797806
+Nice (1978);Nice;;;;;;;1978;53;-0.33;9;During vs prior;child;8;0.015270369;53;-0.33;-0.33

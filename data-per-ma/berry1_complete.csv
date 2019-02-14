@@ -1,22 +1,22 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"coworker";"vr";"id"
-"Bruk-Lee & Spector (2006)";"Bruk-Lee";"Spector";"";"";NA;NA;NA;2006;121;0.3;"coworker";0.00690083333333333;6
-"de Jonge & Peeters (2009)";"de Jonge";"Peeters";"";"";NA;NA;NA;2009;54;0.46;"coworker";0.0117278218867925;6
-"Ferris (2007), exp 1";"Ferris";"";"";"";NA;NA;NA;2007;191;0.42;"coworker";0.00357008926315789;6
-"Ferris (2008), exp 1";"Ferris";"";"";"";NA;NA;NA;2008;164;0.55;"coworker";0.0029847009202454;6
-"Fox et al. (2007)";"Fox";"Spector";"";"";NA;NA;NA;2007;132;0.3;"coworker";0.00632137404580153;6
-"Goh (2007)";"Goh";"";"";"";NA;NA;NA;2007;146;0.42;"coworker";0.004678048;6
-"Hung et al. (2009)";"Hung";"Chi";"Lu";"";NA;NA;NA;2009;184;0.24;"supervisor";0.0048531025136612;6
-"Jones (2004)";"Jones";"";"";"";NA;NA;NA;2004;173;0.16;"coworker";0.00552008930232558;6
-"Judge et al. (2006a)";"Judge";"LePine";"Rich";"";NA;NA;NA;2006;131;0.2;"supervisor";0.00708923076923077;6
-"Kessler et al. (2009)";"Kessler";"Singla";"Galperin";"Spector";NA;NA;NA;2009;96;0.72;"supervisor";0.00244145852631579;6
-"Kidwell & Bennett (2001)";"Kidwell";"Bennett";"";"";NA;NA;NA;2001;556;0.15;"supervisor";0.00172163288288288;6
-"Lee (2000)";"Lee";"";"";"";NA;NA;NA;2000;146;0.33;"coworker";0.0054762704137931;6
-"Mount et al. (2006)";"Mount";"Ilies";"Johnson";"";NA;NA;NA;2006;141;0.38;"supervisor";0.00522893828571429;6
-"OBrien & Allen (2007)";"Obrien";"Allen";"";"";NA;NA;NA;2007;207;0.36;"supervisor";0.00367765126213592;6
-"OBrien & Loch (2005)";"Obrien";"Loch";"";"";NA;NA;NA;2005;176;0.22;"coworker";0.00517452891428571;6
-"Penney & Spector (2005)";"Penney";"Spector";"";"";NA;NA;NA;2005;155;0.24;"coworker";0.00576699844155844;6
-"Richards & Schat (2011)";"Richards";"Schat";"";"";NA;NA;NA;2011;153;0.72;"supervisor";0.00152591157894737;6
-"Rotundo (2006)";"Rotundo";"";"";"";NA;NA;NA;2006;30;0.17;"supervisor";0.0325184555172414;6
-"Spector et al. (2010), exp 1";"Spector";"Bauer";"Fox";"";NA;NA;NA;2010;119;0.48;"supervisor";0.00501935728813559;6
-"Spector et al. (2010), exp 2";"Spector";"Bauer";"Fox";"";NA;NA;NA;2010;140;0.42;"supervisor";0.0048799781294964;6
-"Tubre  et al. (2006)";"Tubre";"Arthur";"Bennett";"";NA;NA;NA;2006;287;0.14;"supervisor";0.00336078377622378;6
+study;a1;a2;a3;a4;a5;a6;a7;yop;n;r;coworker;vr;id;nnew;effest.exp;effestnew.exp
+Bruk-Lee & Spector (2006);Bruk-Lee;Spector;;;NA;NA;NA;2006;121;0.3;coworker;0.006900833;6;121;0.3;0.338681842
+de Jonge & Peeters (2009);de Jonge;Peeters;;;NA;NA;NA;2009;54;0.46;coworker;0.011727822;6;54;0.46;0.549530464
+Ferris (2007), exp 1;Ferris;;;;NA;NA;NA;2007;191;0.42;coworker;0.003570089;6;191;0.42;0.42
+Ferris (2008), exp 1;Ferris;;;;NA;NA;NA;2008;164;0.55;coworker;0.002984701;6;164;0.55;0.55
+Fox et al. (2007);Fox;Spector;;;NA;NA;NA;2007;132;0.3;coworker;0.006321374;6;132;0.3;0.349416906
+Goh (2007);Goh;;;;NA;NA;NA;2007;146;0.42;coworker;0.004678048;6;147;0.42;0.501745206
+Hung et al. (2009);Hung;Chi;Lu;;NA;NA;NA;2009;184;0.24;supervisor;0.004853103;6;184;0.24;0.268223535
+Jones (2004);Jones;;;;NA;NA;NA;2004;173;0.16;coworker;0.005520089;6;173;0.16;0.16
+Judge et al. (2006a);Judge;LePine;Rich;;NA;NA;NA;2006;131;0.2;supervisor;0.007089231;6;131;0.2;0.238926289
+Kessler et al. (2009);Kessler;Singla;Galperin;Spector;NA;NA;NA;2009;96;0.72;supervisor;0.002441459;6;96;0.72;0.72
+Kidwell & Bennett (2001);Kidwell;Bennett;;;NA;NA;NA;2001;556;0.15;supervisor;0.001721633;6;556;0.15;0.183973242
+Lee (2000);Lee;;;;NA;NA;NA;2000;146;0.33;coworker;0.00547627;6;146;0.33;0.33
+Mount et al. (2006);Mount;Ilies;Johnson;;NA;NA;NA;2006;141;0.38;supervisor;0.005228938;6;141;0.38;0.402055306
+OBrien & Allen (2007);Obrien;Allen;;;NA;NA;NA;2007;207;0.36;supervisor;0.003677651;6;207;0.36;0.36
+OBrien & Loch (2005);Obrien;Loch;;;NA;NA;NA;2005;176;0.22;coworker;0.005174529;6;176;0.22;0.22
+Penney & Spector (2005);Penney;Spector;;;NA;NA;NA;2005;155;0.24;coworker;0.005766998;6;155;0.24;0.286711546
+Richards & Schat (2011);Richards;Schat;;;NA;NA;NA;2011;153;0.72;supervisor;0.001525912;6;153;0.72;0.72
+Rotundo (2006);Rotundo;;;;NA;NA;NA;2006;30;0.17;supervisor;0.032518456;6;30;0.17;0.17
+Spector et al. (2010), exp 1;Spector;Bauer;Fox;;NA;NA;NA;2010;119;0.48;supervisor;0.005019357;6;140;0.48;0.573423093
+Spector et al. (2010), exp 2;Spector;Bauer;Fox;;NA;NA;NA;2010;140;0.42;supervisor;0.004879978;6;119;0.42;0.501745206
+Tubre  et al. (2006);Tubre;Arthur;Bennett;;NA;NA;NA;2006;287;0.14;supervisor;0.003360784;6;287;0.14;0.14

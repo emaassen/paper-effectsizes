@@ -1,44 +1,44 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"g";"bias";"controlgroup";"id";"d";"vd";"vg"
-"Amir et al. (2008)";"Amir";"Weber";"Beard";"Bomyea";"Taylor";"";"";2008;94;0.15;"A";"Negative";17;0.151219512195122;0.0425531891462434;0.0418696148929186
-"Amir et al. (2010)";"Amir";"Bomyea";"Beard";"";"";"";"";2010;57;-0.08;"I";"No contingency";17;-0.0810859728506787;0.0701754336135932;0.0683083217698005
-"Amir, Beard, et al. (2009)";"Amir";"Beard";"Burns";"Bomyea";"";"";"";2009;29;0.56;"A";"No contingency";17;0.575412844036697;0.137927289538936;0.130637286911041
-"Amir, Beard, Taylor, et al. (2009)";"Amir";"Beard";"Taylor";"Klumpp";"Elias";"Burns";"Chen";2009;44;0.38;"A";"No contingency";17;0.386745562130178;0.0909087716609082;0.0877651915700108
-"Baert et al. Study 2) (2010)";"Baert";"De Raedt";"Schact";"Koster";"";"";"";2010;35;0.27;"A";"No contingency";17;0.27609022556391;0.114285307918812;0.109298919321792
-"Baert et al.Study 1) (2010)";"Baert";"De Raedt";"Schact";"Koster";"";"";"";2010;48;-0.15;"A";"No contingency";17;-0.152432432432432;0.0833332983162786;0.0806949449658962
-"Beard & Amir (2008)";"Beard";"Amir";"";"";"";"";"";2008;27;0.51;"I";"No contingency";17;0.525148514851485;0.148143996820195;0.139720498480289
-"Browning, Holmes, Murphy, et al. (2010) ";"Browning";"Holmes";"Murphy";"Goodwin";"Harmer";"";"";2010;53;-0.19;"A";"Negative";17;-0.192780487804878;0.0754716604330733;0.0733102933085222
-"Dandeneau et al. (2007, Study 2b) ";"Dandeneau";"Baldwin";"Pruessner";"Baccus";"Sakellaropoulo";"";"";2007;147;0.01;"A";"Other";17;0.0100516351118761;0.0272108843520105;0.0269320385295934
-"Dandeneau et al. (2007, Study 3b) ";"Dandeneau";"Baldwin";"Pruessner";"Baccus";"Sakellaropoulo";"";"";2007;23;0.52;"A";"Other";17;0.538352941176471;0.173904758485499;0.162249726247124
-"Eldar & Bar-Haim (2010) ";"Eldar";"Bar-Haim";"";"";"";"";"";2010;60;0.37;"A";"No contingency";17;0.374763948497854;0.0666665799704726;0.0649824396728129
-"Hayes et al. (2010) ";"Hayes";"Hirsch";"Mathews";"";"";"";"";2010;40;0.11;"A";"No contingency";17;0.112156862745098;0.0999999606901346;0.0961907905898817
-"Hazen et al. (2009) ";"Hazen";"Vasey";"Schmidt";"";"";"";"";2009;23;0.58;"A";"No contingency";17;0.600470588235294;0.173902736380783;0.162247839663114
-"Hirsch et al. (2007) ";"Hirsch";"Mathews";"Clark";"";"";"";"";2007;24;0.53;"I";"Negative";17;0.547865168539326;0.16665942941722;0.155967549670817
-"Hirsch et al. (2009) ";"Hirsch";"Hayes";"Mathews";"";"";"";"";2009;40;0.35;"I";"No contingency";17;0.356862745098039;0.0999996020296499;0.0961904455913903
-"Holmes & Mathews (2005, Study 2) ";"Holmes";"Mathews";"";"";"";"";"";2005;43;0.1;"I";"Negative";17;0.101818181818182;0.093023231555298;0.0897306363057323
-"Hoppitt et al. (2010)";"Hoppitt";"Mathews";"Yiend";"Mackintosh";"";"";"";2010;95;-0.07;"I";"Negative";17;-0.0705630026809652;0.0421052626688488;0.0414360506016174
-"Johnson (2009) ";"Johnson";"";"";"";"";"";"";2009;109;-0.17;"A";"No contingency";17;-0.171188811188811;0.0366972460455555;0.0361893318087174
-"Koster et al. (2010) ";"Koster";"Baert";"Bockstaele";"De Raedt";"";"";"";2010;48;-0.01;"A";"No contingency";17;-0.0101621621621622;0.0833333331777019;0.080694978723598
-"Krebs et al. (2010) ";"Krebs";"Hirsch";"Mathews";"";"";"";"";2010;64;-0.31;"A";"Negative";17;-0.313734939759036;0.0624999530651386;0.0610207166476388
-"Lang et al. (2009)";"Lang";"Moulds";"Holmes";"";"";"";"";2009;48;0.43;"App";"Neutral";17;0.436972972972973;0.083333045571832;0.0806947002234028
-"Lange et al. (2010, Study 1)";"Lange";"Salemink";"Windey";"Keijsers";"Krans";"Becker";"Rinck";2010;68;0.05;"I";"Negative";17;0.0505660377358491;0.0588235284550726;0.0575139547471246
-"Lange et al. (2010, Study 2)";"Lange";"Salemink";"Windey";"Keijsers";"Krans";"Becker";"Rinck";2010;39;0.07;"I";"Negative";17;0.0714093959731544;0.102564084930453;0.0985554557453683
-"Li et al. (2008) ";"Li";"Tan";"Qian";"Liu";"";"";"";2008;22;0.24;"A";"No contingency";17;0.248888888888889;0.181816066356182;0.169061112721501
-"Mackintosh et al. (2006, Study 2) ";"Mackintosh";"Mathews";"Yiend";"Ridgeway";"Cook";"";"";2006;40;0.76;"I ";"Negative";17;0.774901960784314;0.0999981235569335;0.0961890234362367
-"MacLeod et al. (2002, Study 1) ";"MacLeod";"Rutherford";"Campbell";"Ebsworthy";"Holker";"";"";2002;64;-0.02;"A";"Negative";17;-0.0202409638554217;0.0624999998046414;0.0610207622809205
-"MacLeod et al. (2002, Study 2)";"MacLeod";"Rutherford";"Campbell";"Ebsworthy";"Holker";"";"";2002;64;0.07;"A ";"Negative";17;0.0708433734939759;0.0624999976068576;0.0610207601351533
-"Mathews et al. (2007) ";"Mathews";"Ridgeway";"Cook";"Yiend";"";"";"";2007;39;0.52;"I";"Other";17;0.530469798657718;0.102563129483613;0.0985545376413478
-"Murphy et al. (2007) ";"Murphy";"Hirsch";"Mathews";"Smith";"Clark";"";"";2007;44;0.64;"I";"No contingency";17;0.651360946745562;0.090908185346679;0.0877646255302359
-"Reese et al. (2010)";"Reese";"McNally";"Najmi";"Amir";"";"";"";2010;41;0.19;"A";"No contingency";17;0.193630573248408;0.0975608694641674;0.0939366356024321
-"Salemink & van den Hout (2010)";"Salemink";"van den Hout";"";"";"";"";"";2010;82;-0.17;"I";"Negative";17;-0.171588785046729;0.0487804825951827;0.0478813224650417
-"Salemink et al. (2007a) ";"Salemink";"van den Hout";"Kindt";"";"";"";"";2007;118;0.35;"I";"Negative";17;0.352258064516129;0.0338982999645828;0.0334650993034641
-"Salemink et al. (2007b) ";"Salemink";"van den Houdt";"Kindt";"";"";"";"";2007;81;0.23;"I";"Negative";17;0.23217665615142;0.0493827060312466;0.048461120570058
-"Schmidt et al. (2009)a FOUT";"Schmidt";"Richey";"Buckner";"Timpano";"";"";"";2009;36;2.1;"A";"No contingency";17;2.14598540145985;0.11108918064898;0.106379226102077
-"Standage et al. (2009) ";"Standage";"Ashwin";"Fox";"";"";"";"";2009;48;0.2;"I";"Negative";17;0.203243243243243;0.0833332710808119;0.0806949185927113
-"Steinman & Teachman (2010) ";"Steinman";"Teachman";"";"";"";"";"";2010;50;0.16;"I";"No contingency";17;0.162487046632124;0.0799999662054027;0.077569729830931
-"Teachman & Addison (2008)";"Teachman";"Addison";"";"";"";"";"";2008;61;0.12;"I";"No contingency";17;0.121518987341772;0.0655737619596456;0.0639446638109606
-"Wadlinger (2009) [Dissertation] ";"Wadlinger";"";"";"";"";"";"";2009;69;0.03;"A";"Neutral";17;0.0303345724907063;0.0579710141679885;0.0566992938501543
-"Wells & Beevers (2010) ";"Wells";"Beevers";"";"";"";"";"";2010;31;0.33;"A";"No contingency";17;0.338461538461538;0.129031265729035;0.122660346983664
-"Wilson et al. (2006) ";"Wilson";"MacLeod";"Mathews";"Rutherford";"";"";"";2006;48;-0.35;"I";"Negative";17;-0.355675675675676;0.0833331426852803;0.0806947942622148
-"Yiend et al. (2005, Study 1) ";"Yiend";"Mackintosh";"Mathews";"";"";"";"";2005;20;0.72;"I ";"Negative";17;0.74958904109589;0.199971909759336;0.184496244305315
-"Yiend et al. (2005, Study 2) ";"Yiend";"Mackintosh";"Mathews";"";"";"";"";2005;24;0.15;"I ";"Negative";17;0.155056179775281;0.166666086942148;0.155973780088463
-"Yiend et al. (2005, Study 3)";"Yiend";"Mackintosh";"Mathews";"";"";"";"";2005;19;0.22;"I ";"Negative";17;0.229565217391304;0.210523080738839;0.193344982136885
+study;a1;a2;a3;a4;a5;a6;a7;yop;n;g;bias;controlgroup;id;d;vd;vg;nnew;effest.exp;effestnew.exp
+Amir et al. (2008);Amir;Weber;Beard;Bomyea;Taylor;;;2008;94;0.15;A;Negative;17;0.151219512;0.042553189;0.041869615;94;0.15;0.15
+Amir et al. (2010);Amir;Bomyea;Beard;;;;;2010;57;-0.08;I;No contingency;17;-0.081085973;0.070175434;0.068308322;57;-0.08;-0.076270736
+Amir, Beard, et al. (2009);Amir;Beard;Burns;Bomyea;;;;2009;29;0.56;A;No contingency;17;0.575412844;0.13792729;0.130637287;29;0.56;0.56
+Amir, Beard, Taylor, et al. (2009);Amir;Beard;Taylor;Klumpp;Elias;Burns;Chen;2009;44;0.38;A;No contingency;17;0.386745562;0.090908772;0.087765192;44;0.38;0.38
+Baert et al. Study 2) (2010);Baert;De Raedt;Schact;Koster;;;;2010;35;0.27;A;No contingency;17;0.276090226;0.114285308;0.109298919;35;0.27;0.27
+Baert et al.Study 1) (2010);Baert;De Raedt;Schact;Koster;;;;2010;48;-0.15;A;No contingency;17;-0.152432432;0.083333298;0.080694945;48;-0.15;-0.15
+Beard & Amir (2008);Beard;Amir;;;;;;2008;27;0.51;I;No contingency;17;0.525148515;0.148143997;0.139720498;27;0.51;0.51
+Browning, Holmes, Murphy, et al. (2010) ;Browning;Holmes;Murphy;Goodwin;Harmer;;;2010;53;-0.19;A;Negative;17;-0.192780488;0.07547166;0.073310293;53;-0.19;-0.19
+Dandeneau et al. (2007, Study 2b) ;Dandeneau;Baldwin;Pruessner;Baccus;Sakellaropoulo;;;2007;147;0.01;A;Other;17;0.010051635;0.027210884;0.026932039;147;0.01;0.01
+Dandeneau et al. (2007, Study 3b) ;Dandeneau;Baldwin;Pruessner;Baccus;Sakellaropoulo;;;2007;23;0.52;A;Other;17;0.538352941;0.173904758;0.162249726;23;0.52;0.52
+Eldar & Bar-Haim (2010) ;Eldar;Bar-Haim;;;;;;2010;60;0.37;A;No contingency;17;0.374763948;0.06666658;0.06498244;60;0.37;0.37
+Hayes et al. (2010) ;Hayes;Hirsch;Mathews;;;;;2010;40;0.11;A;No contingency;17;0.112156863;0.099999961;0.096190791;40;0.11;0.11
+Hazen et al. (2009) ;Hazen;Vasey;Schmidt;;;;;2009;23;0.58;A;No contingency;17;0.600470588;0.173902736;0.16224784;23;0.58;0.584934003
+Hirsch et al. (2007) ;Hirsch;Mathews;Clark;;;;;2007;24;0.53;I;Negative;17;0.547865169;0.166659429;0.15596755;24;0.53;0.53
+Hirsch et al. (2009) ;Hirsch;Hayes;Mathews;;;;;2009;40;0.35;I;No contingency;17;0.356862745;0.099999602;0.096190446;40;0.35;0.35
+Holmes & Mathews (2005, Study 2) ;Holmes;Mathews;;;;;;2005;43;0.1;I;Negative;17;0.101818182;0.093023232;0.089730636;43;0.1;0.1
+Hoppitt et al. (2010);Hoppitt;Mathews;Yiend;Mackintosh;;;;2010;95;-0.07;I;Negative;17;-0.070563003;0.042105263;0.041436051;95;-0.07;-0.07
+Johnson (2009) ;Johnson;;;;;;;2009;109;-0.17;A;No contingency;17;-0.171188811;0.036697246;0.036189332;109;-0.17;-0.17
+Koster et al. (2010) ;Koster;Baert;Bockstaele;De Raedt;;;;2010;48;-0.01;A;No contingency;17;-0.010162162;0.083333333;0.080694979;48;-0.01;0.047813343
+Krebs et al. (2010) ;Krebs;Hirsch;Mathews;;;;;2010;64;-0.31;A;Negative;17;-0.31373494;0.062499953;0.061020717;64;-0.31;-0.31
+Lang et al. (2009);Lang;Moulds;Holmes;;;;;2009;48;0.43;App;Neutral;17;0.436972973;0.083333046;0.0806947;48;0.43;0.837913721
+Lange et al. (2010, Study 1);Lange;Salemink;Windey;Keijsers;Krans;Becker;Rinck;2010;68;0.05;I;Negative;17;0.050566038;0.058823528;0.057513955;68;0.05;0.05
+Lange et al. (2010, Study 2);Lange;Salemink;Windey;Keijsers;Krans;Becker;Rinck;2010;39;0.07;I;Negative;17;0.071409396;0.102564085;0.098555456;39;0.07;0.07
+Li et al. (2008) ;Li;Tan;Qian;Liu;;;;2008;22;0.24;A;No contingency;17;0.248888889;0.181816066;0.169061113;22;0.24;0.24
+Mackintosh et al. (2006, Study 2) ;Mackintosh;Mathews;Yiend;Ridgeway;Cook;;;2006;40;0.76;I ;Negative;17;0.774901961;0.099998124;0.096189023;40;0.76;0.757728997
+MacLeod et al. (2002, Study 1) ;MacLeod;Rutherford;Campbell;Ebsworthy;Holker;;;2002;64;-0.02;A;Negative;17;-0.020240964;0.0625;0.061020762;64;-0.02;-0.02
+MacLeod et al. (2002, Study 2);MacLeod;Rutherford;Campbell;Ebsworthy;Holker;;;2002;64;0.07;A ;Negative;17;0.070843373;0.062499998;0.06102076;64;0.07;0.07
+Mathews et al. (2007) ;Mathews;Ridgeway;Cook;Yiend;;;;2007;39;0.52;I;Other;17;0.530469799;0.102563129;0.098554538;39;0.52;0.52
+Murphy et al. (2007) ;Murphy;Hirsch;Mathews;Smith;Clark;;;2007;44;0.64;I;No contingency;17;0.651360947;0.090908185;0.087764626;44;0.64;0.629055067
+Reese et al. (2010);Reese;McNally;Najmi;Amir;;;;2010;41;0.19;A;No contingency;17;0.193630573;0.097560869;0.093936636;41;0.19;0.19
+Salemink & van den Hout (2010);Salemink;van den Hout;;;;;;2010;82;-0.17;I;Negative;17;-0.171588785;0.048780483;0.047881322;82;-0.17;-0.17
+Salemink et al. (2007a) ;Salemink;van den Hout;Kindt;;;;;2007;118;0.35;I;Negative;17;0.352258065;0.0338983;0.033465099;118;0.35;0.35
+Salemink et al. (2007b) ;Salemink;van den Houdt;Kindt;;;;;2007;81;0.23;I;Negative;17;0.232176656;0.049382706;0.048461121;81;0.23;0.23
+Schmidt et al. (2009)a FOUT;Schmidt;Richey;Buckner;Timpano;;;;2009;36;2.1;A;No contingency;17;2.145985401;0.111089181;0.106379226;36;2.1;0.494836189
+Standage et al. (2009) ;Standage;Ashwin;Fox;;;;;2009;48;0.2;I;Negative;17;0.203243243;0.083333271;0.080694919;48;0.2;0.2
+Steinman & Teachman (2010) ;Steinman;Teachman;;;;;;2010;50;0.16;I;No contingency;17;0.162487047;0.079999966;0.07756973;50;0.16;0.16
+Teachman & Addison (2008);Teachman;Addison;;;;;;2008;61;0.12;I;No contingency;17;0.121518987;0.065573762;0.063944664;61;0.12;0.12
+Wadlinger (2009) [Dissertation] ;Wadlinger;;;;;;;2009;69;0.03;A;Neutral;17;0.030334572;0.057971014;0.056699294;69;0.03;0.03
+Wells & Beevers (2010) ;Wells;Beevers;;;;;;2010;31;0.33;A;No contingency;17;0.338461538;0.129031266;0.122660347;31;0.33;0.33
+Wilson et al. (2006) ;Wilson;MacLeod;Mathews;Rutherford;;;;2006;48;-0.35;I;Negative;17;-0.355675676;0.083333143;0.080694794;48;-0.35;-0.35
+Yiend et al. (2005, Study 1) ;Yiend;Mackintosh;Mathews;;;;;2005;20;0.72;I ;Negative;17;0.749589041;0.19997191;0.184496244;20;0.72;0.72
+Yiend et al. (2005, Study 2) ;Yiend;Mackintosh;Mathews;;;;;2005;24;0.15;I ;Negative;17;0.15505618;0.166666087;0.15597378;24;0.15;0.154610186
+Yiend et al. (2005, Study 3);Yiend;Mackintosh;Mathews;;;;;2005;19;0.22;I ;Negative;17;0.229565217;0.210523081;0.193344982;19;0.22;0.22

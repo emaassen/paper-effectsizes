@@ -45,7 +45,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1) 
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.156 \n Reproduced MA effect size g = 0.182", hjust = 0, vjust=1) 
 ```
 &nbsp;
 &nbsp;
@@ -73,7 +73,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) + 
   expand_limits(x = c(-2.3, 0.8)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1) 
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = -0.533 \n Reproduced MA effect size g = -0.591", hjust = 0, vjust=1) 
 ```
 
 
@@ -98,7 +98,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 1.060 \n Reproduced MA effect size g = 1.060", hjust = 0, vjust=1)
 ```
 
 &nbsp;
@@ -128,7 +128,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = -0.086 \n Reproduced MA effect size g = -0.044", hjust = 0, vjust=1)
 ```
 
 
@@ -154,7 +154,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x = c(0,2), y = c(0, 2)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.468 \n Reproduced MA effect size g = 0.612", hjust = 0, vjust=1)
 ```
 &nbsp;
 &nbsp;
@@ -184,7 +184,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(y = c(0, 0.7), x = c(0,0.7)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.320 \n Reproduced MA effect size r = 0.379", hjust = 0, vjust=1)
 ```
 
 ```{r MA7, echo=FALSE}
@@ -208,7 +208,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.329 \n Reproduced MA effect size r = 0.331", hjust = 0, vjust=1)
 ```
 
 
@@ -240,7 +240,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x = c(-0.12, 0.12),y = c(-0.12, 0.12)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = -0.003 \n Reproduced MA effect size r = 0.004", hjust = 0, vjust=1)
 ```
 
 
@@ -265,7 +265,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.161 \n Reproduced MA effect size r = 0.154", hjust = 0, vjust=1)
 ```
 
 &nbsp;
@@ -295,7 +295,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.223 \n Reproduced MA effect size r = 0.231", hjust = 0, vjust=1)
 ```
 
 
@@ -322,7 +322,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size d = 0.036 \n Reproduced MA effect size d = 0.038", hjust = 0, vjust=1)
 
 ```
 &nbsp;
@@ -353,7 +353,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(y = c(0,0.85), x = c(0,0.85)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.321 \n Reproduced MA effect size r = 0.323", hjust = 0, vjust=1)
 
 ```
 
@@ -378,7 +378,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.494 \n Reproduced MA effect size g = 0.438", hjust = 0, vjust=1)
 ```
 &nbsp;
 &nbsp;
@@ -407,7 +407,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.083 \n Reproduced MA effect size r = 0.056", hjust = 0, vjust=1)
 ```
 
 ```{r MA15, echo=FALSE}
@@ -431,7 +431,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.353 \n Reproduced MA effect size r = 0.353", hjust = 0, vjust=1)
 
 ```
 &nbsp;
@@ -461,7 +461,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size d = 2.484 \n Reproduced MA effect size d = 2.482", hjust = 0, vjust=1)
 
 ```
 
@@ -487,7 +487,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x = c(-0.4,2.2), y=c(-0.4,2.2)) +
-  annotate("text", x = -Inf, y = 2, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = 2, color="white", label = " Original MA effect size g = 0.348 \n Reproduced MA effect size g = 0.230", hjust = 0, vjust=1)
 
 ```
 &nbsp;
@@ -495,6 +495,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
 &nbsp;
 &nbsp;
 &nbsp;
+
 ```{r MA18, echo=FALSE}
 # Ihle
 dfma <- subset(df, meta=="Ihle")
@@ -517,7 +518,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x = c(-0.4,0.6), y=c(-0.4,0.6)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.032 \n Reproduced MA effect size g = 0.027", hjust = 0, vjust=1)
 
 ```
 
@@ -544,7 +545,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x = c(-1,3), y=c(-1,3)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 1.447 \n Reproduced MA effect size g = 1.555", hjust = 0, vjust=1)
 
 ```
 &nbsp;
@@ -576,7 +577,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x=c(-0.25,0.7),y=c(-0.25,0.7)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.241 \n Reproduced MA effect size r = 0.215", hjust = 0, vjust=1)
 ```
 
 ```{r MA21, echo=FALSE}
@@ -600,7 +601,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.116 \n Reproduced MA effect size r = 0.109", hjust = 0, vjust=1)
 ```
 
 &nbsp;
@@ -630,7 +631,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size z = 0.272 \n Reproduced MA effect size z = 0.266", hjust = 0, vjust=1)
 ```
 
 ```{r MA23, echo=FALSE}
@@ -655,7 +656,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x=c(-0.85,1.8),y=c(-0.85,1.8)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.897 \n Reproduced MA effect size g = 0.901", hjust = 0, vjust=1)
 ```
 &nbsp;
 &nbsp;
@@ -684,7 +685,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = -0.011 \n Reproduced MA effect size g = -0.016", hjust = 0, vjust=1)
 ```
 
 ```{r MA25, echo=FALSE}
@@ -709,7 +710,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x=c(0.1,1),y=c(0.1,1)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.364 \n Reproduced MA effect size g = 0.388", hjust = 0, vjust=1)
 ```
 
 &nbsp;
@@ -739,7 +740,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.246 \n Reproduced MA effect size r = 0.246", hjust = 0, vjust=1)
 ```
 
 ```{r MA27, echo=FALSE}
@@ -763,7 +764,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.400 \n Reproduced MA effect size r = 0.400", hjust = 0, vjust=1)
 ```
 &nbsp;
 &nbsp;
@@ -792,7 +793,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.102 \n Reproduced MA effect size r = 0.082", hjust = 0, vjust=1)
 ```
 
 ```{r MA29, echo=FALSE}
@@ -816,7 +817,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.137 \n Reproduced MA effect size r = 0.142", hjust = 0, vjust=1)
 ```
 
 &nbsp;
@@ -847,7 +848,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x=c(-0.1,3),y=c(-0.1,3)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size d = 0.751 \n Reproduced MA effect size d = 0.736", hjust = 0, vjust=1)
 ```
 
 ```{r MA31, echo=FALSE}
@@ -872,7 +873,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
   expand_limits(x=c(-0.25,2.5),y=c(-0.25,2.5)) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size g = 0.648 \n Reproduced MA effect size g = 0.712", hjust = 0, vjust=1)
 ```
 
 &nbsp;
@@ -902,7 +903,7 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.104 \n Reproduced MA effect size r = 0.106", hjust = 0, vjust=1)
 ```
 
 ```{r MA33, echo=FALSE}
@@ -926,5 +927,5 @@ ggplot(dfma, aes(x = effestnew.exp, y = effest.exp, col=discr)) +
   ggtitle(subheader) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.title=element_blank()) +
-  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size estimate = x \n Reproduced MA effect size estimate = x", hjust = 0, vjust=1)
+  annotate("text", x = -Inf, y = Inf, color="white", label = " Original MA effect size r = 0.068 \n Reproduced MA effect size r = 0.068", hjust = 0, vjust=1)
 ```

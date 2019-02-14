@@ -64,7 +64,7 @@
       <file>english-apa.lbx</file>
     </requires>
   </internal>
-  <external package="biblatex" priority="5" active="0">
+  <external package="biblatex" priority="5" active="1">
     <generic>biber</generic>
     <cmdline>
       <binary>biber</binary>
@@ -83,7 +83,7 @@
       <file>a-sampling-scheme.bcf</file>
     </requires>
     <requires type="editable">
-      <file>appendices-bib.bib</file>
+      <file>C:/Users/s421506/tiu/research/bibliography.bib</file>
     </requires>
   </external>
 </requests>
