@@ -4,6 +4,7 @@ packages <- c("readxl")
 options(scipen=999)
 #lapply(packages,install.packages(packages),character.only=T)     # if packages are not yet installed
 lapply(packages,library,character.only=T)
+library(psych);library(irr);library(readxl)
 
 datp <- read.table("codebook-primary-studies-final.csv", header=T, sep = '')
 datm <- read.table("codebook-meta-analyses-final.csv", header=T, sep = '')
@@ -116,7 +117,58 @@ attach(datp)
 length(which(!abs(datp$disc.n) == 0))    # 67
 
 
-# Sample weighting --------------------------------------------------------
+# INTERRATER RELIABILITY --------------------------------------------------
+dfe <- read_excel("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-primary-studies-em.xlsx", 2)
+dfa <- read_excel("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-primary-studies-aoc.xlsx", 2)
+
+ze <- dfe$znew
+za <- dfa$znew
+dfz <- cbind(ze,za)
+
+table(ze == za)
+cor(ze,za)                           # 0.97
+cohen.kappa(x=cbind(ze,za))          # unweighted 0.74, weighted 0.97
+icc(dfz, "twoway")                   # 0.964 (CI 0.97 ; 0.975)
+
+# by category
+infoe <- dfe$info
+infoa <- dfa$info
+dfinfo <- cbind(infoe,infoa)
+
+tab <- table(infoe,infoa)
+# simple agreement among raters
+pr.a <- (tab[1,1] + tab[2,2] + tab[3,3] + tab[4,4])  / sum(tab)
+# expected agreement among raters by chance
+cat0 <- (sum(tab[1,]) / sum(tab)) * (sum(tab[,1]) / sum(tab)) * sum(tab)
+cat1 <- (sum(tab[2,]) / sum(tab)) * (sum(tab[,2]) / sum(tab)) * sum(tab)
+cat2 <- (sum(tab[3,]) / sum(tab)) * (sum(tab[,3]) / sum(tab)) * sum(tab)
+cat3 <- (sum(tab[4,]) / sum(tab)) * (sum(tab[,4]) / sum(tab)) * sum(tab)
+pr.e <- (cat0 + cat1 + cat2 + cat3) / sum(tab)
+
+kappa <- (pr.a - pr.e) / (1 - pr.e)
+
+
+
+# SAMPLE WEIGHTING --------------------------------------------------------
+# appendix e table 1
+nrow(df.studies)
+nrow(df.out)
+nrow(df.reg)
+nrow(df.out)/nrow(df.studies)
+nrow(df.reg)/nrow(df.studies)
+
+# table 2
+sum(datp$typestudy == "r")
+sum(datp$typestudy == "o")
+sum(datp$typestudy == "r")/500
+sum(datp$typestudy == "o")/500
+
+# table 3
+sum(df.reg$id == 1)
+sum(df.out$id == 1)
+sum(df.reg$id == 1)/(sum(df.reg$id == 1)+sum(df.out$id == 1))
+sum(df.out$id == 1)/(sum(df.reg$id == 1)+sum(df.out$id == 1))
+
 # Errors
 for (i in 1:nrow(datp)) {
   if (datp$info[i] != 0) { 
@@ -124,7 +176,6 @@ for (i in 1:nrow(datp)) {
   } else { 
     datp$error[i] <- 0 }
 }
-
 
 # Make list with matrices for all MA seperately
 datp$metano <- as.numeric(datp$meta)
@@ -146,6 +197,9 @@ for (i in 1:33) {
   
 }
 
+# appendix e table 4
+mats[[1]]
+
 # First, we calculate correction weights that correct proportions within each MA sample.
 # Within each sample, the proportion of non-outliers and outliers will come to represent the proportion in the 
 # individual MA population
@@ -166,6 +220,7 @@ for (i in 1:33) {
     if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
 }
 
+mats[[1]]
 
 # by multiplying all 33 MA matrices with g1 (for the reg row) and g2 (for the outlier row), the proportions within
 # the sample are restored to the population samples.
@@ -179,6 +234,8 @@ for (i in 1:33) {
 
 # now MA1, which had a 50/50 sample has a 65/35 sample:
 sum(mats[[1]][1,])/sum(mats[[1]])
+
+# appendix e table 5
 mats[[1]]
 
 # Probability of finding an error in meta-analysis
@@ -207,546 +264,384 @@ p.x.b.tot <- sum((p.x.b * ss)) / nrow(df.studies)
 
 
 
-
-
-
-
-
 a <-mats[[1]]+mats[[2]]+mats[[3]]+mats[[4]]+mats[[5]]+mats[[6]]+mats[[7]]+mats[[8]]+mats[[9]]+
-  mats[[10]]+mats[[11]]+mats[[12]]+mats[[13]]+mats[[14]]+mats[[15]]+mats[[16]]+mats[[17]]+
-  mats[[18]]+mats[[19]]+mats[[20]]+mats[[21]]+mats[[22]]+mats[[23]]+mats[[24]]+mats[[25]]+
-  mats[[26]]+mats[[27]]+mats[[28]]+mats[[29]]+mats[[30]]+mats[[31]]+mats[[32]]+mats[[33]]
-
-(a[3]+a[4])/sum(a)
-(a[3]/(a[1]+a[3]))
-(a[4]/(a[2]+a[4]))
-
-#
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# So now, within each meta-analysis, the proportions are adjusted to the population.
-# Now, we want to generalize the sample to the population
-# one outlier in the population (for MA1 this is 20 total) is represented by 2 in the sample
-1 / (10/20) # outlier
-1 / (10/37) # reg
-
-# we again multiply all the matrices with these estimates
-for (i in 1:33) {
-  
-  mats[[i]][1,] <- mats[[i]][1,] * d1[i]
-  mats[[i]][2,] <- mats[[i]][2,] * d2[i]
-  
-}
-
-# probability of finding an error in these 33 meta-analyses:
-prob <- c()
-
-for (i in 1:33) {
-  
-  prob <- c(prob,mats[[i]][1,2] / sum(mats[[i]]))
- 
-}
-
-
-
-
-
-
-datp$metano <- as.numeric(datp$meta)
-
-sum(c(reg.ma.err,reg.ma.nerr,out.ma.err,out.ma.nerr))
-
-p1 <- p2 <- d1 <- d2 <- g1 <- g2 <- w1 <- w2 <- c()
-
-for (i in 1:33) {
-  
-  out <- sum(as.numeric(df.out$type[df.out$id %in% i]))
-  reg <- sum(as.numeric(df.reg$type[df.reg$id %in% i]))
-  tot <- sum(df.studies$id %in% i)
-  sel.out <- sum(c(out.ma.err[i],out.ma.nerr[i]))
-  sel.reg <- sum(c(reg.ma.err[i],reg.ma.nerr[i]))
-  sel.tot <- sum(c(reg.ma.err[i],reg.ma.nerr[i],out.ma.err[i],out.ma.nerr[i]))
-  err.reg <- reg.ma.err[i]
-  err.out <- out.ma.err[i]
-  inc.prob.out <- out / tot
-  inc.prob.reg <- reg / tot
-  d1[i] <- 1 / (sel.reg/reg)
-  d2[i] <- 1 / (sel.out/out)
-  if (d2[i] == "NaN" | d2[i] == "Inf") { d2[i] <- 0 }
-  N <- tot
-  N1 <- reg
-  N2 <- out
-  n <- sel.tot
-  n1 <- sel.reg
-  n2 <- sel.out
-  # correction weight for all regs / outliers
-  g1[i] <- (N1 / N) / (n1 / n)
-  g2[i] <- (N2 / N) / (n2 / n)
-  if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
-  # weights
-  w1[i] <- g1[i] * d1[i]
-  w2[i] <- g2[i] * d2[i]
-  # population weights
-  p1[i] <- sel.reg/reg # number of regular studies in sample vs regular studies in population of MA
-  p2[i] <- sel.out/tot # number of outliers in sample vs outliers in population of MA
-}
-
-
-# weights
-for (i in 1:nrow(datp)) {
-  for (q in 1:33) {
-  
-  if (datp$metano[i] %in% q & datp$typestudy[i] %in% "r") { 
-    datp$d.weight[i] <- d1[q]                                      # design weights
-    datp$g.weight[i] <- as.numeric(g1[q]) # first one in w1 list is a function, so +1
-    datp$w.weight[i] <- as.numeric(w1[q])
-  } 
-  if (datp$metano[i] %in% q & datp$typestudy[i] %in% "o") { 
-    datp$d.weight[i] <- d2[q]
-    datp$g.weight[i] <- as.numeric(g2[q]) # first one in w1 list is a function, so +1
-    datp$w.weight[i] <- as.numeric(w2[q])
-  } 
-  }
-}
-
-
-
-
-N <- nrow(df.studies)
-N1 <- nrow(df.reg)
-N2 <- nrow(df.out)
-n <- nrow(datp)
-n1 <- sum(datp$typestudy == "r")
-n2 <- sum(datp$typestudy == "o")
-# proportion regulars population P(A) / sample P(a)
-N1/N;n1/n 
-# proportion outliers population P(B) / sample P(b)
-N2/N;n2/n
-# probabilitiy of being included in the sample (inclusion probability):
-p1 <- n1/N1
-p2 <- n2/N2
-# inclusion weights
-d1 <- N1/n1
-d2 <- N2/n2
-d <- N/n
-# correction weight for all regs / outliers
-g1 <-(N1 / N) / (n1 / n)
-g2 <- (N2 / N) / (n2 / n) 
-# weights
-w1 <- g1 * d
-w2 <- g2 * d
-
-# make summary matrix
-tab <- table(typestudy,info)
-out.noerror <- tab[1,1]
-out.error <- sum(tab[1,2:4])
-reg.noerror <- tab[2,1]
-reg.error <- sum(tab[2,2:4])
-mat <- matrix(c(reg.noerror,reg.error,out.noerror,out.error), ncol=2, nrow=2)
-rownames(mat) <- c("reg","out")
-colnames(mat) <- c("no error","error")
-mat
-p.x <- sum(mat[,2])/sum(mat);p.x
-p.x.a <- mat[1,2] / sum(mat[1,]);p.x.a
-p.x.b <- mat[2,2] / sum(mat[2,]);p.x.b
-p.a.x <- mat[1,2] / sum(mat[,2]);p.a.x
-p.b.x <- mat[2,2] / sum(mat[,2]);p.b.x
-# multiply all outlier values by g2, regulars by g1
-mat[1,] <- mat[1,] * w1
-mat[2,] <- mat[2,] * w2
-mat
-p.x <- sum(mat[,2])/sum(mat);p.x
-p.x.a <- mat[1,2] / sum(mat[1,]);p.x.a
-p.x.b <- mat[2,2] / sum(mat[2,]);p.x.b
-p.a.x <- mat[1,2] / sum(mat[,2]);p.a.x
-p.b.x <- mat[2,2] / sum(mat[,2]);p.b.x
-# probability error in both P(x|ab) in the sample / with correction
-p.x.ab <- p.x.a * p.x.b / p.x            # 25.04%
-# count
-out.noerror <- mat[2,1]
-out.error <- mat[2,2]
-reg.noerror <- mat[1,1]
-reg.error <- mat[1,2]
-#
-p.a.x <- mat[1,2] / sum(mat[,2]);p.a.x
-p.b.x <- mat[2,2] / sum(mat[,2]);p.b.x
-
-
-reg.ma.err <- c(reg.ma.err,sum(datp$error[datp$metano %in% i & datp$typestudy %in% "r"]))
-reg.ma.nerr <- c(reg.ma.nerr,sum(datp$metano %in% i & datp$typestudy %in% "r")-sum(datp$error[datp$metano %in% i & datp$typestudy %in% "r"]))
-out.ma.err <-  c(out.ma.err,sum(datp$error[datp$metano %in% i & datp$typestudy %in% "o"]))
-out.ma.nerr <- c(out.ma.nerr,sum(datp$metano %in% i & datp$typestudy %in% "o")-sum(datp$error[datp$metano %in% i & datp$typestudy %in% "o"]))
-
-
-
-test2 <- rbind(reg.ma.err,out.ma.err)
-barplot(test2,beside=T)
-
-barplot(ma.err, names.arg=unique(datp$metano))
-barplot(ma.nerr, names.arg=unique(datp$metano))
-library(ggplot2)
-ggplot(test2)
-
-
-
-
-
-
-
-plot(density(ma.nerr))
-plot(ma.err,unique(datp$meta))
-
-vegLengths <- rbind(carrots, cukes)
-
-
-sum(datp[i,""])
-
-df <- data.frame(id = rep(LETTERS[1:8], 10), weight = as.integer(rnorm(80, 80, 10)))
-
-datp
-df <- data.frame(as.numeric(datp$meta),datp$error,)
-
-
-library(ggplot2)
-ggplot(df, aes(x=weight)) + 
-  geom_density(alpha=.2, fill="#FF6666") +
-  facet_wrap( ~ id, nrow=2)
-
-plot((datp$info),as.numeric(datp$meta))
-plot(density(words2))
-
-# inclusion weights for all regs / outliers
-d1 <- N1 / n1
-d2 <- N2 / n2
-# errors
-for (i in 1:nrow(datp)) {
-  if (datp$info[i] != 0) { 
-    datp$error[i] <- 1 
-    } else { 
-      datp$error[i] <- 0 }
-}
-
-# weights
-for (i in 1:nrow(datp)) {
-  if (datp$typestudy[i] == "r") { 
-    datp$weight[i] <- g1 
-  } else { 
-    datp$weight[i] <- g2 }
-}
-
-# weighted estimate
-datp$est.weight <- datp$error * datp$weight
-
-#poststratification estimator
-sub.reg <- datp[datp$typestudy == "r",]
-sub.out <- datp[datp$typestudy == "o",]
-y <- (1 / N) * sum(c(N1 * mean(sub.reg$est.weight)),(N2 * mean(sub.out$est.weight))); y
-
-
-# responding elements in all regulars
-datp$error <- datp$info[datp$typestudy %in% "0"]
-datp$weight <- datp$info[datp$typestudy %in% "r"]
-res.out <- datp$info[datp$typestudy %in% "o"]  
-# weight the estimates per cluster
-res.reg <- res.reg * g1
-res.out <- res.out * g2
-  
-  
-  
-  
-  
-# propability error in regular P(x|a)
-table(typestudy,info)
-p.x.a <- sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])  # 48.5%
-# propability error in outlier P(x|b)
-p.x.b <- sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])  # 39.1%
-# probability error in total P(x)
-p.x <- sum(table(typestudy,info)[1:2,2:4])/sum(table(typestudy,info)[1:2,]) # 44.8%
-# probability error in both P(x|ab) in the sample / without correction      # 42.32%   
-p.x.ab <- p.x.a * p.x.b / p.x;p.x.ab
-# make summary matrix
-tab <- table(typestudy,info)
-out.noerror <- tab[1,1]
-out.error <- sum(tab[1,2:4])
-reg.noerror <- tab[2,1]
-reg.error <- sum(tab[2,2:4])
-mat <- matrix(c(reg.noerror,reg.error,out.noerror,out.error), ncol=2, nrow=2)
-rownames(mat) <- c("reg","out")
-colnames(mat) <- c("no error","error")
-# multiply all outlier values by g2, regulars by g1
-mat[1,] <- mat[1,] * g1 * d1
-mat[2,] <- mat[2,] * g2 * d2
-# propability error in regular P(x|a)    # 43.47%
-p.x.a <- mat[1,2] / sum(mat[1,])
-# propability error in outlier P(x|b)    # 34.375
-p.x.b <- mat[2,2] / sum(mat[2,])
-# probability error in total P(x)        # 59.6%
-p.x <- sum(mat[,1])/sum(mat)
-# probability error in both P(x|ab) in the sample / with correction
-p.x.ab <- p.x.a * p.x.b / p.x            # 25.04%
-
-
-
-
-# inclusion weight
-d <- N/n
-# weighted estimates
-n1 * d * g1
-n2 * d * g2
-# inverse probaility sampling weight - how many regs in the population are represented by a single reg in the sample
-1 / (n1/N1)
-# inverse probabilitie sampling weight - how many regs in the population are represented by a single reg in the sample
-1 / (n2/N2)
-# correction weights
-# no of outliers population vs sample
-
-
-
-
-# no of errors in reg
-reg <- sum(table(typestudy,info)[2,2:4]);reg
-out <- sum(table(typestudy,info)[1,2:4]);out
-err.reg.corr <- err.reg * d * g1
-err.out.corr <- err.out * d * g3
-# 218
-w.err.reg = g1 * d
-w.err.
-err.corr <- err * w1
-
-
-# design weight * adjustment weight
-
-
-
-
-
-# propability error in regular P(x|a)
-attach(datp)
-table(typestudy,info)
-p.x.a <- sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])  # 48.5%
-# propability error in outlier P(x|b)
-p.x.b <- sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])  # 39.1%
-# probability error in total P(x)
-p.x <- sum(table(typestudy,info)[1:2,2:4])/sum(table(typestudy,info)[1:2,]) # 44.8%
-# probability error in both P(x|ab) in the sample / without correction
-p.x.ab <- p.x.a * p.x.b / p.x
-
-# correction
-# multiply probabilities with weight
-p.x.a
-p.x.a.corr <- p.x.a * g1
-p.x.b
-p.x.b.corr <- p.x.b * g2
-# probability error in both P(x|ab) in the sample / without correction
-p.x.ab
-p.x.ab.corr <- p.x.a.corr * p.x.b.corr / p.x; p.x.ab.corr
-
-
-p.x.a.corr <- p.x.a * g1 * d
-# doesnt work because probabilities exceed 1, convert to odds first
-# odds
-odds.reg <- p.x.a * (1 - p.x.a)
-odds.out <- p.x.b * (1 - p.x.b)
-# oversampled odds
-org_frac <- n1/n # original fraction: 60.1% of 500
-over_frac <- N1/N # oversample fraction: 70.2% of 1951 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# expected no of outliers
-pi1 <- N2/N 
-
-# sampling probability - expected no of reg / outlier
-a1 <- n1/N1 # from the total no of regs, 22% is selected
-p1 <- N1/N
-
-1/n1 * n1
-
-
-
-
-
-
-
-# inverse probaility sampling weight - how many regs in the population are represented by a single reg in the sample
-1 / (n1/N1)
-# inverse probabilitie sampling weight - how many regs in the population are represented by a single reg in the sample
-1 / (n2/N2)
-# propability error in regular P(x|a)
-attach(datp)
-table(typestudy,info)
-p.x.a <- sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])  # 48.5%
-# propability error in outlier P(x|b)
-p.x.b <- sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])  # 39.1%
-# probability error in total P(x)
-p.x <- sum(table(typestudy,info)[1:2,2:4])/sum(table(typestudy,info)[1:2,]) # 44.8%
-# probability error in both P(x|ab) in the sample / without correction
-p.x.ab <- p.x.a * p.x.b / p.x
-
-# correction
-# multiply probabilities with weight
-p.x.a
-p.x.a.corr <- p.x.a * g1
-p.x.b
-p.x.b.corr <- p.x.b * g2
-# probability error in both P(x|ab) in the sample / without correction
-p.x.ab
-p.x.ab.corr <- p.x.a.corr * p.x.b.corr / p.x; p.x.ab.corr
-
-
-
-
-
-
-
-
-
-
-
-# sample proportion error and non-error in regular
-p.x # unadjusted probability
-p.x.ab
-r0 <- n1/n   # sample proportion reg
-r1 <- n2/n
-p0 <- N1/N   # population proportion reg
-p1 <- N2/N #   population proportion reg
-
-  
-p.x.corrected <- (p.x * r0 * p1) / ((1 - p.x) * r1 * p0 + (p.x * r0 * p1))
-p1 <- p2 <- d1 <- d2 <- g1 <- g2 <- w1 <- w2 <- c()
-
-for (i in 1:33) {
-  N2 <- out <- sum(as.numeric(df.out$type[df.out$id %in% i]))
-  N1 <- reg <- sum(as.numeric(df.reg$type[df.reg$id %in% i]))
-  N <- tot <- sum(df.studies$id %in% i)
-  n2 <- sel.out <-  sum(c(out.ma.err[i],out.ma.nerr[i]))
-  n1 <- sel.reg <- sum(c(reg.ma.err[i],reg.ma.nerr[i]))
-  n <- sel.tot <- sum(c(reg.ma.err[i],reg.ma.nerr[i],out.ma.err[i],out.ma.nerr[i]))
-  # correction weight for all regs / outliers
-  g1[i] <- (N1 / N) / (n1 / n)
-  g2[i] <- (N2 / N) / (n2 / n)
-  # inclusion weights
-  d1[i] <- 1 / (n1 / N1)
-  d2[i] <- 1 / (n2 / N2)
-  if (d2[i] == "NaN" | d2[i] == "Inf") { d2[i] <- 0 }
-  if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
-  # weights
-  w1[i] <- g1[i] * d1[i]
-  w2[i] <- g2[i] * d2[i]
-  # population weights
-  p1[i] <- n1/N1 # number of regular studies in sample vs regular studies in population of MA
-  p2[i] <- n2/N2 # number of outliers in sample vs outliers in population of MA
-}
-
-
+   mats[[10]]+mats[[11]]+mats[[12]]+mats[[13]]+mats[[14]]+mats[[15]]+mats[[16]]+mats[[17]]+
+   mats[[18]]+mats[[19]]+mats[[20]]+mats[[21]]+mats[[22]]+mats[[23]]+mats[[24]]+mats[[25]]+
+   mats[[26]]+mats[[27]]+mats[[28]]+mats[[29]]+mats[[30]]+mats[[31]]+mats[[32]]+mats[[33]]
+a
+# 
+# (a[3]+a[4])/sum(a)
+# (a[3]/(a[1]+a[3]))
+# (a[4]/(a[2]+a[4]))
+# 
+# ## So now, within each meta-analysis, the proportions are adjusted to the population.
+# # Now, we want to generalize the sample to the population
+# # one outlier in the population (for MA1 this is 20 total) is represented by 2 in the sample
+# 1 / (10/20) # outlier
+# 1 / (10/37) # reg
+# 
+# # we again multiply all the matrices with these estimates
+# for (i in 1:33) {
+#   
+#   mats[[i]][1,] <- mats[[i]][1,] * d1[i]
+#   mats[[i]][2,] <- mats[[i]][2,] * d2[i]
+#   
+# }
+# 
+# # probability of finding an error in these 33 meta-analyses:
+# prob <- c()
+# 
+# for (i in 1:33) {
+#   
+#   prob <- c(prob,mats[[i]][1,2] / sum(mats[[i]]))
+#  
+# }
+# 
+# 
+# datp$metano <- as.numeric(datp$meta)
+# 
+# sum(c(reg.ma.err,reg.ma.nerr,out.ma.err,out.ma.nerr))
+# 
+# p1 <- p2 <- d1 <- d2 <- g1 <- g2 <- w1 <- w2 <- c()
+# 
+# for (i in 1:33) {
+#   
+#   out <- sum(as.numeric(df.out$type[df.out$id %in% i]))
+#   reg <- sum(as.numeric(df.reg$type[df.reg$id %in% i]))
+#   tot <- sum(df.studies$id %in% i)
+#   sel.out <- sum(c(out.ma.err[i],out.ma.nerr[i]))
+#   sel.reg <- sum(c(reg.ma.err[i],reg.ma.nerr[i]))
+#   sel.tot <- sum(c(reg.ma.err[i],reg.ma.nerr[i],out.ma.err[i],out.ma.nerr[i]))
+#   err.reg <- reg.ma.err[i]
+#   err.out <- out.ma.err[i]
+#   inc.prob.out <- out / tot
+#   inc.prob.reg <- reg / tot
+#   d1[i] <- 1 / (sel.reg/reg)
+#   d2[i] <- 1 / (sel.out/out)
+#   if (d2[i] == "NaN" | d2[i] == "Inf") { d2[i] <- 0 }
+#   N <- tot
+#   N1 <- reg
+#   N2 <- out
+#   n <- sel.tot
+#   n1 <- sel.reg
+#   n2 <- sel.out
+#   # correction weight for all regs / outliers
+#   g1[i] <- (N1 / N) / (n1 / n)
+#   g2[i] <- (N2 / N) / (n2 / n)
+#   if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
+#   # weights
+#   w1[i] <- g1[i] * d1[i]
+#   w2[i] <- g2[i] * d2[i]
+#   # population weights
+#   p1[i] <- sel.reg/reg # number of regular studies in sample vs regular studies in population of MA
+#   p2[i] <- sel.out/tot # number of outliers in sample vs outliers in population of MA
+# }
+# 
+# 
+# # weights
+# for (i in 1:nrow(datp)) {
+#   for (q in 1:33) {
+#   
+#   if (datp$metano[i] %in% q & datp$typestudy[i] %in% "r") { 
+#     datp$d.weight[i] <- d1[q]                                      # design weights
+#     datp$g.weight[i] <- as.numeric(g1[q]) # first one in w1 list is a function, so +1
+#     datp$w.weight[i] <- as.numeric(w1[q])
+#   } 
+#   if (datp$metano[i] %in% q & datp$typestudy[i] %in% "o") { 
+#     datp$d.weight[i] <- d2[q]
+#     datp$g.weight[i] <- as.numeric(g2[q]) # first one in w1 list is a function, so +1
+#     datp$w.weight[i] <- as.numeric(w2[q])
+#   } 
+#   }
+# }
+# 
+# 
+# N <- nrow(df.studies)
+# N1 <- nrow(df.reg)
+# N2 <- nrow(df.out)
+# n <- nrow(datp)
+# n1 <- sum(datp$typestudy == "r")
+# n2 <- sum(datp$typestudy == "o")
+# # proportion regulars population P(A) / sample P(a)
+# N1/N;n1/n 
+# # proportion outliers population P(B) / sample P(b)
+# N2/N;n2/n
+# # probabilitiy of being included in the sample (inclusion probability):
+# p1 <- n1/N1
+# p2 <- n2/N2
+# # inclusion weights
+# d1 <- N1/n1
+# d2 <- N2/n2
+# d <- N/n
+# # correction weight for all regs / outliers
+# g1 <-(N1 / N) / (n1 / n)
+# g2 <- (N2 / N) / (n2 / n) 
+# # weights
+# w1 <- g1 * d
+# w2 <- g2 * d
+# 
+# # make summary matrix
+# tab <- table(typestudy,info)
+# out.noerror <- tab[1,1]
+# out.error <- sum(tab[1,2:4])
+# reg.noerror <- tab[2,1]
+# reg.error <- sum(tab[2,2:4])
+# mat <- matrix(c(reg.noerror,reg.error,out.noerror,out.error), ncol=2, nrow=2)
+# rownames(mat) <- c("reg","out")
+# colnames(mat) <- c("no error","error")
+# mat
+# p.x <- sum(mat[,2])/sum(mat);p.x
+# p.x.a <- mat[1,2] / sum(mat[1,]);p.x.a
+# p.x.b <- mat[2,2] / sum(mat[2,]);p.x.b
+# p.a.x <- mat[1,2] / sum(mat[,2]);p.a.x
+# p.b.x <- mat[2,2] / sum(mat[,2]);p.b.x
+# # multiply all outlier values by g2, regulars by g1
+# mat[1,] <- mat[1,] * w1
+# mat[2,] <- mat[2,] * w2
+# mat
+# p.x <- sum(mat[,2])/sum(mat);p.x
+# p.x.a <- mat[1,2] / sum(mat[1,]);p.x.a
+# p.x.b <- mat[2,2] / sum(mat[2,]);p.x.b
+# p.a.x <- mat[1,2] / sum(mat[,2]);p.a.x
+# p.b.x <- mat[2,2] / sum(mat[,2]);p.b.x
+# # probability error in both P(x|ab) in the sample / with correction
+# p.x.ab <- p.x.a * p.x.b / p.x            # 25.04%
+# # count
+# out.noerror <- mat[2,1]
+# out.error <- mat[2,2]
+# reg.noerror <- mat[1,1]
+# reg.error <- mat[1,2]
+# #
+# p.a.x <- mat[1,2] / sum(mat[,2]);p.a.x
+# p.b.x <- mat[2,2] / sum(mat[,2]);p.b.x
+# 
+# 
+# test2 <- rbind(reg.ma.err,out.ma.err)
+# barplot(test2,beside=T)
+# 
+# barplot(ma.err, names.arg=unique(datp$metano))
+# barplot(ma.nerr, names.arg=unique(datp$metano))
+# library(ggplot2)
+# ggplot(test2)
+# 
+# plot(density(ma.nerr))
+# plot(ma.err,unique(datp$meta))
+# 
+# vegLengths <- rbind(carrots, cukes)
+# 
+# 
+# sum(datp[i,""])
+# 
+# df <- data.frame(id = rep(LETTERS[1:8], 10), weight = as.integer(rnorm(80, 80, 10)))
+# 
+# 
+# 
+# library(ggplot2)
+# ggplot(df, aes(x=weight)) + 
+#   geom_density(alpha=.2, fill="#FF6666") +
+#   facet_wrap( ~ id, nrow=2)
+# 
+# plot((datp$info),as.numeric(datp$meta))
+# plot(density(words2))
+# 
+# # inclusion weights for all regs / outliers
+# d1 <- N1 / n1
+# d2 <- N2 / n2
+# # errors
+# for (i in 1:nrow(datp)) {
+#   if (datp$info[i] != 0) { 
+#     datp$error[i] <- 1 
+#     } else { 
+#       datp$error[i] <- 0 }
+# }
+# 
+# # weights
+# for (i in 1:nrow(datp)) {
+#   if (datp$typestudy[i] == "r") { 
+#     datp$weight[i] <- g1 
+#   } else { 
+#     datp$weight[i] <- g2 }
+# }
+# 
+# # weighted estimate
+# datp$est.weight <- datp$error * datp$weight
+# 
+# #poststratification estimator
+# sub.reg <- datp[datp$typestudy == "r",]
+# sub.out <- datp[datp$typestudy == "o",]
+# y <- (1 / N) * sum(c(N1 * mean(sub.reg$est.weight)),(N2 * mean(sub.out$est.weight))); y
+# 
+# 
+# # responding elements in all regulars
+# datp$error <- datp$info[datp$typestudy %in% "0"]
+# datp$weight <- datp$info[datp$typestudy %in% "r"]
+# res.out <- datp$info[datp$typestudy %in% "o"]  
+# # weight the estimates per cluster
+# res.reg <- res.reg * g1
+# res.out <- res.out * g2
+#   
+# 
+# # propability error in regular P(x|a)
+# table(typestudy,info)
+# p.x.a <- sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])  # 48.5%
+# # propability error in outlier P(x|b)
+# p.x.b <- sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])  # 39.1%
+# # probability error in total P(x)
+# p.x <- sum(table(typestudy,info)[1:2,2:4])/sum(table(typestudy,info)[1:2,]) # 44.8%
+# # probability error in both P(x|ab) in the sample / without correction      # 42.32%   
+# p.x.ab <- p.x.a * p.x.b / p.x;p.x.ab
+# # make summary matrix
+# tab <- table(typestudy,info)
+# out.noerror <- tab[1,1]
+# out.error <- sum(tab[1,2:4])
+# reg.noerror <- tab[2,1]
+# reg.error <- sum(tab[2,2:4])
+# mat <- matrix(c(reg.noerror,reg.error,out.noerror,out.error), ncol=2, nrow=2)
+# rownames(mat) <- c("reg","out")
+# colnames(mat) <- c("no error","error")
+# # multiply all outlier values by g2, regulars by g1
+# mat[1,] <- mat[1,] * g1 * d1
+# mat[2,] <- mat[2,] * g2 * d2
+# # propability error in regular P(x|a)    # 43.47%
+# p.x.a <- mat[1,2] / sum(mat[1,])
+# # propability error in outlier P(x|b)    # 34.375
+# p.x.b <- mat[2,2] / sum(mat[2,])
+# # probability error in total P(x)        # 59.6%
+# p.x <- sum(mat[,1])/sum(mat)
+# # probability error in both P(x|ab) in the sample / with correction
+# p.x.ab <- p.x.a * p.x.b / p.x            # 25.04%
+# 
+# 
+# # inclusion weight
+# d <- N/n
+# # weighted estimates
+# n1 * d * g1
+# n2 * d * g2
+# # inverse probaility sampling weight - how many regs in the population are represented by a single reg in the sample
+# 1 / (n1/N1)
+# # inverse probabilitie sampling weight - how many regs in the population are represented by a single reg in the sample
+# 1 / (n2/N2)
+# # correction weights
+# # no of outliers population vs sample
+# 
+# # no of errors in reg
+# reg <- sum(table(typestudy,info)[2,2:4]);reg
+# out <- sum(table(typestudy,info)[1,2:4]);out
+# err.reg.corr <- err.reg * d * g1
+# err.out.corr <- err.out * d * g3
+# # 218
+# w.err.reg = g1 * d
+# w.err.
+# err.corr <- err * w1
+# 
+# 
+# # design weight * adjustment weight
+# 
+# 
+# 
+# 
+# 
+# # propability error in regular P(x|a)
+# attach(datp)
+# table(typestudy,info)
+# p.x.a <- sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])  # 48.5%
+# # propability error in outlier P(x|b)
+# p.x.b <- sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])  # 39.1%
+# # probability error in total P(x)
+# p.x <- sum(table(typestudy,info)[1:2,2:4])/sum(table(typestudy,info)[1:2,]) # 44.8%
+# # probability error in both P(x|ab) in the sample / without correction
+# p.x.ab <- p.x.a * p.x.b / p.x
+# 
+# # correction
+# # multiply probabilities with weight
+# p.x.a
+# p.x.a.corr <- p.x.a * g1
+# p.x.b
+# p.x.b.corr <- p.x.b * g2
+# # probability error in both P(x|ab) in the sample / without correction
+# p.x.ab
+# p.x.ab.corr <- p.x.a.corr * p.x.b.corr / p.x; p.x.ab.corr
+# 
+# 
+# p.x.a.corr <- p.x.a * g1 * d
+# # doesnt work because probabilities exceed 1, convert to odds first
+# # odds
+# odds.reg <- p.x.a * (1 - p.x.a)
+# odds.out <- p.x.b * (1 - p.x.b)
+# # oversampled odds
+# org_frac <- n1/n # original fraction: 60.1% of 500
+# over_frac <- N1/N # oversample fraction: 70.2% of 1951 
+# 
+# # expected no of outliers
+# pi1 <- N2/N 
+# 
+# # sampling probability - expected no of reg / outlier
+# a1 <- n1/N1 # from the total no of regs, 22% is selected
+# p1 <- N1/N
+# 
+# 1/n1 * n1
+# 
+# 
+# # inverse probaility sampling weight - how many regs in the population are represented by a single reg in the sample
+# 1 / (n1/N1)
+# # inverse probabilitie sampling weight - how many regs in the population are represented by a single reg in the sample
+# 1 / (n2/N2)
+# # propability error in regular P(x|a)
+# attach(datp)
+# table(typestudy,info)
+# p.x.a <- sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])  # 48.5%
+# # propability error in outlier P(x|b)
+# p.x.b <- sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])  # 39.1%
+# # probability error in total P(x)
+# p.x <- sum(table(typestudy,info)[1:2,2:4])/sum(table(typestudy,info)[1:2,]) # 44.8%
+# # probability error in both P(x|ab) in the sample / without correction
+# p.x.ab <- p.x.a * p.x.b / p.x
+# 
+# # correction
+# # multiply probabilities with weight
+# p.x.a
+# p.x.a.corr <- p.x.a * g1
+# p.x.b
+# p.x.b.corr <- p.x.b * g2
+# # probability error in both P(x|ab) in the sample / without correction
+# p.x.ab
+# p.x.ab.corr <- p.x.a.corr * p.x.b.corr / p.x; p.x.ab.corr
+# 
+# 
+# 
+# # sample proportion error and non-error in regular
+# p.x # unadjusted probability
+# p.x.ab
+# r0 <- n1/n   # sample proportion reg
+# r1 <- n2/n
+# p0 <- N1/N   # population proportion reg
+# p1 <- N2/N #   population proportion reg
+# 
+#   
+# p.x.corrected <- (p.x * r0 * p1) / ((1 - p.x) * r1 * p0 + (p.x * r0 * p1))
+# p1 <- p2 <- d1 <- d2 <- g1 <- g2 <- w1 <- w2 <- c()
+# 
+# for (i in 1:33) {
+#   N2 <- out <- sum(as.numeric(df.out$type[df.out$id %in% i]))
+#   N1 <- reg <- sum(as.numeric(df.reg$type[df.reg$id %in% i]))
+#   N <- tot <- sum(df.studies$id %in% i)
+#   n2 <- sel.out <-  sum(c(out.ma.err[i],out.ma.nerr[i]))
+#   n1 <- sel.reg <- sum(c(reg.ma.err[i],reg.ma.nerr[i]))
+#   n <- sel.tot <- sum(c(reg.ma.err[i],reg.ma.nerr[i],out.ma.err[i],out.ma.nerr[i]))
+#   # correction weight for all regs / outliers
+#   g1[i] <- (N1 / N) / (n1 / n)
+#   g2[i] <- (N2 / N) / (n2 / n)
+#   # inclusion weights
+#   d1[i] <- 1 / (n1 / N1)
+#   d2[i] <- 1 / (n2 / N2)
+#   if (d2[i] == "NaN" | d2[i] == "Inf") { d2[i] <- 0 }
+#   if (g2[i] == "NaN" | g2[i] == "Inf") { g2[i] <- 0 }
+#   # weights
+#   w1[i] <- g1[i] * d1[i]
+#   w2[i] <- g2[i] * d2[i]
+#   # population weights
+#   p1[i] <- n1/N1 # number of regular studies in sample vs regular studies in population of MA
+#   p2[i] <- n2/N2 # number of outliers in sample vs outliers in population of MA
+# }
+# 
+# 

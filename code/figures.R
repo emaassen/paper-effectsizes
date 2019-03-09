@@ -3,9 +3,159 @@ rm(list=ls())
 # Scatterplot 500 effect sizes.
 library(readxl);library(ggplot2);library(gridExtra)
 
+# Study 2
+dat <- read.table("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-meta-analyses-final-complete.csv", header=T, sep = '')
+number_ticks <- function(n) {function(limits) pretty(limits, n)}
+
+## EFFECT SIZE ESIMATES
+dat.g <- subset(dat,efftype=="g")
+dat.d <- subset(dat,efftype=="d")
+dat.r <- subset(dat,efftype=="r")
+dat.z <- subset(dat,efftype=="z")
+
+ggplot(dat.g, aes(eff.so, eff.sc, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced pooled MA effect size (Hedges' g)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original pooled MA effect size (Hedges' g)", breaks=number_ticks(6)) +
+  expand_limits(x = c(-0.6, 1.55), y = c(-0.6, 1.55)) +
+  scale_shape_manual(values=rep(c(21:24), times=3)) +
+  theme(legend.position="none") 
+
+ggplot(dat.d, aes(eff.so, eff.sc, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced pooled MA effect size (Cohen's d)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original pooled MA effect size (Cohen's d)", breaks=number_ticks(6)) +
+  expand_limits(x = c(-0.1, 2.5), y = c(-0.1, 2.5)) +
+  scale_shape_manual(values=rep(c(21:24), times=1)) +
+  theme(legend.position="none") 
+
+ggplot(dat.r, aes(eff.so, eff.sc, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced pooled MA effect size (Pearson r)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original pooled MA effect size (Pearson r)", breaks=number_ticks(6)) +
+  expand_limits(x = c(-0.05, 0.45), y = c(-0.05, 0.45)) +
+  scale_shape_manual(values=rep(c(21:24), times=4)) +
+  theme(legend.position="none") 
+
+ggplot(dat.z, aes(eff.so, eff.sc, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced pooled MA effect size (Fisher's z)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original pooled MA effect size (Fisher's z)", breaks=number_ticks(6)) +
+  expand_limits(x = c(0.2, 0.3), y = c(0.2, 0.3)) +
+  scale_shape_manual(values=21) +
+  theme(legend.position="none") 
+
+## CONFIDENCE INTERVAL
+ci.so <- dat.g$ciub.so-dat.g$cilb.so
+ci.sc <- dat.g$ciub.sc-dat.g$cilb.sc
+
+ggplot(dat.g, aes(ci.sc, ci.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced CI range (Hedges' g)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original CI range (Hedges' g)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(0, 0.9), y = c(0, 0.9)) +
+  scale_shape_manual(values=rep(c(21:24),3)) +
+  theme(legend.position="none") 
+
+ci.so <- dat.d$ciub.so-dat.d$cilb.so
+ci.sc <- dat.d$ciub.sc-dat.d$cilb.sc
+
+ggplot(dat.d, aes(ci.sc, ci.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced CI range (Hedges' g)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original CI range (Hedges' g)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(0, 2), y = c(0, 2)) +
+  scale_shape_manual(values=rep(c(21:24),1)) +
+  theme(legend.position="none") 
+
+ci.so <- dat.r$ciub.so-dat.r$cilb.so
+ci.sc <- dat.r$ciub.sc-dat.r$cilb.sc
+
+ggplot(dat.r, aes(ci.sc, ci.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced CI range (Pearson r)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original CI range (Pearson r)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(0,0.35), y = c(0,0.35)) +
+  scale_shape_manual(values=rep(c(21:24),4)) +
+  theme(legend.position="none") 
+
+ci.so <- dat.z$ciub.so-dat.z$cilb.so
+ci.sc <- dat.z$ciub.sc-dat.z$cilb.sc
+
+ggplot(dat.z, aes(ci.sc, ci.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced CI range (Pearson r)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original CI range (Pearson r)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(0.1,0.2), y = c(0.1,0.2)) +
+  scale_shape_manual(values=21) +
+  theme(legend.position="none") 
+
+## TAU2 ESIMATES
+ggplot(dat.g, aes(tau2.sc, tau2.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced tau2 (Hedges' g)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original tau2 (Hedges' g)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(-0.05, 1), y = c(-0.05, 1)) +
+  scale_shape_manual(values=rep(c(21:24), times=3)) +
+  theme(legend.position="none") 
+
+ggplot(dat.d, aes(tau2.sc, tau2.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced tau2 (Cohen's d)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original tau2 (Cohen's d)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(-0.1, 1), y = c(-0.1, 1)) +
+  scale_shape_manual(values=rep(c(21:24), times=1)) +
+  theme(legend.position="none") 
+
+ggplot(dat.r, aes(tau2.sc, tau2.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced tau2 (Pearson r)", breaks=number_ticks(6)) +
+  scale_y_continuous("Original tau2 (Pearson r)", breaks=number_ticks(6)) + 
+  expand_limits(x = c(-0.005, 0.09), y = c(-0.005, 0.09)) +
+  scale_shape_manual(values=rep(c(21:24), times=4)) +
+  theme(legend.position="none") 
+
+ggplot(dat.z, aes(tau2.sc, tau2.so, shape = factor(author), fill = factor(author))) + 
+  geom_point(alpha = 0.6, size=5, stroke=0.7) +
+  geom_abline() + 
+  scale_shape(solid = FALSE) +
+  scale_x_continuous("Reproduced tau2 (Fisher's z)", breaks=number_ticks(2)) +
+  scale_y_continuous("Original tau2 (Fisher's z)", breaks=number_ticks(2)) + 
+  expand_limits(x = c(-0.005, 0.01), y = c(-0.005, 0.01)) +
+  scale_shape_manual(values=rep(c(21:24), times=1)) +
+  theme(legend.position="none") 
+
+
+
+
+
+
+
 
 df <- read_excel("C:/Users/s421506/tiu/research/effectsizes/codebooks/codebook-primary-studies-final-complete.xlsx", 1)
-number_ticks <- function(n) {function(limits) pretty(limits, n)}
+
 # Study 1 scatterplots - SMD
 df.smd <- df[df$efftype == "g" | df$efftype == "d",]
 df.smd$discrepancy <- as.character(df.smd$info)
@@ -439,26 +589,17 @@ dfma %>%
 
 
 
-# MA Scatterplot ----------------------------------------------------------
-
-dat <- read.table("C:/Users/s421506/tiu/research/effectsizes/codebook-meta-analyses-finalbackup.csv", header=T, sep = '')
 
 
-## EFFECT SIZE ESIMATES
-library(randomcoloR)
-
-ggplot(dat, aes(z.cc, z.co, shape = factor(author), fill = factor(author))) + 
-  geom_point(alpha = 0.6, size=4, stroke=0.7) +
-  geom_abline() + 
-  scale_shape(solid = FALSE) +
-  scale_x_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(6)) +
-  scale_y_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(6)) + 
-  expand_limits(x = c(-0.2, 0.8), y = c(-0.2, 0.8)) +
-  scale_shape_manual(values=rep(c(21:25), times=33)) +
-  theme(legend.position="none") 
 
 
-ggplot(dat, aes(z.sc, z.so, shape = factor(author), fill = factor(author))) + 
+
+
+
+
+
+
+ggplot(dat, aes(z.sc, z.so)) + 
   geom_point(alpha = 0.6, size=5, stroke=0.7) +
   geom_abline() + 
   scale_shape(solid = FALSE) +
@@ -497,28 +638,6 @@ ggplot(dat, aes(ci.sc, ci.so, shape = factor(author), fill = factor(author))) +
 
 
 
-## TAU2 ESIMATES
-
-ggplot(dat, aes(tau.cc, tau.co, shape = factor(author), fill = factor(author), col = factor(author))) + 
-  geom_point(alpha = 0.6, size=4, stroke=0.7) +
-  geom_abline() + 
-  scale_shape(solid = FALSE) +
-  scale_x_continuous("Reproduced tau2", breaks=number_ticks(6)) +
-  scale_y_continuous("Original tau2", breaks=number_ticks(6)) + 
-  expand_limits(x = c(0, 0.2), y = c(0, 0.2)) +
-  scale_shape_manual(values=rep(c(21), times=33)) +
-  theme(legend.position="none") 
-
-ggplot(dat, aes(tau.sc, tau.so, shape = factor(author), fill = factor(author))) + 
-  geom_point(alpha = 0.6, size=5, stroke=0.7) +
-  geom_abline() + 
-  scale_shape(solid = FALSE) +
-  scale_x_continuous("Reproduced tau2", breaks=number_ticks(6)) +
-  scale_y_continuous("Original tau2", breaks=number_ticks(6)) + 
-  expand_limits(x = c(0, 0.2), y = c(0, 0.2)) +
-  scale_shape_manual(values=rep(c(21:25), times=7)) +
-  theme(legend.position="none") 
-  
 
 
 n <- 33

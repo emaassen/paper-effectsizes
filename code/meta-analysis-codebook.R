@@ -1,15 +1,18 @@
 rm(list = ls())
-x <- c("metafor","readxl","dplyr")
+x <- c("metafor","readxl","dplyr","writexl")
 #lapply(x,install.packages(x),character.only=T)
 lapply(x,library,character.only=T)
 
 est.fe <- est.re <- k.tot <- outlier.total <- regular.total <- c() # empty vector to store results 
 eff.so <- cilb.so <- ciub.so <- tau2.so <- c() #empty vectors for subset original meta-analyses
 eff.sc <- cilb.sc <- ciub.sc <- tau2.sc <- c() #empty vectors for subset checked meta-analyses
+eff.co <- cilb.co <- ciub.co <- tau2.co <- c() 
+eff.cc <- cilb.cc <- ciub.cc <- tau2.cc <- c() 
 krep1 <- percent <- krep2 <- percent2 <- pval.so <- pval.sc <- c() #empty vectors for misc results
 
 setwd("C:/Users/s421506/tiu/research/effectsizes/codebooks/")
 dat <- read_excel("codebook-meta-analyses-final-empty.xlsx", 2)
+setwd("C:/Users/s421506/tiu/research/effectsizes/data-per-ma")
 
 # Functions ---------------------------------------------------------------
 dependency <- function(y,z) {
@@ -59,14 +62,14 @@ dependency <- function(y,z) {
   return(dependent)
 }
 
-setwd("C:/Users/s421506/tiu/research/effectsizes/data-per-ma")
+
 
 # Adesope -----------------------------------------------------------------
 df <- read.table("adesope_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
 J <- 1 - (3 / (4 * df$n - 9))
-df$d <- df$g / J                                        # cohen's d
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd                                    # variance hedges' g 
+d <- df$effest.exp / J                              # cohen's d
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n))) # variance cohen's d
+vg <- J^2 * vd                                 # variance hedges' g 
 
 # select outliers from dataset
 res <- rma(g, vg, data=df)                            # random effects meta-analysis
@@ -74,12 +77,11 @@ l1o <- leave1out(res)                                 # leave1out analysis
 q <- res$QE - l1o$Q                                   # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                     # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                      # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg))
-write.table(df, file = "adesope_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg))
 
 # complete analysis with reported values
 res.fe <- rma(g, vg, data=df, method="FE")
@@ -87,6 +89,33 @@ res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                                 # variance hedges' g 
+write.table(df, file = "adesope_complete.csv", row.names=FALSE, sep=";")
+
+# complete original
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA subset original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA subset original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA subset checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 
 rm(df)
 
@@ -131,13 +160,12 @@ rm(df)
 
 # Alfieri -----------------------------------------------------------------
 df <- read.table("alfieri_complete.csv", header=T, sep=";")
-
 df$n <- df$n1 + df$n2
 dfs <- df$n1 + df$n2 - 2
-J <- 1 - (3 / (4 * dfs - 1))
-df$d <- df$g / J                                        # cohen's d
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd                                    # variance hedges' g 
+J  <- 1 - (3 / (4 * dfs - 1))
+d <- df$effest.exp / J                                     # cohen's d
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))           # variance cohen's d
+vg <- J^2 * vd                                             # variance hedges' g 
 
 # select outliers from dataset
 res <- rma(g, vg, data=df)                            # random effects meta-analysis
@@ -145,12 +173,11 @@ l1o <- leave1out(res)                                 # leave1out analysis
 q <- res$QE - l1o$Q                                   # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                     # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                      # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg))
-write.table(df, file = "alfieri_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg))
 
 # meta-analysis with reported values
 res.fe <- rma(g, vg, data=df, method="FE")
@@ -158,6 +185,36 @@ res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$n <- df$n1 + df$n2
+dfs <- df$n1 + df$n2 - 2
+dfs.c <- df$ncnew + df$ntnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+write.table(df, file = "alfieri_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 
 rm(df)
 
@@ -207,11 +264,10 @@ rm(df)
 
 # Babbage -----------------------------------------------------------------
 df <- read.table("babbage_complete.csv", header=T, sep=";")
-
 J <- 1 - (3 / (4 * df$n - 9))
-df$d <- df$g / J                                        # cohen's d
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd                                    # variance hedges' g 
+d <- df$effest.exp / J                              # cohen's d
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n))) # variance cohen's d
+vg <- J^2 * vd                                 # variance hedges' g 
 
 # select outliers from dataset
 res <- rma(g, vg, data=df)                            # random effects meta-analysis
@@ -219,12 +275,11 @@ l1o <- leave1out(res)                                 # leave1out analysis
 q <- res$QE - l1o$Q                                   # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                     # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                      # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg))        # no possible dependent studies
-write.table(df, file = "babbage_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg))        # no possible dependent studies
 
 # meta-analysis with reported values
 res.re <- rma(g, vg, data=df, method="DL") 
@@ -232,8 +287,36 @@ est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
 
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                                 # variance hedges' g 
+write.table(df, file = "babbage_complete.csv", row.names=FALSE, sep=";")
+
+# complete original
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA subset original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA subset original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA subset checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
+# subset
 df <- read.table("babbage_subset.csv", header=T, sep=";")
 
 J.o <- 1 - (3 / (4 * df$n - 9))
@@ -276,11 +359,10 @@ rm(df)
 
 # Balliet -----------------------------------------------------------------
 df <- read.table("balliet_complete.csv", header=T, sep=";")
-
 J <- 1 - (3 / (4 * df$n - 9))
-df$d <- df$g / J                                        # cohen's d
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd                                    # variance hedges' g 
+d <- df$effest.exp / J                              # cohen's d
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))    # variance cohen's d
+vg <- J^2 * vd                                      # variance hedges' g 
 
 # select outliers from dataset
 res <- rma(g, vg, data=df)                            # random effects meta-analysis
@@ -288,12 +370,11 @@ l1o <- leave1out(res)                                 # leave1out analysis
 q <- res$QE - l1o$Q                                   # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                     # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                      # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg))
-write.table(df, file = "balliet_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg))
 
 # meta-analysis with reported values
 res.fe <- rma(g, vg, data=df, method="FE")
@@ -301,6 +382,34 @@ res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                                 # variance hedges' g 
+write.table(df, file = "balliet_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -335,6 +444,7 @@ tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[4]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -345,31 +455,57 @@ rm(df)
 
 # Benish ------------------------------------------------------------------
 df <- read.table("benish_complete.csv", header=T, sep=";")
-
 J <- 1 - (3 / (4 * df$n - 9))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$effest.exp / J                              # cohen's d
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n))) # variance cohen's d
+vg <- J^2 * vd                                 # variance hedges' g .c  
 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg))
-write.table(df, file = "benish_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg))
 
 # meta-analysis with reported values
 res.re <- rma(g, vg, data=df, method="HE") 
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
-rm(df)
 
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c  
+write.table(df, file = "benish_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="HE")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="HE")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
+rm(df)
+# subset
 df <- read.table("benish_subset.csv", header=T, sep=";")
 
 J.o <- 1 - (3 / (4 * df$n - 9))
@@ -401,6 +537,7 @@ tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[5]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -411,19 +548,17 @@ rm(df)
 
 # Berry1 ------------------------------------------------------------------
 df <- read.table("berry1_complete.csv", header=T, sep=";")
-
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1) 
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))               
-write.table(df, file = "berry1_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))               
 
 # meta-analysis with reported values
 res.fe <- rma(r, vr, data=df, method="FE")
@@ -431,14 +566,34 @@ res.re <- rma(r, vr, data=df, method="HS")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+write.table(df, file = "berry1_complete.csv", row.names=FALSE, sep=";")
+
+# complete original
+res.co <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 #subset
 df <- read.table("berry1_subset.csv", header=T, sep=";")
-
 df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
 df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
-
 write.table(df, file = "berry1_subset.csv", row.names=FALSE, sep=";")
 
 # subset original
@@ -459,6 +614,7 @@ tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[6]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -469,19 +625,17 @@ rm(df)
 
 # Berry2 ------------------------------------------------------------------
 df <- read.table("berry2_complete.csv", header=T, sep=";")
-
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1) 
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))   
-write.table(df, file = "berry2_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))   
 
 # meta-analysis with reported values
 res.fe <- rma(r, vr, data=df, method="FE")
@@ -489,6 +643,28 @@ res.re <- rma(r, vr, data=df, method="HS")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+write.table(df, file = "berry2_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 #subset
@@ -517,6 +693,7 @@ tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[7]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -527,19 +704,17 @@ rm(df)
 
 # Card --------------------------------------------------------------------
 df <- read.table("card_complete.csv", header=T, sep=";")
-
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))   
-write.table(df, file = "card_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))   
 
 # meta-analysis with reported values
 z <- 0.5 * log((1 + df$r) / (1 - df$r))
@@ -550,6 +725,33 @@ res.re <-tanh(res.re$b)
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3) 
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
+write.table(df, file = "card_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(z.o, vz.o, data=df, method="DL") 
+
+# complete reproduced
+res.cc <- rma(z.c, vz.c, data=df, method="DL")               
+
+# transform estimate back to correlation
+eff.co <- c(eff.co,tanh(res.co$b)) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,tanh(res.co$ci.lb)) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,tanh(res.co$ci.ub)) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,tanh(res.cc$b)) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,tanh(res.cc$ci.lb))
+ciub.cc <- c(ciub.cc,tanh(res.cc$ci.ub))
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -557,32 +759,32 @@ df <- read.table("card_subset.csv", header=T, sep=";")
 
 df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
 df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
-
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3) 
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
 write.table(df, file = "card_subset.csv", row.names=FALSE, sep=";")
 
 # subset original 
-df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
-df$vz.o <- 1 / (df$n - 3)    
 res.so <- rma(z.o, vz.o, data=df, method="DL") 
 
 # subset reproduced
-df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
-df$vz.c <- 1 / (df$nnew - 3) 
 res.sc <- rma(z.c, vz.c, data=df, method="DL")               
 
 # transform estimate back to correlation
 eff.so <- c(eff.so,tanh(res.so$b)) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,tanh(res.so$ci.lb)) # MA subset original effect size CI lowerbound
 ciub.so <- c(ciub.so,tanh(res.so$ci.ub)) # upperbound
-tau2.so <- c(tau2.so,tanh(res.so$tau2)) # tau2 estimate
+tau2.so <- c(tau2.so,res.so$tau2) # tau2 estimate
 
 eff.sc <- c(eff.sc,tanh(res.sc$b)) # MA subset checked effect size estimate
 cilb.sc <- c(cilb.sc,tanh(res.sc$ci.lb))
 ciub.sc <- c(ciub.sc,tanh(res.sc$ci.ub))
-tau2.sc <- c(tau2.sc,tanh(res.sc$tau2))
+tau2.sc <- c(tau2.sc,res.sc$tau2) # Fisher's z estimate
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[8]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -592,94 +794,129 @@ rm(df)
 
 # Crook -------------------------------------------------------------------
 df <- read.table("crook_complete.csv", header=T, sep=";")
-
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
-res <- rma(r, vr, data=df)                         # random effects meta-analysis
+vr <- ((1 - (df$r^2))^2) / (df$n - 1)           # as per metafor package
+res <- rma(r, vr, data=df) 
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                  # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id,  study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))   
-write.table(df, file = "crook_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))   
 
 # meta-analysis with reported values
-res.fe <- res.re <- sum(df$n * df$r)/sum(df$n)
-
-# estimate confidence interval (see formula sheet):
-r.bar <- res.re
-N <- sum(df$n)
-K <- nrow(df)
-sd2.res <- var(df$r)
-se <- ((1 - r.bar^2)^2 / (N - K)) + (sd2.res / K)^1/2
-ci.lb <- r.bar - (1.96 * se)
-ci.ub <- r.bar + (1.96 * se)
-# mean estimate corrected for attenuation (see formula sheet):
-res.fe <- res.re <- (res.fe / 0.82)
-est.fe <- c(est.fe,res.fe)
-est.re <- c(est.re,res.re)
+# the reported individual estimates are not corrected for measurement error, for both reported (as far as we can tell) as reproduced
+r.bar <- sum(df$n * df$r) / sum(df$n)
+relx <- 0.81; rely <- 0.91
+r.corr <- r.bar / 0.82 # correct estimates for measurement error
+est.fe <- c(est.fe,r.bar)
+est.re <- c(est.re,r.corr)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+# effest size
+rbar.co <- sum(df$n * df$effest.exp) / sum(df$n)
+rbar.cc <- sum(df$nnew * df$effestnew.exp) / sum(df$nnew)
+
+# confidence interval
+r.o <- df$effest.exp
+r.c <- df$effestnew.exp
+n.o <- df$n
+n.c <- df$nnew
+var.r.o <- sum(n.o * (r.o - rbar.co)^2) / sum(df$n)
+var.r.c <- sum(n.c * (r.c - rbar.cc)^2) / sum(df$nnew)
+var.e.o <- sum(n.o * (1 - rbar.co^2)^2 / (n.o - 1)) / sum(df$n)  
+var.e.c <- sum(n.c * (1 - rbar.cc^2)^2 / (n.c - 1)) / sum(df$nnew) 
+res.var.o <- var.r.o - var.e.o
+res.var.c <- var.r.c - var.e.c
+
+k <- nrow(df)
+
+se.o <- ((1 - rbar.co^2)^2 / (sum(df$n) - k)) + (res.var.o / k)^1/2
+se.c <- ((1 - rbar.cc^2)^2 / (sum(df$nnew) - k)) + (res.var.c / k)^1/2
+
+ci.lb.co <- rbar.co - (1.96 * se.o)
+ci.ub.co <- rbar.co + (1.96 * se.o)
+ci.lb.cc <- rbar.cc - (1.96 * se.c)
+ci.ub.cc <- rbar.cc + (1.96 * se.c)
+
+#tau2
+df$vi.o <- ((1 - (df$effest.exp^2))^2) / (df$n - 1) 
+df$vi.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew - 1) 
+wi.o <- 1 / df$vi.o
+wi.c <- 1 / df$vi.c
+yi.o <- df$effest.exp
+yi.c <- df$effestnew.exp
+theta.o <- sum(wi.o * yi.o) / sum(wi.o)
+theta.c <- sum(wi.c * yi.c) / sum(wi.c)
+tausq.co <- (sum(wi.o * (yi.o - theta.o)^2)/sum(wi.o)) - (sum(wi.o * df$vi.o) / sum(wi.o))
+tausq.cc <- (sum(wi.c * (yi.c - theta.c)^2)/sum(wi.c)) - (sum(wi.c * df$vi.c) / sum(wi.c))
+
+eff.co <- c(eff.co,rbar.co) # MA subset original effect size estimate
+cilb.co <- c(cilb.co,ci.lb.co) # MA subset original effect size CI lowerbound
+ciub.co <- c(ciub.co,ci.ub.co) # upperbound
+tau2.co <- c(tau2.co,tausq.co) # tau2 estimate
+
+eff.cc <- c(eff.cc,rbar.cc) # MA subset checked effect size estimate
+cilb.cc <- c(cilb.cc,ci.lb.cc)
+ciub.cc <- c(ciub.cc,ci.ub.cc)
+tau2.cc <- c(tau2.cc,tausq.cc)
+
+write.table(df, file = "crook_complete.csv", row.names=FALSE, sep=";")
 rm(df)
-# insert hier tau2 formula from Hunter & Schmidt
 
 # subset
 df <- read.table("crook_subset.csv", header=T, sep=";")
-df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
-df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)       # variance correlation r
-write.table(df, file = "crook_subset.csv", row.names=FALSE, sep=";")
+# effest size
+rbar.so <- sum(df$n * df$effest.exp) / sum(df$n)
+rbar.sc <- sum(df$nnew * df$effestnew.exp) / sum(df$nnew)
 
-# subset original
-est.o <- sum(df$n * df$effest.exp)/sum(df$n)
-# estimate confidence interval (see formula sheet):
-r.bar <- est.o
-N <- sum(df$n)
-K <- nrow(df)
-sd2.res <- var(df$effest.exp)
-se <- ((1 - r.bar^2)^2 / (N - K)) + (sd2.res / K)^1/2
-ci.lb.o <- r.bar - (1.96 * se)
-ci.ub.o <- r.bar + (1.96 * se)
-# mean estimate corrected for attenuation (see formula sheet):
-est.o <- est.o / 0.82
-# insert hier tau2 formula from Hunter & Schmidt
-# k <- nrow(df)
-# Y <- as.matrix(df$r)
-# wi <- 1/df$vr.o
-# W <- diag(wi, nrow = k, ncol = k)
-# stXWX <- .invcalc(X = X, W = W, k = k)
-# P <- W - W %*% X %*% stXWX %*% crossprod(X, W)
-# RSS <- crossprod(Y, P) %*% Y
-# tau2 <- ifelse(tau2.fix, tau2.val, (RSS - k)/sum(wi))
+# sonfidence interval
+r.o <- df$effest.exp
+r.c <- df$effestnew.exp
+n.o <- df$n
+n.c <- df$nnew
+var.r.o <- sum(n.o * (r.o - rbar.so)^2) / sum(df$n)
+var.r.c <- sum(n.c * (r.c - rbar.sc)^2) / sum(df$nnew)
+var.e.o <- sum(n.o * (1 - rbar.so^2)^2 / (n.o - 1)) / sum(df$n)  
+var.e.c <- sum(n.c * (1 - rbar.sc^2)^2 / (n.c - 1)) / sum(df$nnew) 
+res.var.o <- var.r.o - var.e.o
+res.var.c <- var.r.c - var.e.c
+k <- nrow(df)
+se.o <- ((1 - rbar.so^2)^2 / (sum(df$n) - k)) + (res.var.o / k)^1/2
+se.c <- ((1 - rbar.sc^2)^2 / (sum(df$nnew) - k)) + (res.var.c / k)^1/2
+ci.lb.so <- rbar.so - (1.96 * se.o)
+ci.ub.so <- rbar.so + (1.96 * se.o)
+ci.lb.sc <- rbar.sc - (1.96 * se.c)
+ci.ub.sc <- rbar.sc + (1.96 * se.c)
 
+#tau2
+df$vi.o <- ((1 - (df$effest.exp^2))^2) / (df$n - 1) 
+df$vi.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew - 1) 
+wi.o <- 1 / df$vi.o
+wi.c <- 1 / df$vi.c
+yi.o <- df$effest.exp
+yi.c <- df$effestnew.exp
+theta.o <- sum(wi.o * yi.o) / sum(wi.o)
+theta.c <- sum(wi.c * yi.c) / sum(wi.c)
+tausq.so <- (sum(wi.o * (yi.o - theta.o)^2)/sum(wi.o)) - (sum(wi.o * df$vi.o) / sum(wi.o))
+tausq.sc <- (sum(wi.c * (yi.c - theta.c)^2)/sum(wi.c)) - (sum(wi.c * df$vi.c) / sum(wi.c))
 
-# subset reproduced
-est.c <- sum(df$nnew * df$effestnew.exp)/sum(df$nnew)
-# estimate confidence interval (see formula sheet):
-r.bar <- est.c
-N <- sum(df$nnew)
-K <- nrow(df)
-sd2.res <- var(df$effestnew.exp)
-se <- ((1 - r.bar^2)^2 / (N - K)) + (sd2.res / K)^1/2
-ci.lb.c <- r.bar - (1.96 * se)
-ci.ub.c <- r.bar + (1.96 * se)
-# mean estimate corrected for attenuation (see formula sheet):
-est.c <- est.c / 0.82
-# insert hier tau2 formula from Hunter & Schmidt
+eff.so <- c(eff.so,rbar.so) # MA subset original effect size estimate
+cilb.so <- c(cilb.so,ci.lb.so) # MA subset original effect size CI lowerbound
+ciub.so <- c(ciub.so,ci.ub.so) # upperbound
+tau2.so <- c(tau2.so,tausq.so) # tau2 estimate
 
-eff.so <- c(eff.so,est.o) # MA subset original effect size estimate
-cilb.so <- c(cilb.so,ci.lb.o) # MA subset original effect size CI lowerbound
-ciub.so <- c(ciub.so,ci.ub.o) # upperbound
-tau2.so <- c(tau2.so,0) # tau2 estimate
-
-eff.sc <- c(eff.sc,est.c) # MA subset checked effect size estimate
-cilb.sc <- c(cilb.sc,ci.lb.c)
-ciub.sc <- c(ciub.sc,ci.ub.c)
-tau2.sc <- c(tau2.sc,0)
+eff.sc <- c(eff.sc,rbar.sc) # MA subset checked effect size estimate
+cilb.sc <- c(cilb.sc,ci.lb.sc)
+ciub.sc <- c(ciub.sc,ci.ub.sc)
+tau2.sc <- c(tau2.sc,tausq.sc)
 
 pval.so <- c(pval.so,NA) # p value original
 pval.sc <- c(pval.sc,NA) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[9]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -690,18 +927,17 @@ rm(df)
 # DeWit -------------------------------------------------------------------
 df <- read.table("dewit_complete.csv", header=T, sep=";")
 
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)             # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))  
-write.table(df, file = "dewit_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))  
 
 # meta-analysis with reported values
 res.fe <- rma(r, vr, data=df, method="FE")
@@ -709,6 +945,28 @@ res.re <- rma(r, vr, data=df, method="HS")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)   
+write.table(df, file = "dewit_complete.csv", row.names=FALSE, sep=";")
+
+# complete original - the authors are unclear but do check for moderators, co we compare with the random effects model
+res.co <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.co <- c(eff.co,res.co$b) # MA subset original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA subset original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA subset checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -735,6 +993,7 @@ tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
+
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[10]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
@@ -746,32 +1005,52 @@ rm(df)
 df <- read.table("elsequest_complete.csv", header=T, sep=";")
 
 df$n <- df$n1 + df$n2
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
+vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
 res <- rma(d, vd, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                  # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, d))
-regular.total <- bind_rows(regular.total,select(regular, id, study, d))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, d))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, d))
 
 # dependency check with d
-depdf <- as.data.frame(dependency(df$d,df$vd))
-write.table(df, file = "elsequest_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$d,vd))
 
 # meta-analysis with reported values
 res.re <- rma(d, vd, data=df, method="DL") 
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
-rm(df)
 
-df <- read.table("elsequest_subset.csv", header=T, sep=";")
-
+# complete
 df$n <- df$n1 + df$n2
 df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
 df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's d
+write.table(df, file = "elsequest_complete.csv", row.names=FALSE, sep=";")
 
+# complete original - the authors are unclear but do check for moderators, co we compare with the random effects model
+res.co <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# complete reproduced
+res.sc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA subset original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA subset original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA subset checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+rm(df)
+
+# subset
+df <- read.table("elsequest_subset.csv", header=T, sep=";")
+df$n <- df$n1 + df$n2
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's d
 write.table(df, file = "elsequest_subset.csv", row.names=FALSE, sep=";")
 
 # subset original - the authors are unclear but do check for moderators, so we compare with the random effects model
@@ -801,24 +1080,44 @@ rm(df)
 
 # Farber ------------------------------------------------------------------
 df <- read.table("farber_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))        # no possible dependent studies
-write.table(df, file = "farber_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))        # no possible dependent studies
 
 # meta-analysis with reported estimates
 res.re <- rma(r, vr, data=df, method="DL") 
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete 
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA subset original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA subset original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA subset checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+write.table(df, file = "farber_complete.csv", row.names=FALSE, sep=";")
 rm(df)
 
 #subset
@@ -857,21 +1156,20 @@ df <- read.table("fischer_complete.csv", header=T, sep=";")
 df$n <- df$n1 + df$n2
 dfs <- df$n1 + df$n2 - 2
 J <- 1 - (3 / (4 * dfs - 1))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "fischer_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis with reported values
 res.fe <- rma(g, vg, data=df, method="FE")
@@ -879,8 +1177,39 @@ res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+dfs <- df$n1 + df$n2 - 2
+dfs.c <- df$ncnew + df$ntnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+write.table(df, file = "fischer_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
+# subset
 df <- read.table("fischer_subset.csv", header=T, sep=";")
 
 df$n <- df$n1 + df$n2
@@ -925,18 +1254,17 @@ rm(df)
 
 # Fox ---------------------------------------------------------------------
 df <- read.table("fox_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "fox_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 z <- 0.5 * log((1 + df$r) / (1 - df$r))
@@ -947,36 +1275,60 @@ res.re <-tanh(res.re$b)
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3)   
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
+write.table(df, file = "fox_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(z.o, vz.o, data=df, method="ML") 
+
+# complete reproduced
+res.cc <- rma(z.c, vz.c, data=df, method="ML")               
+
+# transform estimate back to correlation
+eff.co <- c(eff.co,tanh(res.co$b)) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,tanh(res.co$ci.lb)) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,tanh(res.co$ci.ub)) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,tanh(res.cc$b)) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,tanh(res.cc$ci.lb))
+ciub.cc <- c(ciub.cc,tanh(res.cc$ci.ub))
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
 df <- read.table("fox_subset.csv", header=T, sep=";")
-
 df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
 df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
-
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3)   
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
 write.table(df, file = "fox_subset.csv", row.names=FALSE, sep=";")
 
 # subset original 
-df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
-df$vz.o <- 1 / (df$n - 3)    
 res.so <- rma(z.o, vz.o, data=df, method="ML") 
 
 # subset reproduced
-df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
-df$vz.c <- 1 / (df$nnew - 3) 
 res.sc <- rma(z.c, vz.c, data=df, method="ML")               
 
 # transform estimate back to correlation
 eff.so <- c(eff.so,tanh(res.so$b)) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,tanh(res.so$ci.lb)) # MA subset original effect size CI lowerbound
 ciub.so <- c(ciub.so,tanh(res.so$ci.ub)) # upperbound
-tau2.so <- c(tau2.so,tanh(res.so$tau2)) # tau2 estimate
+tau2.so <- c(tau2.so,res.so$tau2) # tau2 estimate
 
 eff.sc <- c(eff.sc,tanh(res.sc$b)) # MA subset checked effect size estimate
 cilb.sc <- c(cilb.sc,tanh(res.sc$ci.lb))
 ciub.sc <- c(ciub.sc,tanh(res.sc$ci.ub))
-tau2.sc <- c(tau2.sc,tanh(res.sc$tau2))
+tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
@@ -989,24 +1341,44 @@ rm(df)
 
 # Freund ------------------------------------------------------------------
 df <- read.table("freund_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "freund_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 res.re <- rma.mv(r, vr, data=df)
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+write.table(df, file = "freund_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma.mv(effest.exp, vr.o, data=df)  
+
+# complete reproduced
+res.cc <- rma.mv(effestnew.exp, vr.c, data=df)               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1043,24 +1415,45 @@ rm(df)
 # Green -------------------------------------------------------------------
 df <- read.table("green_complete.csv", header=T, sep=";")
 df$n <- df$n1 + df$n2
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
+vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
 res <- rma(d, vd, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, d))
-regular.total <- bind_rows(regular.total,select(regular, id, study, d))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, d))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, d))
 
 # dependency check with d
-depdf <- as.data.frame(dependency(df$d,df$vd))
-write.table(df, file = "green_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$d,vd))
 
 # meta-analysis with reported values
 res.re <- rma(d, vd, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's d
+write.table(df, file = "green_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1100,26 +1493,52 @@ rm(df)
 # Hallion -----------------------------------------------------------------
 df <- read.table("hallion_complete.csv", header=T, sep=";")
 J <- 1 - (3 / (4 * (df$n - 1)))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "hallion_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis with reported values
 res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c  
+write.table(df, file = "hallion_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1166,26 +1585,55 @@ df <- read.table("ihle_complete.csv", header=T, sep=";")
 df$n <- df$n1 + df$n2
 dfs <- df$n1 + df$n2 - 2
 J <- 1 - (3 / (4 * dfs - 1))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "ihle_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis on reported values
 res.re <- rma(g, vg, data=df, method="HE")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+dfs <- df$n1 + df$n2 - 2
+dfs.c <- df$ncnew + df$ntnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+write.table(df, file = "ihle_complete.csv", row.names=FALSE, sep=";")
+
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="HE")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="HE")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1201,7 +1649,6 @@ df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance 
 df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
 df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
 df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
-
 write.table(df, file = "ihle_subset.csv", row.names=FALSE, sep=";")
 
 # subset original 
@@ -1233,26 +1680,53 @@ rm(df)
 df <- read.table("koenig_complete.csv", header=T, sep=";")
 dfs <- df$n - 2
 J <- 1 - (3 / (4 * dfs - 1))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "koenig_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis with reported values
 res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c   
+write.table(df, file = "koenig_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1294,24 +1768,44 @@ rm(df)
 
 # Kolden ------------------------------------------------------------------
 df <- read.table("kolden_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "kolden_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 res.re <- rma(r, vr, data=df, method="HE")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+write.table(df, file = "kolden_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="HE")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="HE")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1347,24 +1841,45 @@ rm(df)
 
 # Lucassen ----------------------------------------------------------------
 df <- read.table("lucassen_complete.csv", header=T, sep = ";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "lucassen_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis on reported values
 res.re <- rma(r, vr, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)
+write.table(df, file = "lucassen_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1401,17 +1916,17 @@ rm(df)
 
 # Mol ---------------------------------------------------------------------
 df <- read.table("mol_complete.csv", header=T, sep=";")
-df$vz <- 1 / (df$n - 3)                              # variance fisher's z 
+vz <- 1 / (df$n - 3)                              # variance fisher's z 
 res <- rma(z, vz, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, z))
-regular.total <- bind_rows(regular.total,select(regular, id, study, z))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, z))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, z))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$z,df$vz))
+depdf <- as.data.frame(dependency(df$z,vz))
 write.table(df, file = "mol_complete.csv", row.names=FALSE, sep=";")
 
 # meta-analysis with reported values
@@ -1419,6 +1934,27 @@ res.re <- rma(z, vz, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vz.o <- 1 / (df$n - 3)                              # variance fisher's z 
+df$vz.c <- 1 / (df$nnew - 3)                              # variance fisher's z 
+
+# complete original 
+res.co <- rma(effest.exp, vz.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vz.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1455,24 +1991,45 @@ rm(df)
 
 # Morgan ------------------------------------------------------------------
 df <- read.table("morgan_complete.csv", header=T, sep=";")
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
+vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
 res <- rma(d, vd, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, d))
-regular.total <- bind_rows(regular.total,select(regular, id, study, d))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, d))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, d))
 
 # dependency check with d
-depdf <- as.data.frame(dependency(df$d,df$vd))
-write.table(df, file = "morgan_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$d,vd))
 
 # meta-analysis with reported values
 res.re <- rma(d, vd, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's 
+write.table(df, file = "morgan_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1507,32 +2064,60 @@ percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 rm(df)
 
 
-
 # Munder ------------------------------------------------------------------
 df <- read.table("munder_complete.csv", header=T, sep=";")
 dfs <- df$n - 2
 J <- 1 - (3 / (4 * dfs - 1))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
 outlier <- outlier[order(outlier$study),]
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "munder_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis with reported values
 res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+dfs <- df$n - 2
+dfs.c <- df$nnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+write.table(df, file = "munder_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1578,26 +2163,54 @@ rm(df)
 df <- read.table("piet_complete.csv", header=T, sep=";")
 dfs <- df$n - 2
 J <- 1 - (3 / (4 * dfs - 1))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "piet_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis with reported values
 res.re <- rma(g, vg, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+dfs <- df$n - 2
+dfs.c <- df$nnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c 
+write.table(df, file = "piet_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1639,27 +2252,46 @@ percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
 rm(df)
 
-
 # Smith -------------------------------------------------------------------
 df <- read.table("smith_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "smith_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 res.re <- rma(r, vr, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+write.table(df, file = "smith_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1695,24 +2327,44 @@ rm(df)
 
 # Tillman -----------------------------------------------------------------
 df <- read.table("tillman_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "tillman_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 res.re <- rma(r, vr, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+write.table(df, file = "tillman_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1749,24 +2401,44 @@ rm(df)
 
 # Toosi -------------------------------------------------------------------
 df <- read.table("toosi_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "toosi_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 res.re <- rma(r, vr, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+write.table(df, file = "toosi_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1803,18 +2475,17 @@ rm(df)
 
 # VanIddekinge ------------------------------------------------------------
 df <- read.table("vaniddekinge_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "vaniddekinge_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 res.fe <- rma(r, vr, data=df, method="FE")
@@ -1822,6 +2493,27 @@ res.re <- rma(r, vr, data=df, method="HS")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+write.table(df, file = "vaniddekinge_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1864,18 +2556,38 @@ l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, d))
-regular.total <- bind_rows(regular.total,select(regular, id, study, d))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, d))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, d))
 
 # dependency check with d
-depdf <- as.data.frame(dependency(df$d,df$vd))
-write.table(df, file = "webb_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$d,vd))
 
 # meta-analysis on reported values
 res.re <- rma(d, vd, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))
+write.table(df, file = "webb_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
 rm(df)
 
 # subset
@@ -1913,27 +2625,54 @@ rm(df)
 # Woodin ------------------------------------------------------------------
 df <- read.table("woodin_complete.csv", header=T, sep=";")
 J <- 1 - (3 / (4 * df$n - 9))
-df$d <- df$g / J   
-df$vd <- df$n / ((df$n / 2)^2 + (df$d^2 / (2 * df$n)))  # variance cohen's d
-df$vg <- J^2 * df$vd 
+d <- df$g / J   
+vd <- df$n / ((df$n / 2)^2 + (d^2 / (2 * df$n)))  # variance cohen's d
+vg <- J^2 * vd 
 res <- rma(g, vg, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
 outlier <- outlier[order(outlier$study),]
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, g))
-regular.total <- bind_rows(regular.total,select(regular, id, study, g))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, g))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, g))
 
 # dependency check with g
-depdf <- as.data.frame(dependency(df$g,df$vg)) 
-write.table(df, file = "woodin_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$g,vg)) 
 
 # meta-analysis with reported values
 res.fe <- rma(d, vd, data=df, method="FE")
 est.fe <- c(est.fe,res.fe$b)
 est.re <- c(est.re,NA)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c 
+write.table(df, file = "woodin_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vg.o, data=df, method="FE")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vg.c, data=df, method="FE")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -1975,18 +2714,17 @@ rm(df)
 
 # Woodley -----------------------------------------------------------------
 df <- read.table("woodley_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                 # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "woodley_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis on reported values
 res.fe <- rma(r, vr, data=df, method="FE")
@@ -1994,6 +2732,28 @@ res.re <- rma(r, vr, data=df, method="DL")
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re$b)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+write.table(df, file = "woodley_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# complete reproduced
+res.cc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.co <- c(eff.co,res.co$b) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,res.co$ci.lb) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,res.co$ci.ub) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,res.cc$b) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,res.cc$ci.lb)
+ciub.cc <- c(ciub.cc,res.cc$ci.ub)
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -2029,18 +2789,17 @@ rm(df)
 
  # Yoon --------------------------------------------------------------------
 df <- read.table("yoon_complete.csv", header=T, sep=";")
-df$vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
+vr <- ((1 - (df$r^2))^2) / (df$n-1)               # variance correlation r
 res <- rma(r, vr, data=df)                         # random effects meta-analysis
 l1o <- leave1out(res)                              # leave1out analysis
 q <- res$QE - l1o$Q                                # change in Q with l1o
 outlier <- df[which(q >= 3.84), ]                  # subset of studies that are included as outliers
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
-outlier.total <- bind_rows(outlier.total,select(outlier, id, study, r))
-regular.total <- bind_rows(regular.total,select(regular, id, study, r))
+outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
+regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
 
 # dependency check with r
-depdf <- as.data.frame(dependency(df$r,df$vr))
-write.table(df, file = "yoon_complete.csv", row.names=FALSE, sep=";")
+depdf <- as.data.frame(dependency(df$r,vr))
 
 # meta-analysis with reported values
 df$z <- 0.5 * log((1 + df$r) / (1 - df$r))
@@ -2051,6 +2810,33 @@ res.re <- tanh(res.re$b)
 est.fe <- c(est.fe,NA)
 est.re <- c(est.re,res.re)
 k.tot <- c(k.tot,nrow(df))
+
+# complete
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3) 
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
+write.table(df, file = "yoon_complete.csv", row.names=FALSE, sep=";")
+
+# complete original 
+res.co <- rma(z.o, vz.o, data=df, method="DL") 
+
+# complete reproduced
+res.cc <- rma(z.c, vz.c, data=df, method="DL")               
+
+# transform estimate back to correlation
+eff.co <- c(eff.co,tanh(res.co$b)) # MA complete original effect size estimate
+cilb.co <- c(cilb.co,tanh(res.co$ci.lb)) # MA complete original effect size CI lowerbound
+ciub.co <- c(ciub.co,tanh(res.co$ci.ub)) # upperbound
+tau2.co <- c(tau2.co,res.co$tau2) # tau2 estimate
+
+eff.cc <- c(eff.cc,tanh(res.cc$b)) # MA complete checked effect size estimate
+cilb.cc <- c(cilb.cc,tanh(res.cc$ci.lb))
+ciub.cc <- c(ciub.cc,tanh(res.cc$ci.ub))
+tau2.cc <- c(tau2.cc,res.cc$tau2)
+
 rm(df)
 
 # subset
@@ -2073,12 +2859,12 @@ res.sc <- rma(z.c, vz.c, data=df, method="DL")
 eff.so <- c(eff.so,tanh(res.so$b)) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,tanh(res.so$ci.lb)) # MA subset original effect size CI lowerbound
 ciub.so <- c(ciub.so,tanh(res.so$ci.ub)) # upperbound
-tau2.so <- c(tau2.so,tanh(res.so$tau2)) # tau2 estimate
+tau2.so <- c(tau2.so,res.so$tau2) # tau2 estimate
 
 eff.sc <- c(eff.sc,tanh(res.sc$b)) # MA subset checked effect size estimate
 cilb.sc <- c(cilb.sc,tanh(res.sc$ci.lb))
 ciub.sc <- c(ciub.sc,tanh(res.sc$ci.ub))
-tau2.sc <- c(tau2.sc,tanh(res.sc$tau2))
+tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval) # p value original
 pval.sc <- c(pval.sc,res.sc$pval) # p value checked
@@ -2094,24 +2880,27 @@ rm(df)
 dat$k <- k.tot
 dat$recalc.fe <- est.fe
 dat$recalc.re <- est.re
-dat$eff.so <- eff.so
-dat$cilb.so <- cilb.so
-dat$ciub.so <- ciub.so
-dat$tau2.so <- tau2.so
-dat$eff.sc <- eff.sc
-dat$cilb.sc <- cilb.sc
-dat$ciub.sc <- ciub.sc
-dat$tau2.sc <- tau2.sc
+dat$eff.so <- eff.so;   dat$eff.co <- eff.co
+dat$cilb.so <- cilb.so; dat$cilb.co <- cilb.co
+dat$ciub.so <- ciub.so; dat$ciub.co <- ciub.co
+dat$tau2.so <- tau2.so; dat$tau2.co <- tau2.co
+dat$eff.sc <- eff.sc; 
+dat$eff.cc <- eff.cc
+dat$cilb.sc <- cilb.sc; dat$cilb.cc <- cilb.cc
+dat$ciub.sc <- ciub.sc; dat$ciub.cc <- ciub.cc
+dat$tau2.sc <- tau2.sc; 
+dat$tau2.cc <- tau2.cc
 dat$krep1 <- krep1
 dat$krep2 <- krep2
 dat$percent <- percent
 dat$percent2 <- percent2
+dat$pval.so <- pval.so; dat$pval.sc <- pval.sc
 
 # Discrepancies
-dat$disc.s <- abs(eff.so) - abs(eff.sc)
-dat$disc.cilb.s <- abs(cilb.so) - abs(cilb.sc)
-dat$disc.ciub.s <- abs(ciub.so) - abs(ciub.sc)
-dat$disc.tau2.s <- abs(tau2.so) - abs(tau2.sc)
+dat$disc.s <- abs(eff.so) - abs(eff.sc); dat$disc.c <- abs(eff.co) - abs(eff.cc)
+dat$disc.cilb.s <- abs(cilb.so) - abs(cilb.sc); dat$disc.cilb.c <- abs(cilb.co) - abs(cilb.cc)
+dat$disc.ciub.s <- abs(ciub.so) - abs(ciub.sc); dat$disc.ciub.c <- abs(ciub.co) - abs(ciub.cc)
+dat$disc.tau2.s <- abs(tau2.so) - abs(tau2.sc); dat$disc.tau2.c <- abs(tau2.co) - abs(tau2.cc)
 
 # Are there any p-values which change from significant to non-sig
 round(pval.so,2)
@@ -2125,16 +2914,28 @@ for (i in 1:nrow(dat)) {
     
     if (abs(dat$disc.s[i]) < 0.05) {
       dat$disccat.s[i] = 0
-    } else if (abs(dat$disc.s[i]) >= 0.050 & abs(dat$disc.s[i]) <= 0.149) {
+      } else if (abs(dat$disc.s[i]) >= 0.050 & abs(dat$disc.s[i]) <= 0.149) {
       dat$disccat.s[i] = 1
-    } else if (abs(dat$disc.s[i]) > 0.149 & abs(dat$disc.s[i]) <= 0.249) {
+      } else if (abs(dat$disc.s[i]) > 0.149 & abs(dat$disc.s[i]) <= 0.249) {
       dat$disccat.s[i] = 2
-    } else if (abs(dat$disc.s[i]) > 0.249) {
+      } else if (abs(dat$disc.s[i]) > 0.249) {
       dat$disccat.s[i] = 3
-    } else {
+      } else {
       dat$disccat.s[i] = "check"
+      }
+   
+    if (abs(dat$disc.c[i]) < 0.05) {
+      dat$disccat.c[i] = 0
+    } else if (abs(dat$disc.c[i]) >= 0.050 & abs(dat$disc.c[i]) <= 0.149) {
+      dat$disccat.c[i] = 1
+    } else if (abs(dat$disc.c[i]) > 0.149 & abs(dat$disc.c[i]) <= 0.249) {
+      dat$disccat.c[i] = 2
+    } else if (abs(dat$disc.c[i]) > 0.249) {
+      dat$disccat.c[i] = 3
+    } else {
+      dat$disccat.c[i] = "check"
     }
-  } 
+  }
   
   if (dat$efftype[i] == "d") {
     
@@ -2150,6 +2951,17 @@ for (i in 1:nrow(dat)) {
       dat$disccat.s[i] = "check"
     }
     
+  if (abs(dat$disc.c[i]) < 0.051) {
+    dat$disccat.c[i] = 0
+    } else if (abs(dat$disc.c[i]) >= 0.051 & abs(dat$disc.c[i]) <= 0.151) {
+    dat$disccat.c[i] = 1
+    } else if (abs(dat$disc.c[i]) > 0.151 & abs(dat$disc.c[i]) <= 0.252) {
+    dat$disccat.c[i] = 2
+    } else if (abs(dat$disc.c[i]) > 0.252) {
+    dat$disccat.c[i] = 3
+    } else {
+    dat$disccat.c[i] = "check"
+    }
   }
   
   if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
@@ -2164,6 +2976,18 @@ for (i in 1:nrow(dat)) {
       dat$disccat.s[i] = 3
     } else {
       dat$disccat.s[i] = "check"
+    }
+    
+    if (abs(dat$disc.c[i]) < 0.025) {
+      dat$disccat.c[i] = 0
+    } else if (abs(dat$disc.c[i]) >= 0.025 & abs(dat$disc.c[i]) <= 0.075) {
+      dat$disccat.c[i] = 1
+    } else if (abs(dat$disc.c[i]) > 0.075 & abs(dat$disc.c[i]) <= 0.125) {
+      dat$disccat.c[i] = 2
+    } else if (abs(dat$disc.c[i]) > 0.125) {
+      dat$disccat.c[i] = 3
+    } else {
+      dat$disccat.c[i] = "check"
     }
   }
 }
@@ -2186,6 +3010,18 @@ for (i in 1:nrow(dat)) {
     } else {
       dat$disccat.ci.s[i] == "check"
     }
+    
+    if (abs(dat$disc.cilb.c[i]) < 0.050 & abs(dat$disc.ciub.c[i]) < 0.050) {
+      dat$disccat.ci.c[i] = 0
+    } else if (abs(dat$disc.cilb.c[i]) > 0.249 | abs(dat$disc.ciub.c[i]) > 0.249) {
+      dat$disccat.ci.c[i] = 3
+    } else if (abs(dat$disc.cilb.c[i]) > 0.149 & abs(dat$disc.cilb.c[i]) <= 0.249 | abs(dat$disc.ciub.c[i]) > 0.149 & abs(dat$disc.ciub.c[i]) <= 0.249) {
+      dat$disccat.ci.c[i] = 2
+    } else if (abs(dat$disc.cilb.c[i]) >= 0.050 & abs(dat$disc.cilb.c[i]) <= 0.149 | abs(dat$disc.ciub.c[i]) >= 0.050 & abs(dat$disc.ciub.c[i]) <= 0.149) {
+      dat$disccat.ci.c[i] = 1
+    } else {
+      dat$disccat.ci.c[i] == "check"
+    }
   }
     
   if (dat$efftype[i] == "d") {
@@ -2202,6 +3038,18 @@ for (i in 1:nrow(dat)) {
     } else {
       dat$disccat.ci.s[i] == "check"
     }
+    
+    if (abs(dat$disc.cilb.c[i]) < 0.051 & abs(dat$disc.ciub.c[i]) < 0.051) {
+      dat$disccat.ci.c[i] = 0
+    } else if (abs(dat$disc.cilb.c[i]) > 0.252 | abs(dat$disc.ciub.c[i]) > 0.252) {
+      dat$disccat.ci.c[i] = 3
+    } else if (abs(dat$disc.cilb.c[i]) > 0.151 & abs(dat$disc.cilb.c[i]) <= 0.252 | abs(dat$disc.ciub.c[i]) > 0.151 & abs(dat$disc.ciub.c[i]) <= 0.252) {
+      dat$disccat.ci.c[i] = 2
+    } else if (abs(dat$disc.cilb.c[i]) >= 0.051 & abs(dat$disc.cilb.c[i]) <= 0.151 | abs(dat$disc.ciub.c[i]) >= 0.051 & abs(dat$disc.ciub.c[i]) <= 0.151) {
+      dat$disccat.ci.c[i] = 1
+    } else {
+      dat$disccat.ci.c[i] == "check"
+    }
   }
   
   if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
@@ -2217,6 +3065,19 @@ for (i in 1:nrow(dat)) {
       dat$disccat.ci.s[i] = 1
     } else {
       dat$disccat.ci.s[i] == "check"
+    }
+    
+    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
+    if (abs(dat$disc.cilb.c[i]) < 0.025 & abs(dat$disc.ciub.c[i]) < 0.025) {
+      dat$disccat.ci.c[i] = 0
+    } else if (abs(dat$disc.cilb.c[i]) > 0.125 | abs(dat$disc.ciub.c[i]) > 0.125) {
+      dat$disccat.ci.c[i] = 3
+    } else if (abs(dat$disc.cilb.c[i]) > 0.075 & abs(dat$disc.cilb.c[i]) <= 0.125 | abs(dat$disc.ciub.c[i]) > 0.075 & abs(dat$disc.ciub.c[i]) <= 0.125) {
+      dat$disccat.ci.c[i] = 2
+    } else if (abs(dat$disc.cilb.c[i]) >= 0.025 & abs(dat$disc.cilb.c[i]) <= 0.075 | abs(dat$disc.ciub.c[i]) >= 0.025 & abs(dat$disc.ciub.c[i]) <= 0.075) {
+      dat$disccat.ci.c[i] = 1
+    } else {
+      dat$disccat.ci.c[i] == "check"
     }
   }
 }
@@ -2238,6 +3099,18 @@ for (i in 1:nrow(dat)) {
     } else {
       dat$disccat.tau2.s[i] = "check"
     }
+    
+    if (abs(dat$disc.tau2.c[i]) < 0.05) {
+      dat$disccat.tau2.c[i] = 0
+    } else if (abs(dat$disc.tau2.c[i]) >= 0.050 & abs(dat$disc.tau2.c[i]) <= 0.149) {
+      dat$disccat.tau2.c[i] = 1
+    } else if (abs(dat$disc.tau2.c[i]) > 0.149 & abs(dat$disc.tau2.c[i]) <= 0.249) {
+      dat$disccat.tau2.c[i] = 2
+    } else if (abs(dat$disc.tau2.c[i]) > 0.249) {
+      dat$disccat.tau2.c[i] = 3
+    } else {
+      dat$disccat.tau2.c[i] = "check"
+    }
   } 
   
   if (dat$efftype[i] == "d") {
@@ -2254,6 +3127,18 @@ for (i in 1:nrow(dat)) {
       dat$disccat.tau2.s[i] = "check"
     }
     
+    if (abs(dat$disc.tau2.c[i]) < 0.051) {
+      dat$disccat.tau2.c[i] = 0
+    } else if (abs(dat$disc.tau2.c[i]) >= 0.051 & abs(dat$disc.tau2.c[i]) <= 0.151) {
+      dat$disccat.tau2.c[i] = 1
+    } else if (abs(dat$disc.tau2.c[i]) > 0.151 & abs(dat$disc.tau2.c[i]) <= 0.252) {
+      dat$disccat.tau2.c[i] = 2
+    } else if (abs(dat$disc.tau2.c[i]) > 0.252) {
+      dat$disccat.tau2.c[i] = 3
+    } else {
+      dat$disccat.tau2.c[i] = "check"
+    }
+    
   }
   
   if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
@@ -2268,6 +3153,18 @@ for (i in 1:nrow(dat)) {
       dat$disccat.tau2.s[i] = 3
     } else {
       dat$disccat.tau2.s[i] = "check"
+    }
+    
+    if (abs(dat$disc.tau2.c[i]) < 0.025) {
+      dat$disccat.tau2.c[i] = 0
+    } else if (abs(dat$disc.tau2.c[i]) >= 0.025 & abs(dat$disc.tau2.c[i]) <= 0.075) {
+      dat$disccat.tau2.c[i] = 1
+    } else if (abs(dat$disc.tau2.c[i]) > 0.075 & abs(dat$disc.tau2.c[i]) <= 0.125) {
+      dat$disccat.tau2.c[i] = 2
+    } else if (abs(dat$disc.tau2.c[i]) > 0.125) {
+      dat$disccat.tau2.c[i] = 3
+    } else {
+      dat$disccat.tau2.c[i] = "check"
     }
   }
 }

@@ -9,7 +9,9 @@ datm <- read.table("codebook-meta-analyses-final-complete.csv", header=T, sep = 
 
 # How many meta-analyses cannot be reproduced based on the reported results only?
 
-sum(is.na(datm$model)) # 7 meta-analyses do not explicitly report whether they use RE or FE models :')
+sum(is.na(datm$model)) # 7 meta-analyses do not explicitly report whether they use RE or FE models 
+sum(is.na(datm$software)) # 19 meta-analyses do not explicitly report on software
+sum(is.na(datm$estimator)) # 13 meta-analyses do not explicitly report on estimator
 
 for (i in 1:nrow(datm)) {
   
@@ -81,7 +83,7 @@ for (i in 1:nrow(datm)) {
   }
 }
 
-sum(datm$recalc.cat != 0) # for 12 meta-analyes we cannot reproduce the reported effect size based on the reported primary study effect sizes
+sum(datm$recalc.cat != 0) # for 11 meta-analyes we cannot reproduce the reported effect size based on the reported primary study effect sizes
 
 # How many meta-analyses had a small / med / large  change in effect size estimate?
 sum(datm$disccat.s == 0) # 24 no discrepancy
@@ -100,3 +102,18 @@ sum(datm$disccat.tau2.s == 0) # 25 no discrepancy
 sum(datm$disccat.tau2.s == 1) # 6 a small discrepancy
 sum(datm$disccat.tau2.s == 2) # 2
 sum(datm$disccat.tau2.s == 3) # 0
+
+sum(datm$disccat.tau2.s == 0 & datm$disccat.ci.s == 0 & datm$disccat.s == 0) # 19 MA no discrepancies at all 
+
+round(datm$pval.sc - datm$pval.so,2)
+datm$pval.sc[1];datm$pval.so[1]
+datm$pval.sc[2];datm$pval.so[2]
+datm$pval.sc[4];datm$pval.so[4]
+datm$pval.sc[8];datm$pval.so[8]
+datm$pval.sc[11];datm$pval.so[11]
+datm$pval.sc[14];datm$pval.so[14]
+datm$pval.sc[18];datm$pval.so[18]
+datm$pval.sc[24];datm$pval.so[24]
+datm$pval.sc[28];datm$pval.so[28]
+datm$pval.sc[32];datm$pval.so[32]
+

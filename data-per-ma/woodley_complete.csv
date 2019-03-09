@@ -1,13 +1,13 @@
-"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"id";"vr"
-"Bogaert & Rushton (1989) ";"Bogaert";"Rushton";"";"";"";NA;NA;1989;116;0.29;32;0.00729454617391304
-"Bogaert & Rushton (1989) ";"Bogaert";"Rushton";"";"";"";NA;NA;1989;100;-0.05;32;0.0100505681818182
-"Brown, Ross, Figueredo, Young & Miller (2010)";"Brown";" Ross";" Figueredo";" Young";"Miller";NA;NA;2010;198;-0.12;32;0.00493100182741117
-"Figueredo et al. (2007)";"Figueredo";" MacDonald";" Wenner";"Howrigan";"";NA;NA;2007;110;-0.18;32;0.00858944733944954
-"Gladden et al. (2008)";"Figueredo";" Jacobs";"";"";"";NA;NA;2008;192;0.05;32;0.00520945680628272
-"MacDonald et al. (2007)";"Figueredo";"Wenner";"";"";"";NA;NA;2007;211;-0.01;32;0.00476095242857143
-"MacDonald et al. (2006)";"Vásquez";"Figueredo";"";"";"";NA;NA;2006;193;-0.06;32;0.00517090083333333
-"Ross & Figueredo (2009)";"Ross";"Figueredo";"";"";"";NA;NA;2009;121;0.06;32;0.00827344133333333
-"Rushton et al. (2007)";"Rushton";" Vernon";"Bons";"";"";NA;NA;2007;239;0.18;32;0.0039338225210084
-"Ruston et al. (2007)";"Rushton";" Vernon";"Bons";"";"";NA;NA;2007;239;0.19;32;0.003903795
-"Sefcek (2007) ";"Sefcek";"";"";"";"";NA;NA;2007;194;-0.06;32;0.00514410860103627
-"Wenner et al. (2007)";"Wenner";" Figueredo";" Rushton";"Jacobs";"";NA;NA;2007;143;-0.14;32;0.00676890253521127
+"study";"a1";"a2";"a3";"a4";"a5";"a6";"a7";"yop";"n";"r";"id";"nnew";"effest.exp";"effestnew.exp";"vr.c";"vr.o"
+"Bogaert & Rushton (1989) ";"Bogaert";"Rushton";"";"";"";NA;NA;1989;116;0.29;32;116;0.29;0.29;0.00729454617391304;0.00729454617391304
+"Bogaert & Rushton (1989) ";"Bogaert";"Rushton";"";"";"";NA;NA;1989;100;-0.05;32;100;-0.05;-0.05;0.0100505681818182;0.0100505681818182
+"Brown, Ross, Figueredo, Young & Miller (2010)";"Brown";" Ross";" Figueredo";" Young";"Miller";NA;NA;2010;198;-0.12;32;198;-0.12;-0.12;0.00493100182741117;0.00493100182741117
+"Figueredo et al. (2007)";"Figueredo";" MacDonald";" Wenner";"Howrigan";"";NA;NA;2007;110;-0.18;32;110;-0.18;-0.18;0.00858944733944954;0.00858944733944954
+"Gladden et al. (2008)";"Figueredo";" Jacobs";"";"";"";NA;NA;2008;192;0.05;32;100;0.05;0.05;0.0100505681818182;0.00520945680628272
+"MacDonald et al. (2007)";"Figueredo";"Wenner";"";"";"";NA;NA;2007;211;-0.01;32;211;-0.01;-0.01;0.00476095242857143;0.00476095242857143
+"MacDonald et al. (2006)";"Vásquez";"Figueredo";"";"";"";NA;NA;2006;193;-0.06;32;193;-0.06;-0.06;0.00517090083333333;0.00517090083333333
+"Ross & Figueredo (2009)";"Ross";"Figueredo";"";"";"";NA;NA;2009;121;0.06;32;121;0.06;0.06;0.00827344133333333;0.00827344133333333
+"Rushton et al. (2007)";"Rushton";" Vernon";"Bons";"";"";NA;NA;2007;239;0.18;32;239;0.18;0.18;0.0039338225210084;0.0039338225210084
+"Ruston et al. (2007)";"Rushton";" Vernon";"Bons";"";"";NA;NA;2007;239;0.19;32;239;0.19;0.19;0.003903795;0.003903795
+"Sefcek (2007) ";"Sefcek";"";"";"";"";NA;NA;2007;194;-0.06;32;194;-0.06;-0.06;0.00514410860103627;0.00514410860103627
+"Wenner et al. (2007)";"Wenner";" Figueredo";" Rushton";"Jacobs";"";NA;NA;2007;143;-0.14;32;143;-0.14;-0.14;0.00676890253521127;0.00676890253521127
