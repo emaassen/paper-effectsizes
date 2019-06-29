@@ -2,13 +2,12 @@ rm(list = ls())
 options(scipen=999,warn=0) # show only warning notification 
 #options(scipen=999,warn=1) # show all warnings
 #options(scipen=999,warn=-1) # supress warnings (caused by coerced NAs) 
-setwd("C:/Users/s421506/tiu/research/effectsizes/codebooks/")
 packages <- c("readxl","writexl","MAd")
 #sapply(packages,install.packages(packages),character.only=T)
 sapply(packages,library,character.only=T)
 
 # Open codebook
-df <- read_excel("codebook-primary-studies-final-empty.xlsx",2)
+df <- read_excel("../codebooks/codebook-primary-studies-empty.xlsx")
 
 # Functions effect size transformations -----------------------------------
 agg_f_to_g1_benish <- function(x) {
@@ -2250,206 +2249,82 @@ yoon_r <- r_to_r(x = df_yoon)
 df$effestnew[df$meta %in% "Yoon" & df$input %in% "NA"] <- df$effest[df$meta %in% "Yoon" & df$input %in% "NA"]
 df$effestnew[df$meta %in% "Yoon" & df$input %in% "r"] <- yoon_r
 
-# Transforming all calculated effect sizes to Fisher's z ------------------
-
-# # OUTPUT = D or G
-# dftemp <- df[df$output=="d" | df$output=="g",]
-# z.temp <- c()
-# 
-# for (k in 1:nrow(dftemp)) {
-#   if (dftemp$ncnew[k] == "NA") {
-#     
-#     A <- 4
-#     
-#   } else {
-#     
-#     A <- (as.numeric(dftemp$ncnew[k]) + as.numeric(dftemp$ntnew[k]))^2 / (as.numeric(dftemp$ncnew[k]) * as.numeric(dftemp$ntnew[k]))
-#     
-#   }
-#   
-#   d <- as.numeric(dftemp$effestnew[k])
-#   r <- d / (sqrt((d^2) + A))
-#   z <- 0.5 * log((1 + r) / (1 - r))
-#   z.temp <- c(z.temp,z)
-#   
-# }
-# 
-# df$znew[df$output=="d" | df$output=="g" ] <- z.temp
-# 
-# # OUTPUT = R
-# dftemp <- df[df$output=="r",]
-# z.temp <- c()
-# 
-# for (k in 1:nrow(dftemp)) {
-#   
-#   r <- as.numeric(dftemp$effestnew[k])
-#   z <- 0.5 * log((1 + r) / (1 - r))
-#   z.temp <- c(z.temp,z)
-#   
-# }
-# 
-# df$znew[df$output=="r"] <- z.temp
-# 
-# # OUTPUT = Z
-# df$znew[df$output=="z"] <- df$effestnew[df$output %in% "z"]
-# 
-# 
-# # Other transformations ---------------------------------------------------
-# df$effestnew <- as.numeric(df$effestnew)
-# df$znew <- as.numeric(df$znew)
-# 
-# # Transforming all reported effect sizes to Fisher's z --------------------
-# 
-# # OUTPUT = D or G
-# dftemp <- df[df$efftype == "d" | df$efftype == "g", ]
-# z.temp <- c()
-# 
-# for (k in 1:nrow(dftemp)) {
-#  if (dftemp$nc[k] == "NA") {
-#    
-#    A <- 4
-# 
-#  } else {
-#    
-#    A <- (as.numeric(dftemp$nc[k]) + as.numeric(dftemp$nt[k])) ^ 2 / (as.numeric(dftemp$nc[k]) * as.numeric(dftemp$nt[k]))
-#  }
-# 
-#  d <- as.numeric(dftemp$effest[k])
-#  r <- d / (sqrt((d ^ 2) + A))
-#  z <- 0.5 * log((1 + r) / (1 - r))
-#  z.temp <- c(z.temp, z)
-# 
-# }
-# 
-# df$z[df$efftype == "d" | df$efftype == "g"] <- z.temp
-# 
-# # OUTPUT = R
-# dftemp <- df[df$efftype == "r", ]
-# z.temp <- c()
-# 
-# for (k in 1:nrow(dftemp)) {
-#   
-#  r <- as.numeric(dftemp$effest[k])
-#  z <- 0.5 * log((1 + r) / (1 - r))
-#  z.temp <- c(z.temp, z)
-# }
-# 
-# df$z[df$efftype == "r"] <- z.temp
-# 
-# # OUTPUT = Z
-# df$z[df$efftype == "z"] <- df$effest[df$efftype %in% "z"]
-
-
 # Discrepancies -----------------------------------------------------------
 
 # Transform discrepancies
-g <- c(.05,.149,.150,.249,.250)
-J <- (1 - 3 / (4 * (64 - 2) - 1)) # Assuming N = 64
-d <- g / J;d 
-A <- (31 + 31)^2 / (31*31);A
-r <- d / (sqrt((d^2) + A));r
+r <- c(.025, .076, .126)
 z <- 0.5 * log((1 + r) / (1 - r));z
-
-
-# Hedges g - small [.050 - .149], moderate [.150 - .249] and large [.250 - inf] 
-# Cohens d - small [.051 - .151], moderate [.152 - .252] and large [.253 - inf].
-# Correlation - small [.025 - .075], moderate [.076 - .125], and large [.126 - inf].
-# Fisher's z - small [.025 - .075], moderate [.076 - .125], and large [.126 - inf].
-
+d <- (2 * r) / sqrt(1 - r^2);d
+J <- (1 - 3 / (4 * (64 - 2) - 1)) # Assuming N = 64
+g <- d * J;g
+  
 
 # Fill in discrepancies ---------------------------------------------------
 df$disc.eff <- df$effest - df$effestnew
-#df$disc.z <- df$z - df$znew
 df$disc.n <- df$n - df$nnew
 
 
 # Fill in discrepancy category 
 for (i in 1:nrow(df)) {
-
-if (df$efftype[i] == "g") {
   
-  if (abs(df$disc.eff[i]) < 0.05) {
+  if (df$efftype[i] == "g") {
+    
+    if (abs(df$disc.eff[i]) < g[1]) {
+      df$disccat.eff[i] = 0
+    } else if (abs(df$disc.eff[i]) >= g[1] & abs(df$disc.eff[i]) < g[2]) {
+      df$disccat.eff[i] = 1
+    } else if (abs(df$disc.eff[i]) >= g[2] & abs(df$disc.eff[i]) < g[3]) {
+      df$disccat.eff[i] = 2
+    } else if (abs(df$disc.eff[i]) >= g[3]) {
+      df$disccat.eff[i] = 3
+    } else {
+      df$disccat.eff[i] = "check"
+      
+    }
+  }
+  
+  if (df$efftype[i] == "d") {
+  
+  if (abs(df$disc.eff[i]) < d[1]) {
     df$disccat.eff[i] = 0
-  } else if (abs(df$disc.eff[i]) >= 0.050 & abs(df$disc.eff[i]) <= 0.149) {
+  } else if (abs(df$disc.eff[i]) >= d[1] & abs(df$disc.eff[i]) < d[2]) {
     df$disccat.eff[i] = 1
-  } else if (abs(df$disc.eff[i]) > 0.149 & abs(df$disc.eff[i]) <= 0.249) {
+  } else if (abs(df$disc.eff[i]) >= d[2]& abs(df$disc.eff[i]) < d[3]) {
     df$disccat.eff[i] = 2
-  } else if (abs(df$disc.eff[i]) > 0.249) {
+  } else if (abs(df$disc.eff[i]) >= d[3]) {
     df$disccat.eff[i] = 3
   } else {
     df$disccat.eff[i] = "check"
   }
-  
-} 
-
-if (df$efftype[i] == "d") {
-  
-  if (abs(df$disc.eff[i]) < 0.051) {
-    df$disccat.eff[i] = 0
-  } else if (abs(df$disc.eff[i]) >= 0.051 & abs(df$disc.eff[i]) <= 0.151) {
-    df$disccat.eff[i] = 1
-  } else if (abs(df$disc.eff[i]) > 0.151 & abs(df$disc.eff[i]) <= 0.252) {
-    df$disccat.eff[i] = 2
-  } else if (abs(df$disc.eff[i]) > 0.252) {
-    df$disccat.eff[i] = 3
-  } else {
-    df$disccat.eff[i] = "check"
-  }
-  
-}
+ }
 
 if (df$efftype[i] == "r" | df$efftype[i] == "z") {
-  
-  if (abs(df$disc.eff[i]) < 0.025) {
-    df$disccat.eff[i] = 0
-  } else if (abs(df$disc.eff[i]) >= 0.025 & abs(df$disc.eff[i]) <= 0.075) {
-    df$disccat.eff[i] = 1
-  } else if (abs(df$disc.eff[i]) > 0.075 & abs(df$disc.eff[i]) <= 0.125) {
-    df$disccat.eff[i] = 2
-  } else if (abs(df$disc.eff[i]) > 0.125) {
-    df$disccat.eff[i] = 3
-  } else {
-    df$disccat.eff[i] = "check"
+    
+    if (abs(df$disc.eff[i]) < r[1]) {
+      df$disccat.eff[i] = 0
+    } else if (abs(df$disc.eff[i]) >= r[1] & abs(df$disc.eff[i]) < r[2]) {
+      df$disccat.eff[i] = 1
+    } else if (abs(df$disc.eff[i]) >= r[2] & abs(df$disc.eff[i]) < r[3]) {
+      df$disccat.eff[i] = 2
+    } else if (abs(df$disc.eff[i]) >= r[3]) {
+      df$disccat.eff[i] = 3
+    } else {
+      df$disccat.eff[i] = "check"
+    }
   }
-  
-}
-  
-  # if (abs(df$disc.z[i]) < 0.025) {
-  #   df$disccat.z[i] = 0
-  # } else if (abs(df$disc.z[i]) >= 0.025 & abs(df$disc.z[i]) <= 0.075) {
-  #   df$disccat.z[i] = 1
-  # } else if (abs(df$disc.z[i]) > 0.075 & abs(df$disc.z[i]) <= 0.125) {
-  #   df$disccat.z[i] = 2
-  # } else if (abs(df$disc.z[i]) > 0.125) {
-  #   df$disccat.z[i] = 3
-  # } else {
-  #   df$disccat.z[i] = "check"
-  # }
-  
-  
-}
+} 
 
 # Reverse effect sizes so all effects are in hypothesized direction -------
 df$effest.exp <- df$effest
 df$effestnew.exp <- df$effestnew
-#df$z.exp <- df$z
-#df$znew.exp <- df$znew
 
 reverse <- c("Babbage","de Wit","Fischer","Woodin","Yoon")
 
 df$effest.exp[which(df$meta %in% reverse)] <- df$effest.exp[which(df$meta %in% reverse)]*-1
 df$effestnew.exp[which(df$meta %in% reverse)] <- df$effestnew.exp[which(df$meta %in% reverse)]*-1
-#df$z.exp[which(df$meta %in% reverse)] <- df$z.exp[which(df$meta %in% reverse)]*-1
-#df$znew.exp[which(df$meta %in% reverse)] <- df$znew.exp[which(df$meta %in% reverse)]*-1
-
-# Discrepancy categories not coinciding between original effect and after transformation to z.
-#check <- df[which(!df$disccat.eff == df$disccat.z),]
 
 # Save file in xlsx -------------------------------------------------------
-write_xlsx(df,"codebook-primary-studies-final-complete.xlsx",col_names=T)
+write_xlsx(df,"../codebooks/codebook-primary-studies-complete.xlsx",col_names=T)
 
 # Save file in csv --------------------------------------------------------
-write.table(df, file = "codebook-primary-studies-final-complete.csv", row.names=F, col.names=T, sep=' ')
-
-
-
+write.table(df, file = "../codebooks/codebook-primary-studies-complete.csv", row.names=F, col.names=T, sep=' ')

@@ -7,6 +7,12 @@
 # writing files
 /writing/
 
+# individual codebooks 
+/codebooks/individual/
+
+# sort
+/sort/
+
 # misc files
 *.txt
 *.rar

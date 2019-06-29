@@ -19,43 +19,73 @@
 
 \refsection{0}
   \datalist[entry]{apa/global//global/global}
-    \entry{Schmidt2015}{book}{}
-      \name{author}{2}{}{%
-        {{uniquename=0,uniquepart=base,hash=815423931da5bf3d960e4fa9de4e6860}{%
-           family={Schmidt},
-           familyi={S\bibinitperiod},
-           given={Frank\bibnamedelima L.},
-           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod},
+    \entry{bethlehem2011}{book}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=6e188e5ee88c538d01ea77035def44f0}{%
+           family={Bethlehem},
+           familyi={B\bibinitperiod},
+           given={Jelke},
+           giveni={J\bibinitperiod},
            givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley-Blackwell}%
+      }
+      \strng{namehash}{6e188e5ee88c538d01ea77035def44f0}
+      \strng{fullhash}{6e188e5ee88c538d01ea77035def44f0}
+      \strng{bibnamehash}{6e188e5ee88c538d01ea77035def44f0}
+      \strng{authorbibnamehash}{6e188e5ee88c538d01ea77035def44f0}
+      \strng{authornamehash}{6e188e5ee88c538d01ea77035def44f0}
+      \strng{authorfullhash}{6e188e5ee88c538d01ea77035def44f0}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{0-470-54279-9}
+      \field{month}{1}
+      \field{title}{Handbook of {{Nonresponse}} in {{Household Surveys}}}
+      \field{year}{2011}
+    \endentry
+    \entry{hunter2004}{book}{}
+      \name{author}{2}{}{%
         {{uniquename=0,uniquepart=base,hash=68a4867fb99b21b6f8276b96ff1ebcaa}{%
            family={Hunter},
            familyi={H\bibinitperiod},
            given={John\bibnamedelima E.},
            giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
            givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=815423931da5bf3d960e4fa9de4e6860}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Frank\bibnamedelima L.},
+           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{location}{1}{%
+        {New York City, NY}%
       }
       \list{publisher}{1}{%
-        {{SAGE} Publications, Ltd}%
+        {SAGE Publications, Inc}%
       }
-      \strng{namehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{fullhash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{bibnamehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{authorbibnamehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{authornamehash}{1f8e968f25432a50814511dc6a35a70c}
-      \strng{authorfullhash}{1f8e968f25432a50814511dc6a35a70c}
-      \field{sortinit}{S}
-      \field{sortinithash}{322b1d5276f2f6c1bccdcd15920dbee6}
+      \strng{namehash}{a17cd2fe42c16873f0bd652b55cbdf39}
+      \strng{fullhash}{a17cd2fe42c16873f0bd652b55cbdf39}
+      \strng{bibnamehash}{a17cd2fe42c16873f0bd652b55cbdf39}
+      \strng{authorbibnamehash}{a17cd2fe42c16873f0bd652b55cbdf39}
+      \strng{authornamehash}{a17cd2fe42c16873f0bd652b55cbdf39}
+      \strng{authorfullhash}{a17cd2fe42c16873f0bd652b55cbdf39}
+      \field{sortinit}{H}
+      \field{sortinithash}{5f15a7bc777ad49ff15aa4d2831b1681}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{year}
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{note}{p.64}
-      \field{title}{Methods of Meta-Analysis: Correcting Error and Bias in Research Findings}
-      \field{year}{2015}
-      \verb{doi}
-      \verb 10.4135/9781483398105
-      \endverb
+      \field{isbn}{1-4129-0912-0}
+      \field{title}{Methods of {{Meta}}-{{Analysis}}: {{Correcting Error}} and {{Bias}} in {{Research Findings}}}
+      \field{year}{2004}
     \endentry
   \enddatalist
 \endrefsection
