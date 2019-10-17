@@ -1,8 +1,9 @@
-rm(list = ls())
+#rm(list = ls()) # clear workspace
 packages <- c("metafor","readxl","dplyr","writexl")
-#lapply(packages,install.packages(packages),character.only=T)
-lapply(packages,library,character.only=T)
+sapply(packages,install.packages(packages),character.only=T)
+sapply(packages,library,character.only=T)
 
+# empty vectors to store results
 est.fe <- est.re <- k.tot <- outlier.total <- regular.total <- c() # empty vector to store results 
 eff.so <- cilb.so <- ciub.so <- tau2.so <- pval.so <- pval.het.so <- c() #empty vectors for subset original meta-analyses
 eff.sc <- cilb.sc <- ciub.sc <- tau2.sc <- pval.sc <- pval.het.sc <- c() #empty vectors for subset checked meta-analyses
@@ -11,6 +12,7 @@ eff.cc <- cilb.cc <- ciub.cc <- tau2.cc <- pval.cc <- pval.het.cc <- c()
 outeff1 <- outeff2 <- outeff3 <- c()
 krep1 <- percent <- krep2 <- percent2 <- c() #empty vectors for misc results
 
+# open the (relatively) empty meta-analysis codebook
 dat <- read_excel("../codebooks/codebook-meta-analyses-empty.xlsx")
 
 # Functions ---------------------------------------------------------------
@@ -61,7 +63,12 @@ dependency <- function(y,z) {
   return(dependent)
 }
 
-
+# Effect size discrepancies -----------------------------------------------
+r.disc <- c(.025, .076, .126)
+z.disc <- 0.5 * log((1 + r.disc) / (1 - r.disc))
+d.disc <- (2 * r.disc) / sqrt(1 - r.disc^2)
+J.disc <- (1 - 3 / (4 * (64 - 2) - 1)) # Assuming N = 64
+g.disc <- d.disc * J.disc
 
 # Adesope -----------------------------------------------------------------
 df <- read.table("../data-per-ma/adesope_complete.csv", header=T, sep=';') # recalculated effect size based on reported effect sizes
@@ -143,9 +150,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 
 eff.so <- c(eff.so,res.so$b)             # MA subset original effect size estimate
@@ -263,9 +270,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -374,9 +381,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -485,9 +492,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -593,9 +600,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="HE")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -685,9 +692,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="HS")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -779,9 +786,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="HS")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -884,9 +891,9 @@ res.sc <- rma(z.c, vz.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 # transform estimate back to correlation
 eff.so <- c(eff.so,tanh(res.so$b)) # MA subset original effect size estimate
@@ -921,6 +928,8 @@ outlier <- df[which(q >= 3.84), ]                  # subset of studies that are 
 regular <- df[which(q < 3.84), ]                   # subset of studies that are included as non-outliers
 outlier.total <- bind_rows(outlier.total,dplyr::select(outlier, id, study, r))
 regular.total <- bind_rows(regular.total,dplyr::select(regular, id, study, r))
+
+write.table(df, file = "../data-per-ma/crook_complete.csv", row.names=FALSE, sep=";")
 
 # dependency check with r
 depdf <- as.data.frame(dependency(df$r,vr))   
@@ -986,8 +995,6 @@ pval.cc <- c(pval.cc,NA)
 pval.het.co <- c(pval.het.co,NA)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,NA)      # p value heterogeneity test
 
-
-write.table(df, file = "../data-per-ma/crook_complete.csv", row.names=FALSE, sep=";")
 rm(df)
 
 # subset
@@ -1044,14 +1051,15 @@ tau2.sc <- c(tau2.sc,tausq.sc)
 
 pval.so <- c(pval.so,NA) # p value original
 pval.sc <- c(pval.sc,NA) # p value checked
-pval.het.so <- c(pval.het.so,res.so$QEp)      # p value heterogeneity test
-pval.het.sc <- c(pval.het.sc,res.sc$QEp)      # p value heterogeneity test
+pval.het.so <- c(pval.het.so,NA)      # p value heterogeneity test
+pval.het.sc <- c(pval.het.sc,NA)      # p value heterogeneity test
 
 krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[9]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+write.table(df, file = "../data-per-ma/crook_subset.csv", row.names=FALSE, sep=";")
 rm(df)
 
 # DeWit -------------------------------------------------------------------
@@ -1120,9 +1128,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="HS")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -1214,8 +1222,8 @@ res.sc <- rma(effestnew.exp, vd.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.051 & abs(estdiff) < 0.152]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.152 & abs(estdiff) < 0.252]))  # no of studies that have a medium effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= d.disc[1] & abs(estdiff) < d.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= d.disc[2] & abs(estdiff) < d.disc[3]]))  # no of studies that have a medium effect on MA effect size
 outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.253]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
@@ -1304,9 +1312,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -1419,9 +1427,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -1523,9 +1531,9 @@ res.sc <- rma(z.c, vz.c, data=df, method="ML")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 # transform estimate back to correlation
 eff.so <- c(eff.so,tanh(res.so$b)) # MA subset original effect size estimate
@@ -1709,8 +1717,8 @@ res.sc <- rma(effestnew.exp, vd.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.051 & abs(estdiff) < 0.152]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.152 & abs(estdiff) < 0.252]))  # no of studies that have a medium effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= d.disc[1] & abs(estdiff) < d.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= d.disc[2] & abs(estdiff) < d.disc[3]]))  # no of studies that have a medium effect on MA effect size
 outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.253]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
@@ -1814,9 +1822,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -1929,9 +1937,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="HE")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
@@ -2037,9 +2045,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2127,9 +2135,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="HE")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2218,9 +2226,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2310,9 +2318,9 @@ res.sc <- rma(effestnew.exp, vz.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2402,8 +2410,8 @@ res.sc <- rma(effestnew.exp, vd.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.051 & abs(estdiff) < 0.152]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.152 & abs(estdiff) < 0.252]))  # no of studies that have a medium effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= d.disc[1] & abs(estdiff) < d.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= d.disc[2] & abs(estdiff) < d.disc[3]]))  # no of studies that have a medium effect on MA effect size
 outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.253]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
@@ -2513,9 +2521,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2624,9 +2632,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2714,9 +2722,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2804,9 +2812,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2895,9 +2903,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -2987,9 +2995,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="HS")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
@@ -3080,8 +3088,8 @@ res.sc <- rma(effestnew.exp, vd.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.051 & abs(estdiff) < 0.152]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.152 & abs(estdiff) < 0.252]))  # no of studies that have a medium effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= d.disc[1] & abs(estdiff) < d.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= d.disc[2] & abs(estdiff) < d.disc[3]]))  # no of studies that have a medium effect on MA effect size
 outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.253]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
@@ -3187,9 +3195,9 @@ res.sc <- rma(effestnew.exp, vg.c, data=df, method="FE")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.050 & abs(estdiff) < 0.150]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.150 & abs(estdiff) < 0.250]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.250]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < g.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -3277,9 +3285,9 @@ res.sc <- rma(effestnew.exp, vr.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 eff.so <- c(eff.so,res.so$b) # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb) # MA subset original effect size CI lowerbound
@@ -3382,9 +3390,9 @@ res.sc <- rma(z.c, vz.c, data=df, method="DL")
 # effect of outliers
 l1o <- leave1out(res.sc)              # leave-one-out analysis
 estdiff <- l1o$estimate - c(res.sc$b)  # MA pooled effect size estimates if ith study was omitted
-outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= 0.025 & abs(estdiff) < 0.076]))  # no of studies that have a small effect on MA effect size
-outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= 0.076 & abs(estdiff) < 0.126]))  # no of studies that have a medium effect on MA effect size
-outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= 0.126]))                         # no of studies that have a large effect on MA effect size
+outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= r.disc[1] & abs(estdiff) < r.disc[2]]))  # no of studies that have a small effect on MA effect size
+outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= r.disc[2] & abs(estdiff) < r.disc[3]]))  # no of studies that have a medium effect on MA effect size
+outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= r.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
 # transform estimate back to correlation
 eff.so <- c(eff.so,tanh(res.so$b)) # MA subset original effect size estimate
@@ -3451,36 +3459,31 @@ round(pval.so,2)
 round(pval.sc,2)
 
 
-# Effect size discrepancies -----------------------------------------------
-r <- c(.025, .076, .126)
-z <- 0.5 * log((1 + r) / (1 - r));z
-d <- (2 * r) / sqrt(1 - r^2);d
-J <- (1 - 3 / (4 * (64 - 2) - 1)) # Assuming N = 64
-g <- d * J;g
+# Effect size discrepancies
 
 for (i in 1:nrow(dat)) {
   
   if (dat$efftype[i] == "g") {
     
-    if (abs(dat$disc.s[i]) < g[1]) {
+    if (abs(dat$disc.s[i]) < g.disc[1]) {
       dat$disccat.s[i] = 0
-      } else if (abs(dat$disc.s[i]) >= g[1] & abs(dat$disc.s[i]) < g[2]) {
+      } else if (abs(dat$disc.s[i]) >= g.disc[1] & abs(dat$disc.s[i]) < g.disc[2]) {
       dat$disccat.s[i] = 1
-      } else if (abs(dat$disc.s[i]) >= g[2] & abs(dat$disc.s[i]) < g[3]) {
+      } else if (abs(dat$disc.s[i]) >= g.disc[2] & abs(dat$disc.s[i]) < g.disc[3]) {
       dat$disccat.s[i] = 2
-      } else if (abs(dat$disc.s[i]) >= g[3]) {
+      } else if (abs(dat$disc.s[i]) >= g.disc[3]) {
       dat$disccat.s[i] = 3
       } else {
       dat$disccat.s[i] = "check"
       }
    
-    if (abs(dat$disc.c[i]) < g[1]) {
+    if (abs(dat$disc.c[i]) < g.disc[1]) {
       dat$disccat.c[i] = 0
-    } else if (abs(dat$disc.c[i]) >= g[1] & abs(dat$disc.c[i]) < g[2]) {
+    } else if (abs(dat$disc.c[i]) >= g.disc[1] & abs(dat$disc.c[i]) < g.disc[2]) {
       dat$disccat.c[i] = 1
-    } else if (abs(dat$disc.c[i]) >= g[2] & abs(dat$disc.c[i]) < g[3]) {
+    } else if (abs(dat$disc.c[i]) >= g.disc[2] & abs(dat$disc.c[i]) < g.disc[3]) {
       dat$disccat.c[i] = 2
-    } else if (abs(dat$disc.c[i]) >= g[3]) {
+    } else if (abs(dat$disc.c[i]) >= g.disc[3]) {
       dat$disccat.c[i] = 3
     } else {
       dat$disccat.c[i] = "check"
@@ -3489,25 +3492,25 @@ for (i in 1:nrow(dat)) {
   
   if (dat$efftype[i] == "d") {
     
-    if (abs(dat$disc.s[i]) < d[1]) {
+    if (abs(dat$disc.s[i]) < d.disc[1]) {
       dat$disccat.s[i] = 0
-    } else if (abs(dat$disc.s[i]) >= d[1] & abs(dat$disc.s[i]) < d[2]) {
+    } else if (abs(dat$disc.s[i]) >= d.disc[1] & abs(dat$disc.s[i]) < d.disc[2]) {
       dat$disccat.s[i] = 1
-    } else if (abs(dat$disc.s[i]) >= d[2] & abs(dat$disc.s[i]) < d[3]) {
+    } else if (abs(dat$disc.s[i]) >= d.disc[2] & abs(dat$disc.s[i]) < d.disc[3]) {
       dat$disccat.s[i] = 2
-    } else if (abs(dat$disc.s[i]) >= d[3]) {
+    } else if (abs(dat$disc.s[i]) >= d.disc[3]) {
       dat$disccat.s[i] = 3
     } else {
       dat$disccat.s[i] = "check"
     }
     
-  if (abs(dat$disc.c[i]) < d[1]) {
+  if (abs(dat$disc.c[i]) < d.disc[1]) {
     dat$disccat.c[i] = 0
-    } else if (abs(dat$disc.c[i]) >= d[1] & abs(dat$disc.c[i]) < d[2]) {
+    } else if (abs(dat$disc.c[i]) >= d.disc[1] & abs(dat$disc.c[i]) < d.disc[2]) {
     dat$disccat.c[i] = 1
-    } else if (abs(dat$disc.c[i]) >= d[2] & abs(dat$disc.c[i]) < d[3]) {
+    } else if (abs(dat$disc.c[i]) >= d.disc[2] & abs(dat$disc.c[i]) < d.disc[3]) {
     dat$disccat.c[i] = 2
-    } else if (abs(dat$disc.c[i]) >= d[3]) {
+    } else if (abs(dat$disc.c[i]) >= d.disc[3]) {
     dat$disccat.c[i] = 3
     } else {
     dat$disccat.c[i] = "check"
@@ -3516,25 +3519,25 @@ for (i in 1:nrow(dat)) {
   
   if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
     
-    if (abs(dat$disc.s[i]) < r[1]) {
+    if (abs(dat$disc.s[i]) < r.disc[1]) {
       dat$disccat.s[i] = 0
-    } else if (abs(dat$disc.s[i]) >= r[1] & abs(dat$disc.s[i]) < r[2]) {
+    } else if (abs(dat$disc.s[i]) >= r.disc[1] & abs(dat$disc.s[i]) < r.disc[2]) {
       dat$disccat.s[i] = 1
-    } else if (abs(dat$disc.s[i]) >= r[2] & abs(dat$disc.s[i]) < r[3]) {
+    } else if (abs(dat$disc.s[i]) >= r.disc[2] & abs(dat$disc.s[i]) < r.disc[3]) {
       dat$disccat.s[i] = 2
-    } else if (abs(dat$disc.s[i]) >= r[3]) {
+    } else if (abs(dat$disc.s[i]) >= r.disc[3]) {
       dat$disccat.s[i] = 3
     } else {
       dat$disccat.s[i] = "check"
     }
     
-    if (abs(dat$disc.c[i]) < r[1]) {
+    if (abs(dat$disc.c[i]) < r.disc[1]) {
       dat$disccat.c[i] = 0
-    } else if (abs(dat$disc.c[i]) >= r[1] & abs(dat$disc.c[i]) < r[2]) {
+    } else if (abs(dat$disc.c[i]) >= r.disc[1] & abs(dat$disc.c[i]) < r.disc[2]) {
       dat$disccat.c[i] = 1
-    } else if (abs(dat$disc.c[i]) >= r[2] & abs(dat$disc.c[i]) < r[3]) {
+    } else if (abs(dat$disc.c[i]) >= r.disc[2] & abs(dat$disc.c[i]) < r.disc[3]) {
       dat$disccat.c[i] = 2
-    } else if (abs(dat$disc.c[i]) >= r[3]) {
+    } else if (abs(dat$disc.c[i]) >= r.disc[3]) {
       dat$disccat.c[i] = 3
     } else {
       dat$disccat.c[i] = "check"
@@ -3549,25 +3552,25 @@ for (i in 1:nrow(dat)) {
   if (dat$efftype[i] == "g") {
     
     # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$disc.cilb.s[i]) < g[1] & abs(dat$disc.ciub.s[i]) < g[1]) {
+    if (abs(dat$disc.cilb.s[i]) < g.disc[1] & abs(dat$disc.ciub.s[i]) < g.disc[1]) {
       dat$disccat.ci.s[i] = 0
-    } else if (abs(dat$disc.cilb.s[i]) >= g[3] | abs(dat$disc.ciub.s[i]) >= g[3]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= g.disc[3] | abs(dat$disc.ciub.s[i]) >= g.disc[3]) {
       dat$disccat.ci.s[i] = 3
-    } else if (abs(dat$disc.cilb.s[i]) >= g[2] & abs(dat$disc.cilb.s[i]) < g[3] | abs(dat$disc.ciub.s[i]) >= g[2] & abs(dat$disc.ciub.s[i]) < g[3]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= g.disc[2] & abs(dat$disc.cilb.s[i]) < g.disc[3] | abs(dat$disc.ciub.s[i]) >= g.disc[2] & abs(dat$disc.ciub.s[i]) < g.disc[3]) {
       dat$disccat.ci.s[i] = 2
-    } else if (abs(dat$disc.cilb.s[i]) >= g[1] & abs(dat$disc.cilb.s[i]) < g[2] | abs(dat$disc.ciub.s[i]) >= g[1] & abs(dat$disc.ciub.s[i]) < g[2]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= g.disc[1] & abs(dat$disc.cilb.s[i]) < g.disc[2] | abs(dat$disc.ciub.s[i]) >= g.disc[1] & abs(dat$disc.ciub.s[i]) < g.disc[2]) {
       dat$disccat.ci.s[i] = 1
     } else {
       dat$disccat.ci.s[i] == "check"
     }
     
-    if (abs(dat$disc.cilb.c[i]) < g[1] & abs(dat$disc.ciub.c[i]) < g[1]) {
+    if (abs(dat$disc.cilb.c[i]) < g.disc[1] & abs(dat$disc.ciub.c[i]) < g.disc[1]) {
       dat$disccat.ci.c[i] = 0
-    } else if (abs(dat$disc.cilb.c[i]) >= g[3] | abs(dat$disc.ciub.c[i]) >= g[3]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= g.disc[3] | abs(dat$disc.ciub.c[i]) >= g.disc[3]) {
       dat$disccat.ci.c[i] = 3
-    } else if (abs(dat$disc.cilb.c[i]) >= g[2] & abs(dat$disc.cilb.c[i]) < g[3] | abs(dat$disc.ciub.c[i]) >= g[2] & abs(dat$disc.ciub.c[i]) < g[3]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= g.disc[2] & abs(dat$disc.cilb.c[i]) < g.disc[3] | abs(dat$disc.ciub.c[i]) >= g.disc[2] & abs(dat$disc.ciub.c[i]) < g.disc[3]) {
       dat$disccat.ci.c[i] = 2
-    } else if (abs(dat$disc.cilb.c[i]) >= g[1] & abs(dat$disc.cilb.c[i]) < g[2] | abs(dat$disc.ciub.c[i]) >= g[1] & abs(dat$disc.ciub.c[i]) < g[2]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= g.disc[1] & abs(dat$disc.cilb.c[i]) < g.disc[2] | abs(dat$disc.ciub.c[i]) >= g.disc[1] & abs(dat$disc.ciub.c[i]) < g.disc[2]) {
       dat$disccat.ci.c[i] = 1
     } else {
       dat$disccat.ci.c[i] == "check"
@@ -3577,25 +3580,25 @@ for (i in 1:nrow(dat)) {
   if (dat$efftype[i] == "d") {
     
     # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$disc.cilb.s[i]) < d[1] & abs(dat$disc.ciub.s[i]) < d[1]) {
+    if (abs(dat$disc.cilb.s[i]) < d.disc[1] & abs(dat$disc.ciub.s[i]) < d.disc[1]) {
       dat$disccat.ci.s[i] = 0
-    } else if (abs(dat$disc.cilb.s[i]) >= d[3] | abs(dat$disc.ciub.s[i]) >= d[3]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= d.disc[3] | abs(dat$disc.ciub.s[i]) >= d.disc[3]) {
       dat$disccat.ci.s[i] = 3
-    } else if (abs(dat$disc.cilb.s[i]) >= d[2] & abs(dat$disc.cilb.s[i]) < d[3] | abs(dat$disc.ciub.s[i]) >= d[2] & abs(dat$disc.ciub.s[i]) < d[3]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= d.disc[2] & abs(dat$disc.cilb.s[i]) < d.disc[3] | abs(dat$disc.ciub.s[i]) >= d.disc[2] & abs(dat$disc.ciub.s[i]) < d.disc[3]) {
       dat$disccat.ci.s[i] = 2
-    } else if (abs(dat$disc.cilb.s[i]) >= d[1] & abs(dat$disc.cilb.s[i]) < d[2] | abs(dat$disc.ciub.s[i]) >= d[1] & abs(dat$disc.ciub.s[i]) < d[2]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= d.disc[1] & abs(dat$disc.cilb.s[i]) < d.disc[2] | abs(dat$disc.ciub.s[i]) >= d.disc[1] & abs(dat$disc.ciub.s[i]) < d.disc[2]) {
       dat$disccat.ci.s[i] = 1
     } else {
       dat$disccat.ci.s[i] == "check"
     }
     
-    if (abs(dat$disc.cilb.c[i]) < d[1] & abs(dat$disc.ciub.c[i]) < d[1]) {
+    if (abs(dat$disc.cilb.c[i]) < d.disc[1] & abs(dat$disc.ciub.c[i]) < d.disc[1]) {
       dat$disccat.ci.c[i] = 0
-    } else if (abs(dat$disc.cilb.c[i]) >= d[3] | abs(dat$disc.ciub.c[i]) >= d[3]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= d.disc[3] | abs(dat$disc.ciub.c[i]) >= d.disc[3]) {
       dat$disccat.ci.c[i] = 3
-    } else if (abs(dat$disc.cilb.c[i]) >= d[2] & abs(dat$disc.cilb.c[i]) < d[3] | abs(dat$disc.ciub.c[i]) >= d[2] & abs(dat$disc.ciub.c[i]) < d[3]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= d.disc[2] & abs(dat$disc.cilb.c[i]) < d.disc[3] | abs(dat$disc.ciub.c[i]) >= d.disc[2] & abs(dat$disc.ciub.c[i]) < d.disc[3]) {
       dat$disccat.ci.c[i] = 2
-    } else if (abs(dat$disc.cilb.c[i]) >= d[1] & abs(dat$disc.cilb.c[i]) < d[2] | abs(dat$disc.ciub.c[i]) >= d[1] & abs(dat$disc.ciub.c[i]) < d[2]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= d.disc[1] & abs(dat$disc.cilb.c[i]) < d.disc[2] | abs(dat$disc.ciub.c[i]) >= d.disc[1] & abs(dat$disc.ciub.c[i]) < d.disc[2]) {
       dat$disccat.ci.c[i] = 1
     } else {
       dat$disccat.ci.c[i] == "check"
@@ -3605,26 +3608,26 @@ for (i in 1:nrow(dat)) {
   if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
     
     # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$disc.cilb.s[i]) < r[1] & abs(dat$disc.ciub.s[i]) < r[1]) {
+    if (abs(dat$disc.cilb.s[i]) < r.disc[1] & abs(dat$disc.ciub.s[i]) < r.disc[1]) {
       dat$disccat.ci.s[i] = 0
-    } else if (abs(dat$disc.cilb.s[i]) >= r[3] | abs(dat$disc.ciub.s[i]) >= r[3]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= r.disc[3] | abs(dat$disc.ciub.s[i]) >= r.disc[3]) {
       dat$disccat.ci.s[i] = 3
-    } else if (abs(dat$disc.cilb.s[i]) >= r[2] & abs(dat$disc.cilb.s[i]) < r[3] | abs(dat$disc.ciub.s[i]) >= r[2] & abs(dat$disc.ciub.s[i]) < r[3]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= r.disc[2] & abs(dat$disc.cilb.s[i]) < r.disc[3] | abs(dat$disc.ciub.s[i]) >= r.disc[2] & abs(dat$disc.ciub.s[i]) < r.disc[3]) {
       dat$disccat.ci.s[i] = 2
-    } else if (abs(dat$disc.cilb.s[i]) >= r[1] & abs(dat$disc.cilb.s[i]) < r[2] | abs(dat$disc.ciub.s[i]) >= r[1] & abs(dat$disc.ciub.s[i]) < r[2]) {
+    } else if (abs(dat$disc.cilb.s[i]) >= r.disc[1] & abs(dat$disc.cilb.s[i]) < r.disc[2] | abs(dat$disc.ciub.s[i]) >= r.disc[1] & abs(dat$disc.ciub.s[i]) < r.disc[2]) {
       dat$disccat.ci.s[i] = 1
     } else {
       dat$disccat.ci.s[i] == "check"
     }
     
     # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$disc.cilb.c[i]) < r[1] & abs(dat$disc.ciub.c[i]) < r[1]) {
+    if (abs(dat$disc.cilb.c[i]) < r.disc[1] & abs(dat$disc.ciub.c[i]) < r.disc[1]) {
       dat$disccat.ci.c[i] = 0
-    } else if (abs(dat$disc.cilb.c[i]) >= r[3] | abs(dat$disc.ciub.c[i]) >= r[3]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= r.disc[3] | abs(dat$disc.ciub.c[i]) >= r.disc[3]) {
       dat$disccat.ci.c[i] = 3
-    } else if (abs(dat$disc.cilb.c[i]) >= r[2] & abs(dat$disc.cilb.c[i]) < r[3] | abs(dat$disc.ciub.c[i]) >= r[2] & abs(dat$disc.ciub.c[i]) < r[3]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= r.disc[2] & abs(dat$disc.cilb.c[i]) < r.disc[3] | abs(dat$disc.ciub.c[i]) >= r.disc[2] & abs(dat$disc.ciub.c[i]) < r.disc[3]) {
       dat$disccat.ci.c[i] = 2
-    } else if (abs(dat$disc.cilb.c[i]) >= r[1] & abs(dat$disc.cilb.c[i]) < r[2] | abs(dat$disc.ciub.c[i]) >= r[1] & abs(dat$disc.ciub.c[i]) < r[2]) {
+    } else if (abs(dat$disc.cilb.c[i]) >= r.disc[1] & abs(dat$disc.cilb.c[i]) < r.disc[2] | abs(dat$disc.ciub.c[i]) >= r.disc[1] & abs(dat$disc.ciub.c[i]) < r.disc[2]) {
       dat$disccat.ci.c[i] = 1
     } else {
       dat$disccat.ci.c[i] == "check"
@@ -3641,63 +3644,6 @@ dat$recalc.re <- as.numeric(dat$recalc.re)
 dat$diff.fe <- ifelse(is.na(dat$effest.fe), 0, abs(dat$effest.fe) - abs(dat$recalc.fe))
 dat$diff.re <- ifelse(is.na(dat$effest.re), 0, abs(dat$effest.re) - abs(dat$recalc.re))
 
-
-
-for (i in 1:nrow(dat)) {
-  
-  if (dat$efftype[i] == "g") {
-    
-    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$diff.fe[i]) < 0.050 & abs(dat$diff.re[i]) < 0.050) {
-      dat$recalc.cat[i] = 0
-    } else if (abs(dat$diff.fe[i]) >= 0.250 | abs(dat$diff.re[i]) >= 0.250) {
-      dat$recalc.cat[i] = 3
-    } else if (abs(dat$diff.fe[i]) >= 0.150 & abs(dat$diff.fe[i]) < 0.250 | abs(dat$diff.re[i]) >= 0.150 & abs(dat$diff.re[i]) < 0.250) {
-      dat$recalc.cat[i] = 2
-    } else if (abs(dat$diff.fe[i]) >= 0.050 & abs(dat$diff.fe[i]) < 0.150 | abs(dat$diff.re[i]) >= 0.050 & abs(dat$diff.re[i]) < 0.150) {
-      dat$recalc.cat[i] = 1
-    } else {
-      dat$recalc.cat[i] == "check"
-    }
-  }
-  
-  if (dat$efftype[i] == "d") {
-    
-    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$diff.fe[i]) < 0.051 & abs(dat$diff.re[i]) < 0.051) {
-      dat$recalc.cat[i] = 0
-    } else if (abs(dat$diff.fe[i]) >= 0.253 | abs(dat$diff.re[i]) >= 0.253) {
-      dat$recalc.cat[i] = 3
-    } else if (abs(dat$diff.fe[i]) >= 0.152 & abs(dat$diff.fe[i]) < 0.252 | abs(dat$diff.re[i]) >= 0.152 & abs(dat$diff.re[i]) < 0.252) {
-      dat$recalc.cat[i] = 2
-    } else if (abs(dat$diff.fe[i]) >= 0.051 & abs(dat$diff.fe[i]) < 0.152 | abs(dat$diff.re[i]) >= 0.051 & abs(dat$diff.re[i]) < 0.152) {
-      dat$recalc.cat[i] = 1
-    } else {
-      dat$recalc.cat[i] == "check"
-    }
-  }
-  
-  if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
-    
-    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
-    if (abs(dat$diff.fe[i]) < 0.025 & abs(dat$diff.re[i]) < 0.025) {
-      dat$recalc.cat[i] = 0
-    } else if (abs(dat$diff.fe[i]) >= 0.126 | abs(dat$diff.re[i]) >= 0.126) {
-      dat$recalc.cat[i] = 3
-    } else if (abs(dat$diff.fe[i]) >= 0.076 & abs(dat$diff.fe[i]) < 0.126 | abs(dat$diff.re[i]) >= 0.076 & abs(dat$diff.re[i]) < 0.126) {
-      dat$recalc.cat[i] = 2
-    } else if (abs(dat$diff.fe[i]) >= 0.025 & abs(dat$diff.fe[i]) < 0.076 | abs(dat$diff.re[i]) >= 0.025 & abs(dat$diff.re[i]) < 0.076) {
-      dat$recalc.cat[i] = 1
-    } else {
-      dat$recalc.cat[i] == "check"
-    }
-  }
-}
-
-# for some reason, sometimes the final 2 dat$recalc.cat values aren't entered. I checked these by hand (both are 0) and added them like this:
-dat$recalc.cat[32] <- 0
-dat$recalc.cat[33] <- 0
-
 # dataset with all studies
 regular.total[,"type"] <- "r"
 outlier.total[,"type"] <- "o"
@@ -3705,15 +3651,15 @@ dftot <- rbind(regular.total,outlier.total)
 dftot <- dftot[order(dftot$id),]
 
 # Further calculations ----------------------------------------------------
-k.tot <- nrow(outlier.total)+nrow(regular.total);k.tot     # number of total studies 1951
-nrow(outlier.total);nrow(regular.total)                    # 581 outliers 1370 regulars
-k.out <- nrow(outlier.total)/k.tot*100; k.out              # perc of outlier studies of total k 30.1%
-k.reg <- nrow(regular.total)/k.tot*100; k.reg              # perc of regular studies of total k 69.9%
+k.tot <- nrow(outlier.total)+nrow(regular.total)   # number of total studies 1978
+nrow(outlier.total);nrow(regular.total)            # 596 outliers 1382 regulars
+k.out <- nrow(outlier.total)/k.tot*100             # perc of outlier studies of total k 30.1%
+k.reg <- nrow(regular.total)/k.tot*100             # perc of regular studies of total k 69.9%
 
 # Save file in xlsx -------------------------------------------------------
 write_xlsx(dat,"../codebooks/codebook-meta-analyses-complete.xlsx",col_names=T)
 
-# save results ------------------------------------------------------------
+# Save results ------------------------------------------------------------
 write.table(dat, file = "../codebooks/codebook-meta-analyses-complete.csv", row.names=F, col.names=T, sep=' ')
 write.table(outlier.total, file = "../codebooks/studies-outliers.csv", row.names=FALSE, sep=";")
 write.table(regular.total, file = "../codebooks/studies-nonoutliers.csv", row.names=FALSE, sep=";")

@@ -1,9 +1,9 @@
-rm(list = ls())
+# rm(list = ls()) # clear workspace
 options(scipen=999,warn=0) # show only warning notification 
 #options(scipen=999,warn=1) # show all warnings
 #options(scipen=999,warn=-1) # supress warnings (caused by coerced NAs) 
 packages <- c("readxl","writexl","MAd")
-#sapply(packages,install.packages(packages),character.only=T)
+sapply(packages,install.packages(packages),character.only=T)
 sapply(packages,library,character.only=T)
 
 # Open codebook
@@ -2251,13 +2251,13 @@ df$effestnew[df$meta %in% "Yoon" & df$input %in% "r"] <- yoon_r
 
 # Discrepancies -----------------------------------------------------------
 
-# Transform discrepancies
-r <- c(.025, .076, .126)
-z <- 0.5 * log((1 + r) / (1 - r));z
-d <- (2 * r) / sqrt(1 - r^2);d
-J <- (1 - 3 / (4 * (64 - 2) - 1)) # Assuming N = 64
-g <- d * J;g
-  
+# Effect size discrepancies -----------------------------------------------
+r.disc <- c(.025, .076, .126)
+z.disc <- 0.5 * log((1 + r.disc) / (1 - r.disc))
+d.disc <- (2 * r.disc) / sqrt(1 - r.disc^2)
+J.disc <- (1 - 3 / (4 * (64 - 2) - 1)) # Assuming N = 64
+g.disc <- d.disc * J.disc
+
 
 # Fill in discrepancies ---------------------------------------------------
 df$disc.eff <- df$effest - df$effestnew
@@ -2269,13 +2269,13 @@ for (i in 1:nrow(df)) {
   
   if (df$efftype[i] == "g") {
     
-    if (abs(df$disc.eff[i]) < g[1]) {
+    if (abs(df$disc.eff[i]) < g.disc[1]) {
       df$disccat.eff[i] = 0
-    } else if (abs(df$disc.eff[i]) >= g[1] & abs(df$disc.eff[i]) < g[2]) {
+    } else if (abs(df$disc.eff[i]) >= g.disc[1] & abs(df$disc.eff[i]) < g.disc[2]) {
       df$disccat.eff[i] = 1
-    } else if (abs(df$disc.eff[i]) >= g[2] & abs(df$disc.eff[i]) < g[3]) {
+    } else if (abs(df$disc.eff[i]) >= g.disc[2] & abs(df$disc.eff[i]) < g.disc[3]) {
       df$disccat.eff[i] = 2
-    } else if (abs(df$disc.eff[i]) >= g[3]) {
+    } else if (abs(df$disc.eff[i]) >= g.disc[3]) {
       df$disccat.eff[i] = 3
     } else {
       df$disccat.eff[i] = "check"
@@ -2285,13 +2285,13 @@ for (i in 1:nrow(df)) {
   
   if (df$efftype[i] == "d") {
   
-  if (abs(df$disc.eff[i]) < d[1]) {
+  if (abs(df$disc.eff[i]) < d.disc[1]) {
     df$disccat.eff[i] = 0
-  } else if (abs(df$disc.eff[i]) >= d[1] & abs(df$disc.eff[i]) < d[2]) {
+  } else if (abs(df$disc.eff[i]) >= d.disc[1] & abs(df$disc.eff[i]) < d.disc[2]) {
     df$disccat.eff[i] = 1
-  } else if (abs(df$disc.eff[i]) >= d[2]& abs(df$disc.eff[i]) < d[3]) {
+  } else if (abs(df$disc.eff[i]) >= d.disc[2]& abs(df$disc.eff[i]) < d.disc[3]) {
     df$disccat.eff[i] = 2
-  } else if (abs(df$disc.eff[i]) >= d[3]) {
+  } else if (abs(df$disc.eff[i]) >= d.disc[3]) {
     df$disccat.eff[i] = 3
   } else {
     df$disccat.eff[i] = "check"
@@ -2300,13 +2300,13 @@ for (i in 1:nrow(df)) {
 
 if (df$efftype[i] == "r" | df$efftype[i] == "z") {
     
-    if (abs(df$disc.eff[i]) < r[1]) {
+    if (abs(df$disc.eff[i]) < r.disc[1]) {
       df$disccat.eff[i] = 0
-    } else if (abs(df$disc.eff[i]) >= r[1] & abs(df$disc.eff[i]) < r[2]) {
+    } else if (abs(df$disc.eff[i]) >= r.disc[1] & abs(df$disc.eff[i]) < r.disc[2]) {
       df$disccat.eff[i] = 1
-    } else if (abs(df$disc.eff[i]) >= r[2] & abs(df$disc.eff[i]) < r[3]) {
+    } else if (abs(df$disc.eff[i]) >= r.disc[2] & abs(df$disc.eff[i]) < r.disc[3]) {
       df$disccat.eff[i] = 2
-    } else if (abs(df$disc.eff[i]) >= r[3]) {
+    } else if (abs(df$disc.eff[i]) >= r.disc[3]) {
       df$disccat.eff[i] = 3
     } else {
       df$disccat.eff[i] = "check"

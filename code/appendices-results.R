@@ -1,10 +1,10 @@
-rm(list = ls())
+# rm(list = ls()) clear workspace
 options(scipen=999)
 
 datm <- read.table("../codebooks/codebook-meta-analyses-complete.csv", header=T, sep = '')
 ret <- read.table("../codebooks/nonretrieved-primary-studies.csv", header=T, sep = ';')
 
-# Additional Results Part 2 -----------------------------------------------
+# Supplement A: Additional Results Part 2 ---------------------------------
 
 # How many meta-analyses had a small / med / large  change in effect size estimate?
 sum(datm$disccat.c == 0) # 30 no discrepancy
@@ -19,11 +19,9 @@ sum(datm$disccat.ci.c == 1) # 6 a small discrepancy
 sum(datm$disccat.ci.c == 2) # 1 a moderate discrepancy
 sum(datm$disccat.ci.c == 3) # 0
 
-
 # Tau2 discrepancy
 (abs(datm$tau2.co) - abs(datm$tau2.cc)) != 0
 abs(datm$disc.tau2.c) > 0.1
-
 
 # Statistical significance changed? 
 round(datm$pval.het.co, 3)
@@ -38,7 +36,6 @@ round(datm$pval.co, 3)
 round(datm$pval.cc, 3)
 round(datm$pval.co - datm$pval.cc, 3)
 
-
 # Reporting standards: heterogeneity --------------------------------------
 # Which models were used?
 datm$model
@@ -47,7 +44,6 @@ sum(datm$model == "RE", na.rm=T)
 sum(datm$model == "FE", na.rm=T) 
 sum(is.na(datm$model))
 
-
 # Which software was used?
 datm$software
 sum(datm$software == "CMA", na.rm=T)
@@ -55,7 +51,6 @@ sum(datm$software == "SL", na.rm=T)
 sum(datm$software == "SPSS", na.rm=T)
 sum(datm$software == "Stata", na.rm=T)
 sum(is.na(datm$software))
-
 
 # Which estimators were used?
 datm$estimator
@@ -79,7 +74,7 @@ datm$out
 datm$outsep
 sum(datm$out)
 sum(datm$outsep)
-
+sum(datm$out & datm$outsep)
 
 # Reporting standards: publication bias -----------------------------------
 # How many mention publication bias and how many find publication bias?
@@ -90,7 +85,6 @@ sum(datm$pub)
 sum(datm$pubfound == 1, na.rm=T)
 sum(datm$pubfound == 0, na.rm=T)
 sum(is.na(datm$pubfound))
-
 
 # Which publication bias methods were used?
 levels(datm$pubmet1)

@@ -1,24 +1,19 @@
 # Configuring settings and loading packages and datasets ------------------
-rm(list = ls())
-packages <- c("ggplot2","ggrepel","viridis","metafor","data.table","dplyr","reshape2","ggpubr")
+# rm(list = ls()) #clean workspace
 oldw <- getOption("warn")                                         # temporarily surpress warning messages so it doesnt print in Rmd file
 options(warn = -1)                                                # temporarily surpress warning messages so it doesnt print in Rmd file
-lapply(packages,require,character.only=T)                         # load packages
 options(warn = oldw, scipen=999)                                  # turn warning messages back on, no scientifc notiation
 number_ticks <- function(n) {function(limits) pretty(limits, n)}  # Number of ticks in figures
-
-df <- read.table("../codebooks/codebook-primary-studies-complete.csv", header=T, sep = '') 
-datm <- read.table("../codebooks/codebook-meta-analyses-complete.csv", header=T, sep = '')
 
 # # Study 1 Scatterplot - SMD [Figure 2] ----------------------------------
 df.smd <- df[df$efftype == "g" | df$efftype == "d",]
 df.smd$discrepancy <- as.character(df.smd$info)
 # table(df.smd$info) # check frequencies
 
-df.smd$discrepancy[df.smd$discrepancy=="0"] <- a <- "Cat. 0: No discrepancy, k = 107, 43%"
-df.smd$discrepancy[df.smd$discrepancy=="2"] <- b <- "Cat. 1: Not enough information, k = 40, 16%"
-df.smd$discrepancy[df.smd$discrepancy=="1"] <- c <- "Cat. 2: Different effect, k = 40, 16%"
-df.smd$discrepancy[df.smd$discrepancy=="3"] <- d <- "Cat. 3: Ambiguous effect, k = 60, 24%"
+df.smd$discrepancy[df.smd$discrepancy=="0"] <- a <- "Reproducible, k = 107, 43%"
+df.smd$discrepancy[df.smd$discrepancy=="2"] <- b <- "Incomplete, k = 40, 16%"
+df.smd$discrepancy[df.smd$discrepancy=="1"] <- c <- "Incorrect, k = 40, 16%"
+df.smd$discrepancy[df.smd$discrepancy=="3"] <- d <- "Ambiguous, k = 60, 24%"
 
 df.smd$discrepancy <- factor(df.smd$discrepancy, levels = c(a,b,c,d))
 
@@ -47,10 +42,10 @@ scatter.smd <- ggplot(df.smd, aes(g.reproduced, g.reported, col=discrepancy, alp
   scale_x_continuous("Original effect sizes (Hedges' g)", breaks=number_ticks(5)) + 
   scale_color_manual(values=col.magma, name = "") +
   scale_shape_manual("", values=c(15:18)) +
-  scale_alpha_manual("",values=c(0.6, 1, 0.8, 0.8)) +
+  scale_alpha_manual("",values=c(0.4, 1, 1, 1)) +
   expand_limits(x = c(-2, 6), y = c(-2, 6)) +
   theme(legend.text=element_text(size=14)) +
-  theme(legend.position=c(.77, .17)) +
+  theme(legend.position=c(.85, .17)) +
   theme(legend.title=element_blank()) +
   theme(axis.title=element_text(size=18)) +
   theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12)) +
@@ -66,10 +61,10 @@ df.cor <- df[df$efftype == "r" | df$efftype == "z",]
 df.cor$discrepancy <- as.character(df.cor$info)
 # table(df.cor$info) # check frequencies
 
-df.cor$discrepancy[df.cor$discrepancy=="0"] <- a <- "Cat. 0: No discrepancy, k = 169, 67%"
-df.cor$discrepancy[df.cor$discrepancy=="2"] <- b <- "Cat. 1: Not enough information, k = 14, 6%"
-df.cor$discrepancy[df.cor$discrepancy=="1"] <- c <- "Cat. 2: Different effect, k = 34, 13%"
-df.cor$discrepancy[df.cor$discrepancy=="3"] <- d <- "Cat. 3: Ambiguous effect, k = 36, 14%"
+df.cor$discrepancy[df.cor$discrepancy=="0"] <- a <- "Reproducible, k = 169, 67%"
+df.cor$discrepancy[df.cor$discrepancy=="2"] <- b <- "Incomplete, k = 14, 6%"
+df.cor$discrepancy[df.cor$discrepancy=="1"] <- c <- "Incorrect, k = 34, 13%"
+df.cor$discrepancy[df.cor$discrepancy=="3"] <- d <- "Ambiguous, k = 36, 14%"
 
 df.cor$discrepancy <- factor(df.cor$discrepancy, levels = c(a,b,c,d))
 
@@ -92,11 +87,14 @@ scatter.cor <- ggplot(df.cor, aes(z.reported, z.reproduced, col=discrepancy, alp
   scale_y_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
   scale_x_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
   scale_color_manual(values=col.magma, name = "") +
-  scale_shape_manual("",values=c(15:18)) +
-  scale_alpha_manual("",values=c(0.3, 1, 0.8, 0.8)) +
+  scale_shape_manual("",values=c("Incomplete, k = 14, 6%" = 16,
+                                 "Incorrect, k = 34, 13%" = 17,
+                                 "Ambiguous, k = 36, 14%" = 18,
+                                 "Reproducible, k = 169, 67%" = 15)) + 
+  scale_alpha_manual("",values=c(0.4, 1, 1, 1)) +
   expand_limits(x = c(-0.75, 1.25), y = c(-0.75, 1.25)) +
   theme(legend.text=element_text(size=14)) +
-  theme(legend.position=c(.77, .17)) +
+  theme(legend.position=c(.85, .17)) +
   theme(legend.title=element_blank()) +
   theme(axis.title=element_text(size=18))  +
   theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
@@ -987,7 +985,7 @@ ma.cor.tau <- ggplot(datplot, aes(tau2.so.z, tau2.sc.z, label = as.numeric(autho
   geom_label_repel() +
   scale_y_continuous("Reproduced MA tau2", breaks=number_ticks(6)) +
   scale_x_continuous("Original MA tau2 estimate", breaks=number_ticks(6)) +
-  expand_limits(x = c(0, 0.11), y = c(0, 0.11)) +
+  expand_limits(x = c(0, 0.06), y = c(0, 0.06)) +
   theme(legend.position="none")+
   theme(axis.title=element_text(size=16)) +
   theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +

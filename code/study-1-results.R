@@ -1,8 +1,8 @@
-rm(list = ls())
-options(scipen=999)
-packages <- c("psych","irr","readxl")
-#lapply(packages,install.packages(packages),character.only=T)     # if packages are not yet installed
-lapply(packages,library,character.only=T)
+#rm(list = ls()) # clear workspace
+options(scipen=999) # no scientific notation
+packages <- c("psych","irr","readxl") # library packages
+# sapply(packages,install.packages(packages),character.only=T)     # if packages are not yet installed
+sapply(packages,library,character.only=T)
 
 datp <- read.table("../codebooks/codebook-primary-studies-complete.csv", header=T, sep = '')
 datm <- read.table("../codebooks/codebook-meta-analyses-complete.csv", header=T, sep = '')
@@ -15,47 +15,54 @@ datret <- read.table("../codebooks/nonretrieved-primary-studies.csv", header=T, 
 # PREREGISTRATION RESULTS -------------------------------------------------
 
 # Discrepancies primary studies -------------------------------------------
-# What is the proportion of primary studies for which the reproduced effect size (Fisher's transformed r) differs from the effect size estimate of the authors of the meta-analysis 
+# What is the proportion of primary studies for which the reproduced effect size differs from the effect size estimate of the authors of the meta-analysis 
 # with a small, moderate, or large discrepancy? [It is expected that several primary and meta-analytic effect sizes will be incorrectly reproduced but there is no specific 
 # prediction as to how large this proportion will be].
 attach(datp)
-table(disccat.eff)
-# none: 386
-# small: 62
-# moderate: 20
-# large: 32
-
 table(info)   # based on original effect size estimate
 # category 0 = 276
 # category 1 = 74
 # category 2 = 54
 # category 3 = 96
 
+table(disccat.eff)
+# none: 386
+# small: 62
+# moderate: 21
+# large: 31
+
+# How many studies were larger than reported?
+sum(datp$effestnew < datp$effest) # 165
+sum(datp$effestnew > datp$effest) # 162
+sum(datp$effest == datp$effestnew) # 173
+
 # Crosstabs effect type / discrepancy -------------------------------------
 # For which types of effect sizes are errors found most frequently?  [It is expected that more data extraction errors will be found in primary studies that report SMDs compared to correlations].
 attach(datp)
-typeof <- table(efftype,disccat.eff) # original effect sizes
-sum(typeof["d",2:4]);sum(typeof["d",1:4]);sum(typeof["d",2:4])/sum(typeof["d",1:4])   # effect size d = 12 discrepancies out of 62 = 19.35484%
-sum(typeof["g",2:4]);sum(typeof["g",1:4]);sum(typeof["g",2:4])/sum(typeof["g",1:4])   # effect size g = 49 discrepancies out of 185 = 26.48649%
-sum(typeof["r",2:4]);sum(typeof["r",1:4]);sum(typeof["r",2:4])/sum(typeof["r",1:4])   # effect size r = 53 discrepancies out of 245 = 21.63265%
-sum(typeof["z",2:4]);sum(typeof["z",1:4]);sum(typeof["z",2:4])/sum(typeof["z",1:4])   # effect size z = 0 discrepancies out of 8 = 0%
-
 typeof.info <- table(efftype,info)
 sum(typeof.info["d",2:4]);sum(typeof.info["d",1:4]);sum(typeof.info["d",2:4])/sum(typeof.info["d",1:4])   # effect size d = 44 either different, omitted, or unclear out of 62 = 70.96774%
 sum(typeof.info["g",2:4]);sum(typeof.info["g",1:4]);sum(typeof.info["g",2:4])/sum(typeof.info["g",1:4])   # effect size g = 96 either different, omitted, or unclear out of 185 = 51.89189%
 sum(typeof.info["r",2:4]);sum(typeof.info["r",1:4]);sum(typeof.info["r",2:4])/sum(typeof.info["r",1:4])   # effect size r = 84 either different, omitted, or unclear out of 245 = 3428571%
 sum(typeof.info["z",2:4]);sum(typeof.info["z",1:4]);sum(typeof.info["z",2:4])/sum(typeof.info["z",1:4])   # effect size z = 0 either different, omitted, or unclear out of 8 = 0%
 
+typeof <- table(efftype,disccat.eff) # original effect sizes
+sum(typeof["d",2:4]);sum(typeof["d",1:4]);sum(typeof["d",2:4])/sum(typeof["d",1:4])   # effect size d = 12 discrepancies out of 62 = 19.35484%
+sum(typeof["g",2:4]);sum(typeof["g",1:4]);sum(typeof["g",2:4])/sum(typeof["g",1:4])   # effect size g = 49 discrepancies out of 185 = 26.48649%
+sum(typeof["r",2:4]);sum(typeof["r",1:4]);sum(typeof["r",2:4])/sum(typeof["r",1:4])   # effect size r = 53 discrepancies out of 245 = 21.63265%
+sum(typeof["z",2:4]);sum(typeof["z",1:4]);sum(typeof["z",2:4])/sum(typeof["z",1:4])   # effect size z = 0 discrepancies out of 8 = 0%
+
 # Overall, more data extraction errors are expected in unpublished studies compared to published ones, due to more varying reporting standards in the former. [To determine in which types of articles more data extraction errors occur, 
 # the frequency of errors will be compared for published and unpublished studies.]
 attach(datp)
-table(typecat,disccat.eff) # original effect sizes
-sum(table(typecat,disccat.eff)[1,2:4]);sum(table(typecat,disccat.eff)[1,]);sum(table(typecat,disccat.eff)[1,2:4])/sum(table(typecat,disccat.eff)[1,])  # 109 out of 455 published papers contained a discrepancy = 23.95604%
-sum(table(typecat,disccat.eff)[2,2:4]);sum(table(typecat,disccat.eff)[2,]);sum(table(typecat,disccat.eff)[2,2:4])/sum(table(typecat,disccat.eff)[2,])  # 5 out of 45 non-published papers contained a discrepancy = 11.11%
 
 typecat.info <- table(typecat,info)
 sum(typecat.info[1,2:4]);sum(typecat.info[1,1:4]);sum(table(typecat,info)[1,2:4])/sum(table(typecat,info)[1,])        # 216 out of 455 published papers either different, omitted, or unclear = 47.47253%
 sum(typecat.info[2,2:4]);sum(typecat.info[2,1:4]);sum(table(typecat,info)[2,2:4])/sum(table(typecat,info)[2,])        # 8 out of 45 non-published papers either different, omitted, or unclear = 17.7777%
+
+table(typecat,disccat.eff) # original effect sizes
+sum(table(typecat,disccat.eff)[1,2:4]);sum(table(typecat,disccat.eff)[1,]);sum(table(typecat,disccat.eff)[1,2:4])/sum(table(typecat,disccat.eff)[1,])  # 109 out of 455 published papers contained a discrepancy = 23.95604%
+sum(table(typecat,disccat.eff)[2,2:4]);sum(table(typecat,disccat.eff)[2,]);sum(table(typecat,disccat.eff)[2,2:4])/sum(table(typecat,disccat.eff)[2,])  # 5 out of 45 non-published papers contained a discrepancy = 11.11%
+
 
 # NON PREREGISTRATION / EXPLORATORY RESULTS -------------------------------
 
@@ -63,38 +70,22 @@ sum(typecat.info[2,2:4]);sum(typecat.info[2,1:4]);sum(table(typecat,info)[2,2:4]
 # How many of the outlying studies contained discrepancies
 attach(datp)
 
-table(typestudy,disccat.eff)
-sum(table(typestudy,disccat.eff)[1,2:4]);sum(table(typestudy,disccat.eff)[1,]);sum(table(typestudy,disccat.eff)[1,2:4])/sum(table(typestudy,disccat.eff)[1,])  # 36 out of 179 outliers contained a discrepancy = 20.1111%
-sum(table(typestudy,disccat.eff)[2,2:4]);sum(table(typestudy,disccat.eff)[2,]);sum(table(typestudy,disccat.eff)[2,2:4])/sum(table(typestudy,disccat.eff)[2,])  # 78 out of 321 non-outliers contained a discrepancy = 24.29907%
-
 table(typestudy,info)
-sum(table(typestudy,info)[1,2:4]);sum(table(typestudy,info)[1,]);sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])        # 70 out of 179 outliers either different, omitted, or unclear = 0.3910615%
-sum(table(typestudy,info)[2,2:4]);sum(table(typestudy,info)[2,]);sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])        # 154 out of 321 non-outliers either different, omitted, or unclear = 0.4797508%
+sum(table(typestudy,info)[1,2:4]);sum(table(typestudy,info)[1,]);sum(table(typestudy,info)[1,2:4])/sum(table(typestudy,info)[1,])        # 77 out of 179 outliers either different, omitted, or unclear = 0.3908629%
+sum(table(typestudy,info)[2,2:4]);sum(table(typestudy,info)[2,]);sum(table(typestudy,info)[2,2:4])/sum(table(typestudy,info)[2,])        # 147 out of 303 non-outliers either different, omitted, or unclear = 0.4851485%
 
+table(typestudy,disccat.eff)
+sum(table(typestudy,disccat.eff)[1,2:4]);sum(table(typestudy,disccat.eff)[1,]);sum(table(typestudy,disccat.eff)[1,2:4])/sum(table(typestudy,disccat.eff)[1,])  # 44 out of 197 outliers contained a discrepancy = 22.33503%
+sum(table(typestudy,disccat.eff)[2,2:4]);sum(table(typestudy,disccat.eff)[2,]);sum(table(typestudy,disccat.eff)[2,2:4])/sum(table(typestudy,disccat.eff)[2,])  # 70 out of 303 non-outliers contained a discrepancy = 23.10231%
 
 # Discrepancies in sample size --------------------------------------------
 attach(datp)
 length(which(!abs(datp$disc.n) == 0))    # 67
 
-
 # INTERRATER RELIABILITY --------------------------------------------------
 dfe <- read_excel("../codebooks/individual/codebook-primary-studies-em.xlsx", 2)
 dfa <- read_excel("../codebooks/individual/codebook-primary-studies-aoc.xlsx", 2)
 
-ze <- dfe$znew
-za <- dfa$znew
-dfz <- cbind(ze,za)
-
-# Since we have the same raters for each case, and the raters are
-# representative of a larger population of similar raters,
-# wel calculate reliability ICC(2,1): twoway, single (not average) 
-# and consistency (not absolute agreement)
-
-table(ze == za)
-cor(ze,za)                           # 0.97
-icc(dfz, model = "twoway", type = "consistency", unit="single")    # 0.97
-
-# by category
 # Whereas unweighted kappa does not distinguish among degrees of disagreement, 
 # Weighted kappa incorporates the magnitude of each disagreement
 # Since our categories are not ordered, we need unweighted
@@ -104,7 +95,7 @@ dfinfo <- cbind(infoe,infoa)
 
 cohen.kappa(dfinfo) # unweighted = 0.71
 
-# now by hand:
+# now by hand to check:
 tab <- table(infoe,infoa);tab
 # simple agreement among raters
 pr.a <- (tab[1,1] + tab[2,2] + tab[3,3] + tab[4,4])  / sum(tab);pr.a
@@ -116,8 +107,6 @@ cat3 <- (sum(tab[4,]) / sum(tab)) * (sum(tab[,4]) / sum(tab)) * sum(tab);cat3
 pr.e <- (cat0 + cat1 + cat2 + cat3) / sum(tab);pr.e
 
 kappa <- (pr.a - pr.e) / (1 - pr.e);kappa
-
-
 
 # SAMPLE WEIGHTING --------------------------------------------------------
 # appendix e table 1
@@ -221,6 +210,7 @@ for (i in 1:33) {
 
 # weight each probability with the number of studies in that meta-analysis and divide by the total no. of studies
 ss <- as.numeric(table(df.studies$id))
-p.x.tot <- sum((p.x * ss)) / nrow(df.studies)
+p.x.tot <- sum((p.x * ss)) / nrow(df.studies); p.x.tot
 p.x.a.tot <- sum((p.x.a * ss)) / nrow(df.studies)
 p.x.b.tot <- sum((p.x.b * ss)) / nrow(df.studies)
+
