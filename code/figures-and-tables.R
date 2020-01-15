@@ -36,13 +36,13 @@ for (i in 1:nrow(df.smd)){
 }
 
 scatter.smd <- ggplot(df.smd, aes(g.reproduced, g.reported, col=discrepancy, alpha = discrepancy)) + 
-  geom_point(aes(shape = discrepancy), size = 8, stroke=0.2) +
+  geom_point(aes(shape = discrepancy), size = 6, stroke=0.2) +
   geom_abline() + 
   scale_y_continuous("Reproduced effect sizes (Hedges' g)", breaks=number_ticks(5)) +
   scale_x_continuous("Original effect sizes (Hedges' g)", breaks=number_ticks(5)) + 
   scale_color_manual(values=col.magma, name = "") +
   scale_shape_manual("", values=c(15:18)) +
-  scale_alpha_manual("",values=c(0.4, 1, 1, 1)) +
+  scale_alpha_manual("",values=c(0.2, 0.5, 1, 1)) +
   expand_limits(x = c(-2, 6), y = c(-2, 6)) +
   theme(legend.text=element_text(size=14)) +
   theme(legend.position=c(.85, .17)) +
@@ -82,16 +82,13 @@ for (i in 1:nrow(df.cor)){
 }
 
 scatter.cor <- ggplot(df.cor, aes(z.reported, z.reproduced, col=discrepancy, alpha = discrepancy)) +
-  geom_point(aes(shape = discrepancy),size = 8, stroke=0.2) +
+  geom_point(aes(shape = discrepancy),size = 6, stroke=0.2) +
   geom_abline() + 
   scale_y_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
   scale_x_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
   scale_color_manual(values=col.magma, name = "") +
-  scale_shape_manual("",values=c("Incomplete, k = 14, 6%" = 16,
-                                 "Incorrect, k = 34, 13%" = 17,
-                                 "Ambiguous, k = 36, 14%" = 18,
-                                 "Reproducible, k = 169, 67%" = 15)) + 
-  scale_alpha_manual("",values=c(0.4, 1, 1, 1)) +
+  scale_shape_manual("",values=c(15:18)) + 
+  scale_alpha_manual("",values=c(0.2, 0.5, 1, 1)) +
   expand_limits(x = c(-0.75, 1.25), y = c(-0.75, 1.25)) +
   theme(legend.text=element_text(size=14)) +
   theme(legend.position=c(.85, .17)) +

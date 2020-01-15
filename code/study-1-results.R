@@ -10,7 +10,8 @@ df.studies <- read.table("../codebooks/studies-all.csv", header=T, sep = ';')
 df.out <- read.table("../codebooks/studies-outliers.csv", header=T, sep = ';')
 df.reg <- read.table("../codebooks/studies-nonoutliers.csv", header=T, sep = ';')
 datret <- read.table("../codebooks/nonretrieved-primary-studies.csv", header=T, sep = ';')
-
+dfe <- read_excel("../codebooks/individual/codebook-primary-studies-em.xlsx", 2)
+dfa <- read_excel("../codebooks/individual/codebook-primary-studies-aoc.xlsx", 2)
 
 # PREREGISTRATION RESULTS -------------------------------------------------
 
@@ -30,6 +31,9 @@ table(disccat.eff)
 # small: 62
 # moderate: 21
 # large: 31
+
+tapply(datp$info == 0, datp$meta, FUN=sum)
+tapply(datp$info != 0, datp$meta, FUN=sum)
 
 # How many studies were larger than reported?
 sum(datp$effestnew < datp$effest) # 165
@@ -83,9 +87,6 @@ attach(datp)
 length(which(!abs(datp$disc.n) == 0))    # 67
 
 # INTERRATER RELIABILITY --------------------------------------------------
-dfe <- read_excel("../codebooks/individual/codebook-primary-studies-em.xlsx", 2)
-dfa <- read_excel("../codebooks/individual/codebook-primary-studies-aoc.xlsx", 2)
-
 # Whereas unweighted kappa does not distinguish among degrees of disagreement, 
 # Weighted kappa incorporates the magnitude of each disagreement
 # Since our categories are not ordered, we need unweighted

@@ -1,4 +1,4 @@
-# rm(list = ls()) clear workspace
+#rm(list = ls()) # clear workspace
 options(scipen=999)
 
 datm <- read.table("../codebooks/codebook-meta-analyses-complete.csv", header=T, sep = '')
@@ -35,6 +35,53 @@ round(datm$pval.het.co[31], 3);round(datm$pval.het.cc[31], 3)
 round(datm$pval.co, 3)
 round(datm$pval.cc, 3)
 round(datm$pval.co - datm$pval.cc, 3)
+
+
+# Additional results from meta-analyses excluding "incomplete" eff --------
+
+# How many meta-analyses had a small / med / large  change in effect size estimate?
+sum(datm$disccat.ss == 0) # 22 no discrepancy
+sum(datm$disccat.ss == 1) # 10 a small discrepancy
+sum(datm$disccat.ss == 2) # 1 a moderate discrepancy
+sum(datm$disccat.ss == 3) # 0
+
+# How many meta-analyses had a small / med / large  change in CI estimate?
+sum(datm$disccat.ci.ss == 0) # 19 no discrepancy
+sum(datm$disccat.ci.ss == 1) # 9 a small discrepancy
+sum(datm$disccat.ci.ss == 2) # 3 a moderate discrepancy
+sum(datm$disccat.ci.ss == 3) # 2
+
+# Tau2 discrepancy
+datm$tau2.sso; datm$tau2.ssc
+(abs(datm$tau2.sso) - abs(datm$tau2.ssc)) != 0
+abs(datm$disc.tau2.ss) > 0.1
+datm$tau2.sso[2]; datm$tau2.ssc[2]
+datm$tau2.sso[5]; datm$tau2.ssc[5]
+datm$tau2.sso[17]; datm$tau2.ssc[17]
+datm$tau2.sso[19]; datm$tau2.ssc[19]
+
+# how many heterogeneity estimates increased?
+sum(datm$tau2.ssc < datm$tau2.sso) # 12
+
+# how many heterogeneity estimates decreased?
+sum(datm$tau2.sso < datm$tau2.ssc) # 16
+
+# how many heterogeneity estimates stayed the same?
+sum(datm$tau2.ssc == datm$tau2.sso) # 5
+
+# Statistical significance changed? 
+round(datm$pval.het.sso, 3)
+round(datm$pval.het.ssc, 3)
+round(datm$pval.het.sso - datm$pval.het.ssc, 3)
+
+round(datm$pval.het.sso[5], 3);round(datm$pval.het.ssc[5], 3)
+round(datm$pval.het.sso[17], 3);round(datm$pval.het.ssc[17], 3)
+round(datm$pval.het.sso[29], 3);round(datm$pval.het.ssc[29], 3)
+
+round(datm$pval.sso, 3)
+round(datm$pval.ssc, 3)
+round(datm$pval.sso - datm$pval.ssc, 3)
+
 
 # Reporting standards: heterogeneity --------------------------------------
 # Which models were used?

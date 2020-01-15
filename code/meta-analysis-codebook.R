@@ -1,14 +1,16 @@
 #rm(list = ls()) # clear workspace
 packages <- c("metafor","readxl","dplyr","writexl")
-sapply(packages,install.packages(packages),character.only=T)
+#sapply(packages,install.packages(packages),character.only=T)
 sapply(packages,library,character.only=T)
 
 # empty vectors to store results
 est.fe <- est.re <- k.tot <- outlier.total <- regular.total <- c() # empty vector to store results 
 eff.so <- cilb.so <- ciub.so <- tau2.so <- pval.so <- pval.het.so <- c() #empty vectors for subset original meta-analyses
 eff.sc <- cilb.sc <- ciub.sc <- tau2.sc <- pval.sc <- pval.het.sc <- c() #empty vectors for subset checked meta-analyses
-eff.co <- cilb.co <- ciub.co <- tau2.co <- pval.co <- pval.het.co <- c() 
-eff.cc <- cilb.cc <- ciub.cc <- tau2.cc <- pval.cc <- pval.het.cc <- c() 
+eff.co <- cilb.co <- ciub.co <- tau2.co <- pval.co <- pval.het.co <- c() # empty vectors for complete original meta-analyses
+eff.cc <- cilb.cc <- ciub.cc <- tau2.cc <- pval.cc <- pval.het.cc <- c() # empty vectors for complete checked meta-analyses
+eff.sso <- cilb.sso <- ciub.sso <- tau2.sso <- pval.sso <- pval.het.sso <- c() #empty vectors for subset original meta-analyses (without not enough info effect sizes)
+eff.ssc <- cilb.ssc <- ciub.ssc <- tau2.ssc <- pval.ssc <- pval.het.ssc <- c() # empty vectors for subset checked meta-analyses (without not enough info effect sizes)
 outeff1 <- outeff2 <- outeff3 <- c()
 krep1 <- percent <- krep2 <- percent2 <- c() #empty vectors for misc results
 
@@ -154,7 +156,6 @@ outeff1 <- c(outeff1, length(estdiff[abs(estdiff) >= g.disc[1] & abs(estdiff) < 
 outeff2 <- c(outeff2, length(estdiff[abs(estdiff) >= g.disc[2] & abs(estdiff) < g.disc[3]]))  # no of studies that have a medium effect on MA effect size
 outeff3 <- c(outeff3, length(estdiff[abs(estdiff) >= g.disc[3]]))                         # no of studies that have a large effect on MA effect size
 
-
 eff.so <- c(eff.so,res.so$b)             # MA subset original effect size estimate
 cilb.so <- c(cilb.so,res.so$ci.lb)       # MA subset original effect size CI lowerbound
 ciub.so <- c(ciub.so,res.so$ci.ub)       # upperbound
@@ -167,6 +168,7 @@ tau2.sc <- c(tau2.sc,res.sc$tau2)
 
 pval.so <- c(pval.so,res.so$pval)        # p value original
 pval.sc <- c(pval.sc,res.sc$pval)        # p value checked
+
 pval.het.so <- c(pval.het.so,res.so$QEp)      # p value heterogeneity test
 pval.het.sc <- c(pval.het.sc,res.sc$QEp)      # p value heterogeneity test
 
@@ -174,6 +176,42 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[1]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/adesope_subset.csv", header=T, sep=';') # reproduced results subset
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                                 # variance hedges' g 
+
+# subset original - the authors are unclear but do estimate heterogeneity, so we compare with the random effects model
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL") 
+
+eff.sso <- c(eff.sso,res.sso$b)             # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb)       # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub)       # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2)        # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b)             # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval)        # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval)        # p value checked
+
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -294,6 +332,44 @@ percent <- c(percent,(nrow(df)/k.tot[2]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/alfieri_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$n <- df$n1 + df$n2
+dfs <- df$n1 + df$n2 - 2
+dfs.c <- df$ncnew + df$ntnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+
+# subset original - the authors are unclear but do estimate heterogeneity, so we compare with the random effects model
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval)        # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval)        # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 
@@ -404,6 +480,41 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[3]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/babbage_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                                 # variance hedges' g 
+
+# subset original - the authors are unclear but do estimate heterogeneity, so we compare with the random effects model
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -516,6 +627,42 @@ percent <- c(percent,(nrow(df)/k.tot[4]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/balliet_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                                 # variance hedges' g 
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
+
 rm(df)
 
 
@@ -575,8 +722,8 @@ pval.cc <- c(pval.cc,res.cc$pval)
 pval.het.co <- c(pval.het.co,res.co$QEp)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,res.cc$QEp)      # p value heterogeneity test
 
-
 rm(df)
+
 # subset
 df <- read.table("../data-per-ma/benish_subset.csv", header=T, sep=";")
 
@@ -623,6 +770,41 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[5]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/benish_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c  
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="HE")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="HE")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -715,6 +897,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[6]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/berry1_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+
+# subset original
+res.sso <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -809,6 +1020,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[7]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/berry2_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+
+# subset original - the authors are unclear but do check for moderators, so we compare with the random effects model
+res.sso <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -915,6 +1155,40 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[8]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/card_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3) 
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
+
+# subset original 
+res.sso <- rma(z.o, vz.o, data=df, method="DL") 
+
+# subset reproduced
+res.ssc <- rma(z.c, vz.c, data=df, method="DL")               
+
+# transform estimate back to correlation
+eff.sso <- c(eff.sso,tanh(res.sso$b)) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,tanh(res.sso$ci.lb)) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,tanh(res.sso$ci.ub)) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,tanh(res.ssc$b)) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,tanh(res.ssc$ci.lb))
+ciub.ssc <- c(ciub.ssc,tanh(res.ssc$ci.ub))
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2) # Fisher's z estimate
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -1034,6 +1308,8 @@ theta.c <- sum(wi.c * yi.c) / sum(wi.c)
 tausq.so <- (sum(wi.o * (yi.o - theta.o)^2)/sum(wi.o)) - (sum(wi.o * df$vi.o) / sum(wi.o))
 tausq.sc <-(sum(wi.c * (yi.c - theta.c)^2)/sum(wi.c)) - (sum(wi.c * df$vi.c) / sum(wi.c))
 
+write.table(df, file = "../data-per-ma/crook_subset.csv", row.names=FALSE, sep=";")
+
 # effect of outliers cannot be determined in this meta-analysis
 outeff1 <- c(outeff1, NA)  # no of studies that have a small effect on MA effect size
 outeff2 <- c(outeff2, NA)  # no of studies that have a medium effect on MA effect size
@@ -1059,7 +1335,62 @@ percent <- c(percent,(nrow(df)/k.tot[9]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
-write.table(df, file = "../data-per-ma/crook_subset.csv", row.names=FALSE, sep=";")
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/crook_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+
+# effest size
+rbar.sso <- sum(df$n * df$effest.exp) / sum(df$n)
+rbar.ssc <- sum(df$nnew * df$effestnew.exp) / sum(df$nnew)
+
+# sonfidence interval
+r.o <- df$effest.exp
+r.c <- df$effestnew.exp
+n.o <- df$n
+n.c <- df$nnew
+var.r.o <- sum(n.o * (r.o - rbar.sso)^2) / sum(df$n)
+var.r.c <- sum(n.c * (r.c - rbar.ssc)^2) / sum(df$nnew)
+var.e.o <- sum(n.o * (1 - rbar.sso^2)^2 / (n.o - 1)) / sum(df$n)  
+var.e.c <- sum(n.c * (1 - rbar.ssc^2)^2 / (n.c - 1)) / sum(df$nnew) 
+res.var.o <- var.r.o - var.e.o
+res.var.c <- var.r.c - var.e.c
+k <- nrow(df)
+se.o <- ((1 - rbar.sso^2)^2 / (sum(df$n) - k)) + (res.var.o / k)^1/2
+se.c <- ((1 - rbar.ssc^2)^2 / (sum(df$nnew) - k)) + (res.var.c / k)^1/2
+ci.lb.sso <- rbar.sso - (1.96 * se.o)
+ci.ub.sso <- rbar.sso + (1.96 * se.o)
+ci.lb.ssc <- rbar.ssc - (1.96 * se.c)
+ci.ub.ssc <- rbar.ssc + (1.96 * se.c)
+
+#tau2
+df$vi.o <- ((1 - (df$effest.exp^2))^2) / (df$n - 1) 
+df$vi.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew - 1) 
+wi.o <- 1 / df$vi.o
+wi.c <- 1 / df$vi.c
+yi.o <- df$effest.exp
+yi.c <- df$effestnew.exp
+theta.o <- sum(wi.o * yi.o) / sum(wi.o)
+theta.c <- sum(wi.c * yi.c) / sum(wi.c)
+tausq.sso <- (sum(wi.o * (yi.o - theta.o)^2)/sum(wi.o)) - (sum(wi.o * df$vi.o) / sum(wi.o))
+tausq.ssc <-(sum(wi.c * (yi.c - theta.c)^2)/sum(wi.c)) - (sum(wi.c * df$vi.c) / sum(wi.c))
+
+eff.sso <- c(eff.sso,rbar.sso) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,ci.lb.sso) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,ci.ub.sso) # upperbound
+tau2.sso <- c(tau2.sso,tausq.sso) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,rbar.ssc) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,ci.lb.ssc)
+ciub.ssc <- c(ciub.ssc,ci.ub.ssc)
+tau2.ssc <- c(tau2.ssc,tausq.ssc)
+
+pval.sso <- c(pval.sso,NA) # p value original
+pval.ssc <- c(pval.ssc,NA) # p value checked
+pval.het.sso <- c(pval.het.sso,NA)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,NA)      # p value heterogeneity test
+
 rm(df)
 
 # DeWit -------------------------------------------------------------------
@@ -1151,6 +1482,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[10]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/dewit_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)       
+
+# subset original - the authors are unclear but do check for moderators, so we compare with the random effects model
+res.sso <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -1246,6 +1606,36 @@ percent <- c(percent,(nrow(df)/k.tot[11]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/elsequest_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$n <- df$n1 + df$n2
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's d
+
+# subset original - the authors are unclear but do check for moderators, so we compare with the random effects model
+res.sso <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 # Farber ------------------------------------------------------------------
@@ -1335,6 +1725,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[12]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/farber_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -1451,6 +1870,44 @@ percent <- c(percent,(nrow(df)/k.tot[13]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/fischer_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$n <- df$n1 + df$n2
+dfs <- df$n1 + df$n2 - 2
+dfs.c <- df$ncnew + df$ntnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 
@@ -1556,6 +2013,40 @@ percent <- c(percent,(nrow(df)/k.tot[14]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/fox_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3)   
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
+
+# subset original 
+res.sso <- rma(z.o, vz.o, data=df, method="ML") 
+
+# subset reproduced
+res.ssc <- rma(z.c, vz.c, data=df, method="ML")               
+
+# transform estimate back to correlation
+eff.sso <- c(eff.sso,tanh(res.sso$b)) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,tanh(res.sso$ci.lb)) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,tanh(res.sso$ci.ub)) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,tanh(res.ssc$b)) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,tanh(res.ssc$ci.lb))
+ciub.ssc <- c(ciub.ssc,tanh(res.ssc$ci.ub))
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 # Freund ------------------------------------------------------------------
@@ -1645,6 +2136,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[15]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/freund_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)             # variance correlation r
+
+# subset original 
+res.sso <- rma.mv(effest.exp, vr.o, data=df)  
+
+# subset reproduced
+res.ssc <- rma.mv(effestnew.exp, vr.c, data=df)               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -1740,6 +2260,37 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[16]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+
+# even smaller subset
+df <- read.table("../data-per-ma/green_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$n <- df$n1 + df$n2
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's d
+
+# subset original 
+res.sso <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -1845,6 +2396,41 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[17]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/hallion_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c       
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -1962,6 +2548,44 @@ percent <- c(percent,(nrow(df)/k.tot[18]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/ihle_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$n <- df$n1 + df$n2
+dfs <- df$n1 + df$n2 - 2
+dfs.c <- df$ncnew + df$ntnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="HE")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="HE")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 # Koenig ------------------------------------------------------------------
@@ -2020,10 +2644,6 @@ pval.cc <- c(pval.cc,res.cc$pval)
 pval.het.co <- c(pval.het.co,res.co$QEp)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,res.cc$QEp)      # p value heterogeneity test
 
-
-
-rm(df)
-
 # subset
 df <- read.table("../data-per-ma/koenig_subset.csv", header=T, sep=";")
 J.o <- 1 - (3 / (4 * df$n - 9))
@@ -2068,6 +2688,41 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[19]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/koenig_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c   
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -2118,8 +2773,6 @@ pval.het.co <- c(pval.het.co,res.co$QEp)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,res.cc$QEp)      # p value heterogeneity test
 
 
-rm(df)
-
 # subset
 df <- read.table("../data-per-ma/kolden_subset.csv", header=T, sep=";")
 df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
@@ -2158,6 +2811,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[20]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/kolden_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="HE")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="HE")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -2207,10 +2889,6 @@ pval.cc <- c(pval.cc,res.cc$pval)
 pval.het.co <- c(pval.het.co,res.co$QEp)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,res.cc$QEp)      # p value heterogeneity test
 
-
-
-rm(df)
-
 # subset
 df <- read.table("../data-per-ma/lucassen_subset.csv", header=T, sep=";")
 df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
@@ -2249,6 +2927,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[21]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/lucassen_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1)
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -2300,9 +3007,6 @@ pval.het.co <- c(pval.het.co,res.co$QEp)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,res.cc$QEp)      # p value heterogeneity test
 
 
-
-rm(df)
-
 # subset
 df <- read.table("../data-per-ma/mol_subset.csv", header=T, sep=";")
 df$vz.o <- 1 / (df$n - 3)                              # variance fisher's z 
@@ -2341,6 +3045,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[22]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/mol_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vz.o <- 1 / (df$n - 3)                              # variance fisher's z 
+df$vz.c <- 1 / (df$nnew - 3)                              # variance fisher's z 
+
+# subset original 
+res.sso <- rma(effest.exp, vz.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vz.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -2392,9 +3125,6 @@ pval.het.co <- c(pval.het.co,res.co$QEp)      # p value heterogeneity test
 pval.het.cc <- c(pval.het.cc,res.cc$QEp)      # p value heterogeneity test
 
 
-
-rm(df)
-
 # subset
 df <- read.table("../data-per-ma/morgan_subset.csv", header=T, sep=";")
 df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
@@ -2433,6 +3163,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[23]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/morgan_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))  # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))  # variance cohen's d
+
+# subset original 
+res.sso <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -2545,6 +3304,44 @@ percent <- c(percent,(nrow(df)/k.tot[24]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/munder_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+dfs <- df$n - 2
+dfs.c <- df$nnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c                             # variance hedges' g 
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
+
 rm(df)
 
 # Piet --------------------------------------------------------------------
@@ -2656,6 +3453,43 @@ percent <- c(percent,(nrow(df)/k.tot[25]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/piet_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+dfs <- df$n - 2
+dfs.c <- df$nnew - 2
+J.o <- 1 - (3 / (4 * dfs - 1))
+J.c <- 1 - (3 / (4 * dfs.c - 1))
+df$d.o <- df$effest.exp / J.o                          # cohen's d
+df$d.c <- df$effestnew.exp / J.c 
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.o^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                             # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c 
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 # Smith -------------------------------------------------------------------
@@ -2745,6 +3579,36 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[26]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+
+# even smaller subset
+df <- read.table("../data-per-ma/smith_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -2836,6 +3700,36 @@ percent <- c(percent,(nrow(df)/k.tot[27]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/tillman_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
+
 rm(df)
 
 
@@ -2926,6 +3820,35 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[28]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/toosi_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 
 rm(df)
 
@@ -3020,6 +3943,36 @@ percent <- c(percent,(nrow(df)/k.tot[29]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/vaniddekinge_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="HS")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="HS")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
+
 rm(df)
 
 # Webb --------------------------------------------------------------------
@@ -3111,6 +4064,36 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[30]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/webb_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$n <- df$n1 + df$n2
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$effest.exp^2 / (2 * df$n)))           # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$effestnew.exp^2 / (2 * df$nnew)))
+
+# subset original 
+res.sso <- rma(effest.exp, vd.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vd.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
 
 rm(df)
 
@@ -3219,6 +4202,42 @@ percent <- c(percent,(nrow(df)/k.tot[31]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/woodin_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+J.o <- 1 - (3 / (4 * df$n - 9))
+J.c <- 1 - (3 / (4 * df$nnew - 9)) 
+df$d.o <- df$effest.exp / J.o                              # cohen's d
+df$d.c <- df$effestnew.exp / J.c                           # cohen's d
+df$vd.o <- df$n / ((df$n / 2)^2 + (df$d.o^2 / (2 * df$n))) # variance cohen's d
+df$vd.c <- df$nnew / ((df$nnew / 2)^2 + (df$d.c^2 / (2 * df$nnew)))  # variance cohen's d
+df$vg.o <- J.o^2 * df$vd.o                                 # variance hedges' g 
+df$vg.c <- J.c^2 * df$vd.c 
+
+# subset original 
+res.sso <- rma(effest.exp, vg.o, data=df, method="FE")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vg.c, data=df, method="FE")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
+
 rm(df)
 
 # Woodley -----------------------------------------------------------------
@@ -3308,6 +4327,36 @@ krep1 <- c(krep1,nrow(df))
 percent <- c(percent,(nrow(df)/k.tot[32]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
+
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/woodley_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+
+# subset original 
+res.sso <- rma(effest.exp, vr.o, data=df, method="DL")  
+
+# subset reproduced
+res.ssc <- rma(effestnew.exp, vr.c, data=df, method="DL")               
+
+eff.sso <- c(eff.sso,res.sso$b) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,res.sso$ci.lb) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,res.sso$ci.ub) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,res.ssc$b) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,res.ssc$ci.lb)
+ciub.ssc <- c(ciub.ssc,res.ssc$ci.ub)
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 
 rm(df)
 
@@ -3415,6 +4464,40 @@ percent <- c(percent,(nrow(df)/k.tot[33]*100))
 krep2 <- c(krep2,sum(df$disccat.eff == 0 & df$info == 0))
 percent2 <- c(percent2,sum(df$disccat.eff == 0 & df$info == 0) / nrow(df) * 100)
 
+rm(res.so,res.sc)
+
+# even smaller subset
+df <- read.table("../data-per-ma/yoon_subset.csv", header=T, sep=";")
+df <- df[!grepl(2, df$info),] # remove all effects that are categorized as "not enough information"
+df$vr.o <- ((1 - (df$effest.exp^2))^2) / (df$n-1)             # variance correlation r
+df$vr.c <- ((1 - (df$effestnew.exp^2))^2) / (df$nnew-1) 
+df$z.o <- 0.5 * log((1 + df$effest.exp) / (1 - df$effest.exp))
+df$vz.o <- 1 / (df$n - 3) 
+df$z.c <- 0.5 * log((1 + df$effestnew.exp) / (1 - df$effestnew.exp))
+df$vz.c <- 1 / (df$nnew - 3) 
+
+# subset original 
+res.sso <- rma(z.o, vz.o, data=df, method="DL") 
+
+# subset reproduced
+res.ssc <- rma(z.c, vz.c, data=df, method="DL")               
+
+# transform estimate back to correlation
+eff.sso <- c(eff.sso,tanh(res.sso$b)) # MA subset original effect size estimate
+cilb.sso <- c(cilb.sso,tanh(res.sso$ci.lb)) # MA subset original effect size CI lowerbound
+ciub.sso <- c(ciub.sso,tanh(res.sso$ci.ub)) # upperbound
+tau2.sso <- c(tau2.sso,res.sso$tau2) # tau2 estimate
+
+eff.ssc <- c(eff.ssc,tanh(res.ssc$b)) # MA subset checked effect size estimate
+cilb.ssc <- c(cilb.ssc,tanh(res.ssc$ci.lb))
+ciub.ssc <- c(ciub.ssc,tanh(res.ssc$ci.ub))
+tau2.ssc <- c(tau2.ssc,res.ssc$tau2)
+
+pval.sso <- c(pval.sso,res.sso$pval) # p value original
+pval.ssc <- c(pval.ssc,res.ssc$pval) # p value checked
+pval.het.sso <- c(pval.het.sso,res.sso$QEp)      # p value heterogeneity test
+pval.het.ssc <- c(pval.het.ssc,res.ssc$QEp)      # p value heterogeneity test
+
 rm(df)
 
 
@@ -3422,16 +4505,14 @@ rm(df)
 dat$k <- k.tot
 dat$recalc.fe <- est.fe
 dat$recalc.re <- est.re
-dat$eff.so <- eff.so;   dat$eff.co <- eff.co
-dat$cilb.so <- cilb.so; dat$cilb.co <- cilb.co
-dat$ciub.so <- ciub.so; dat$ciub.co <- ciub.co
-dat$tau2.so <- tau2.so; dat$tau2.co <- tau2.co
-dat$eff.sc <- eff.sc; 
-dat$eff.cc <- eff.cc
-dat$cilb.sc <- cilb.sc; dat$cilb.cc <- cilb.cc
-dat$ciub.sc <- ciub.sc; dat$ciub.cc <- ciub.cc
-dat$tau2.sc <- tau2.sc; 
-dat$tau2.cc <- tau2.cc
+dat$eff.so <- eff.so; dat$eff.co <- eff.co ; dat$eff.sso <- eff.sso
+dat$cilb.so <- cilb.so; dat$cilb.co <- cilb.co; dat$cilb.sso <- cilb.sso
+dat$ciub.so <- ciub.so; dat$ciub.co <- ciub.co; dat$ciub.sso <- ciub.sso
+dat$tau2.so <- tau2.so; dat$tau2.co <- tau2.co; dat$tau2.sso <- tau2.sso
+dat$eff.sc <- eff.sc; dat$eff.cc <- eff.cc; dat$eff.ssc <- eff.ssc; 
+dat$cilb.sc <- cilb.sc; dat$cilb.cc <- cilb.cc; dat$cilb.ssc <- cilb.ssc;
+dat$ciub.sc <- ciub.sc; dat$ciub.cc <- ciub.cc; dat$ciub.ssc <- ciub.ssc;
+dat$tau2.sc <- tau2.sc; dat$tau2.ssc <- tau2.ssc; dat$tau2.cc <- tau2.cc
 dat$krep1 <- krep1
 dat$krep2 <- krep2
 dat$percent <- percent
@@ -3440,10 +4521,14 @@ dat$pval.co <- pval.co
 dat$pval.cc <- pval.cc
 dat$pval.so <- pval.so
 dat$pval.sc <- pval.sc
-dat$pval.het.so <- pval.het.so
-dat$pval.het.sc <- pval.het.sc
+dat$pval.sso <- pval.sso
+dat$pval.ssc <- pval.ssc
 dat$pval.het.co <- pval.het.co
 dat$pval.het.cc <- pval.het.cc
+dat$pval.het.so <- pval.het.so
+dat$pval.het.sc <- pval.het.sc
+dat$pval.het.sso <- pval.het.sso
+dat$pval.het.ssc <- pval.het.ssc
 dat$outeff1.s <- outeff1
 dat$outeff2.s <- outeff2
 dat$outeff3.s <- outeff3
@@ -3453,11 +4538,15 @@ dat$disc.s <- abs(eff.so) - abs(eff.sc); dat$disc.c <- abs(eff.co) - abs(eff.cc)
 dat$disc.cilb.s <- abs(cilb.so) - abs(cilb.sc); dat$disc.cilb.c <- abs(cilb.co) - abs(cilb.cc)
 dat$disc.ciub.s <- abs(ciub.so) - abs(ciub.sc); dat$disc.ciub.c <- abs(ciub.co) - abs(ciub.cc)
 dat$disc.tau2.s <- abs(tau2.so) - abs(tau2.sc); dat$disc.tau2.c <- abs(tau2.co) - abs(tau2.cc)
+dat$disc.ss <- abs(eff.sso) - abs(eff.ssc);        
+dat$disc.cilb.ss <- abs(cilb.sso) - abs(cilb.ssc); 
+dat$disc.ciub.ss <- abs(ciub.sso) - abs(ciub.ssc); 
+dat$disc.tau2.ss <- abs(tau2.sso) - abs(tau2.ssc); 
 
 # Are there any p-values which change from significant to non-sig
 round(pval.so,2)
 round(pval.sc,2)
-
+round(pval.ssc,2)
 
 # Effect size discrepancies
 
@@ -3488,6 +4577,18 @@ for (i in 1:nrow(dat)) {
     } else {
       dat$disccat.c[i] = "check"
     }
+    
+    if (abs(dat$disc.ss[i]) < g.disc[1]) {
+      dat$disccat.ss[i] = 0
+    } else if (abs(dat$disc.ss[i]) >= g.disc[1] & abs(dat$disc.ss[i]) < g.disc[2]) {
+      dat$disccat.ss[i] = 1
+    } else if (abs(dat$disc.ss[i]) >= g.disc[2] & abs(dat$disc.ss[i]) < g.disc[3]) {
+      dat$disccat.ss[i] = 2
+    } else if (abs(dat$disc.ss[i]) >= g.disc[3]) {
+      dat$disccat.ss[i] = 3
+    } else {
+      dat$disccat.ss[i] = "check"
+    }
   }
   
   if (dat$efftype[i] == "d") {
@@ -3515,6 +4616,19 @@ for (i in 1:nrow(dat)) {
     } else {
     dat$disccat.c[i] = "check"
     }
+    
+    if (abs(dat$disc.ss[i]) < d.disc[1]) {
+      dat$disccat.ss[i] = 0
+    } else if (abs(dat$disc.ss[i]) >= d.disc[1] & abs(dat$disc.ss[i]) < d.disc[2]) {
+      dat$disccat.ss[i] = 1
+    } else if (abs(dat$disc.ss[i]) >= d.disc[2] & abs(dat$disc.ss[i]) < d.disc[3]) {
+      dat$disccat.ss[i] = 2
+    } else if (abs(dat$disc.ss[i]) >= d.disc[3]) {
+      dat$disccat.ss[i] = 3
+    } else {
+      dat$disccat.ss[i] = "check"
+    }
+    
   }
   
   if (dat$efftype[i] == "r" | dat$efftype[i] == "z") {
@@ -3541,6 +4655,18 @@ for (i in 1:nrow(dat)) {
       dat$disccat.c[i] = 3
     } else {
       dat$disccat.c[i] = "check"
+    }
+    
+    if (abs(dat$disc.ss[i]) < r.disc[1]) {
+      dat$disccat.ss[i] = 0
+    } else if (abs(dat$disc.ss[i]) >= r.disc[1] & abs(dat$disc.ss[i]) < r.disc[2]) {
+      dat$disccat.ss[i] = 1
+    } else if (abs(dat$disc.ss[i]) >= r.disc[2] & abs(dat$disc.ss[i]) < r.disc[3]) {
+      dat$disccat.ss[i] = 2
+    } else if (abs(dat$disc.ss[i]) >= r.disc[3]) {
+      dat$disccat.ss[i] = 3
+    } else {
+      dat$disccat.ss[i] = "check"
     }
   }
 }
@@ -3575,6 +4701,20 @@ for (i in 1:nrow(dat)) {
     } else {
       dat$disccat.ci.c[i] == "check"
     }
+    
+    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
+    if (abs(dat$disc.cilb.ss[i]) < g.disc[1] & abs(dat$disc.ciub.ss[i]) < g.disc[1]) {
+      dat$disccat.ci.ss[i] = 0
+    } else if (abs(dat$disc.cilb.ss[i]) >= g.disc[3] | abs(dat$disc.ciub.ss[i]) >= g.disc[3]) {
+      dat$disccat.ci.ss[i] = 3
+    } else if (abs(dat$disc.cilb.ss[i]) >= g.disc[2] & abs(dat$disc.cilb.ss[i]) < g.disc[3] | abs(dat$disc.ciub.ss[i]) >= g.disc[2] & abs(dat$disc.ciub.ss[i]) < g.disc[3]) {
+      dat$disccat.ci.ss[i] = 2
+    } else if (abs(dat$disc.cilb.ss[i]) >= g.disc[1] & abs(dat$disc.cilb.ss[i]) < g.disc[2] | abs(dat$disc.ciub.ss[i]) >= g.disc[1] & abs(dat$disc.ciub.ss[i]) < g.disc[2]) {
+      dat$disccat.ci.ss[i] = 1
+    } else {
+      dat$disccat.ci.ss[i] == "check"
+    }
+    
   }
     
   if (dat$efftype[i] == "d") {
@@ -3602,6 +4742,19 @@ for (i in 1:nrow(dat)) {
       dat$disccat.ci.c[i] = 1
     } else {
       dat$disccat.ci.c[i] == "check"
+    }
+    
+    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
+    if (abs(dat$disc.cilb.ss[i]) < d.disc[1] & abs(dat$disc.ciub.ss[i]) < d.disc[1]) {
+      dat$disccat.ci.ss[i] = 0
+    } else if (abs(dat$disc.cilb.ss[i]) >= d.disc[3] | abs(dat$disc.ciub.ss[i]) >= d.disc[3]) {
+      dat$disccat.ci.ss[i] = 3
+    } else if (abs(dat$disc.cilb.ss[i]) >= d.disc[2] & abs(dat$disc.cilb.ss[i]) < d.disc[3] | abs(dat$disc.ciub.ss[i]) >= d.disc[2] & abs(dat$disc.ciub.ss[i]) < d.disc[3]) {
+      dat$disccat.ci.ss[i] = 2
+    } else if (abs(dat$disc.cilb.ss[i]) >= d.disc[1] & abs(dat$disc.cilb.ss[i]) < d.disc[2] | abs(dat$disc.ciub.ss[i]) >= d.disc[1] & abs(dat$disc.ciub.ss[i]) < d.disc[2]) {
+      dat$disccat.ci.ss[i] = 1
+    } else {
+      dat$disccat.ci.ss[i] == "check"
     }
   }
   
@@ -3632,6 +4785,20 @@ for (i in 1:nrow(dat)) {
     } else {
       dat$disccat.ci.c[i] == "check"
     }
+    
+    # Fill in discrepancy category for CI of effect sizes on subset checked MAs
+    if (abs(dat$disc.cilb.ss[i]) < r.disc[1] & abs(dat$disc.ciub.ss[i]) < r.disc[1]) {
+      dat$disccat.ci.ss[i] = 0
+    } else if (abs(dat$disc.cilb.ss[i]) >= r.disc[3] | abs(dat$disc.ciub.ss[i]) >= r.disc[3]) {
+      dat$disccat.ci.ss[i] = 3
+    } else if (abs(dat$disc.cilb.ss[i]) >= r.disc[2] & abs(dat$disc.cilb.ss[i]) < r.disc[3] | abs(dat$disc.ciub.ss[i]) >= r.disc[2] & abs(dat$disc.ciub.ss[i]) < r.disc[3]) {
+      dat$disccat.ci.ss[i] = 2
+    } else if (abs(dat$disc.cilb.ss[i]) >= r.disc[1] & abs(dat$disc.cilb.ss[i]) < r.disc[2] | abs(dat$disc.ciub.ss[i]) >= r.disc[1] & abs(dat$disc.ciub.ss[i]) < r.disc[2]) {
+      dat$disccat.ci.ss[i] = 1
+    } else {
+      dat$disccat.ci.ss[i] == "check"
+    }
+    
   }
 }
 

@@ -101,6 +101,16 @@ sum(datm$tau2.sc > datm$tau2.so) # 17
 sum(datm$tau2.sc < datm$tau2.so) # 12
 sum(datm$tau2.sc == datm$tau2.so) # 4
 
+# how many heterogeneity estimates increased?
+sum(datm$tau2.sc < datm$tau2.so) # 12
+
+# how many heterogeneity estimates decreased?
+sum(datm$tau2.so < datm$tau2.sc) # 16
+
+# how many heterogeneity estimates stayed the same?
+sum(datm$tau2.sc == datm$tau2.so) # 5
+
+
 # How often articles cited in 2018?
 # Checked in Web of Science on Oct. 16 2019
 # Adesope 6
