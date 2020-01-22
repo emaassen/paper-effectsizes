@@ -4,6 +4,13 @@ oldw <- getOption("warn")                                         # temporarily 
 options(warn = -1)                                                # temporarily surpress warning messages so it doesnt print in Rmd file
 options(warn = oldw, scipen=999)                                  # turn warning messages back on, no scientifc notiation
 number_ticks <- function(n) {function(limits) pretty(limits, n)}  # Number of ticks in figures
+# libraries (loaded in the main .Rmd file)
+packages <- c("kableExtra","citr","ggplot2","ggrepel","viridis","metafor","data.table","dplyr","reshape2","ggpubr")
+lapply(packages,require,character.only=T)
+
+# load dataframes (loaded in the main)
+df <- read.table("../codebooks/codebook-primary-studies-complete.csv", header=T, sep = '') 
+datm <- read.table("../codebooks/codebook-meta-analyses-complete.csv", header=T, sep = '')
 
 # # Study 1 Scatterplot - SMD [Figure 2] ----------------------------------
 df.smd <- df[df$efftype == "g" | df$efftype == "d",]
@@ -48,12 +55,33 @@ scatter.smd <- ggplot(df.smd, aes(g.reproduced, g.reported, col=discrepancy, alp
   theme(legend.position=c(.85, .17)) +
   theme(legend.title=element_blank()) +
   theme(axis.title=element_text(size=18)) +
-  theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12)) +
+  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
   theme(legend.key = element_rect(fill = "#C0C0C0")) +
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
 
+# Save figure to .pdf
+#pdf("../figures/fig2.pdf", width=9.7, height=6, compress=F)
+#ggplot(df.smd, aes(g.reproduced, g.reported, col=discrepancy, alpha = discrepancy)) + 
+#  geom_point(aes(shape = discrepancy), size = 6, stroke=0.2) +
+#  geom_abline() + 
+#  scale_y_continuous("Reproduced effect sizes (Hedges' g)", breaks=number_ticks(5)) +
+#  scale_x_continuous("Original effect sizes (Hedges' g)", breaks=number_ticks(5)) + 
+#  scale_color_manual(values=col.magma, name = "") +
+#  scale_shape_manual("", values=c(15:18)) +
+#  scale_alpha_manual("",values=c(0.2, 0.5, 1, 1)) +
+#  expand_limits(x = c(-2, 6), y = c(-2, 6)) +
+#  theme(legend.text=element_text(size=14)) +
+#  theme(legend.position=c(.85, .17)) +
+#  theme(legend.title=element_blank()) +
+#  theme(axis.title=element_text(size=18)) +
+#  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+#  theme(legend.key = element_rect(fill = "#C0C0C0")) +
+#  theme(panel.background = element_rect(fill = "#C0C0C0"),
+#        panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
+#        panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
+#dev.off()
 
 
 # Study 1 Scatterplot - Correlation [Figure 3] ----------------------------
@@ -100,6 +128,27 @@ scatter.cor <- ggplot(df.cor, aes(z.reported, z.reproduced, col=discrepancy, alp
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
 
+# Save figure to .pdf
+#pdf("../figures/fig3.pdf", width=9.7, height=6, compress=F)
+#ggplot(df.cor, aes(z.reported, z.reproduced, col=discrepancy, alpha = discrepancy)) +
+#  geom_point(aes(shape = discrepancy),size = 6, stroke=0.2) +
+#  geom_abline() + 
+#  scale_y_continuous("Reproduced effect sizes (Fisher's z)", breaks=number_ticks(5)) +
+#  scale_x_continuous("Original effect sizes (Fisher's z)", breaks=number_ticks(5)) + 
+#  scale_color_manual(values=col.magma, name = "") +
+#  scale_shape_manual("",values=c(15:18)) + 
+#  scale_alpha_manual("",values=c(0.2, 0.5, 1, 1)) +
+#  expand_limits(x = c(-0.75, 1.25), y = c(-0.75, 1.25)) +
+#  theme(legend.text=element_text(size=14)) +
+#  theme(legend.position=c(.85, .17)) +
+#  theme(legend.title=element_blank()) +
+#  theme(axis.title=element_text(size=18))  +
+#  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+#  theme(legend.key = element_rect(fill = "#C0C0C0")) +
+#  theme(panel.background = element_rect(fill = "#C0C0C0"),
+#        panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
+#        panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
+#dev.off()
 
 # Study 1 Frequency table -------------------------------------------------
 # Type of effect
@@ -210,6 +259,27 @@ barplot.ma <- dfma %>%
 
 # To make it horizontal, add + coord_flip()
 
+# Save figure to pdf
+#pdf("../figures/fig4.pdf", width=9, height=5, compress=F)
+#dfma %>%
+#  arrange(MAnum) %>%
+#  mutate(MAnum=factor(MAnum, levels=1:33)) %>% 
+#  ggplot(aes(x = MAnum, y = Frequency, fill = variable)) +
+#  geom_bar(stat = "identity") +
+#  theme(legend.title=element_blank()) +
+#  ylab("Primary study frequency") + 
+#  xlab("Meta-analysis") +
+#  theme(legend.text=element_text(size=14)) +
+#  theme(legend.position="bottom") +
+#  theme(legend.title=element_blank()) +
+#  theme(axis.title=element_text(size=18))  +
+#  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+#  scale_fill_manual(values=rev(col.magma), guide = guide_legend(reverse=TRUE)) +
+#  theme(legend.key = element_rect(fill = "#C0C0C0")) +
+#  theme(panel.background = element_rect(fill = "#C0C0C0"),
+#        panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
+#        panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
+#dev.off()
 
 # Study 2 SMD figures -----------------------------------------------------
 eff.so <- eff.sc <- cilb.so <- cilb.sc <- ciub.so <- ciub.sc <- tau2.so <- tau2.sc <- c() # empty vectors to store results
@@ -812,7 +882,8 @@ ma.smd.eff <- ggplot(datplot, aes(eff.so.g, eff.sc.g, label = as.numeric(author)
   expand_limits(x = c(-0.5, 2.5), y = c(-0.5, 2.5)) +
   theme(legend.position="none") +
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+  theme(axis.text.x = element_text(size=12), 
+        axis.text.y = element_text(size=12)) +
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -842,12 +913,12 @@ ma.smd.ci <- ggplot(datplot, aes(ci.so.g, ci.sc.g, label = as.numeric(author))) 
   geom_point() +
   geom_label_repel() +
   scale_y_continuous("Reproduced MA effect size CI", breaks=number_ticks(6)) +
-  scale_x_continuous("Original pooled MA effect size CI, difference lower and upper bound (Hedges' g)", breaks=number_ticks(6)) +
+  scale_x_continuous("Original pooled MA effect size CI, difference CIlb and CIub (Hedges' g)", breaks=number_ticks(6)) +
   expand_limits(x = c(-0.5, 2.5), y = c(-0.5, 2.5)) +
   theme(legend.position="none") +
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=14), 
-        axis.text.y = element_text(size=14)) + 
+  theme(axis.text.x = element_text(size=12), 
+        axis.text.y = element_text(size=12)) + 
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -882,8 +953,8 @@ ma.smd.tau <- ggplot(datplot, aes(tau2.so.g, tau2.sc.g, label = as.numeric(autho
   expand_limits(x = c(-0.5, 0.12), y = c(-0.5, 0.12)) +
   theme(legend.position="none") +
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=14), 
-        axis.text.y = element_text(size=14)) +   
+  theme(axis.text.x = element_text(size=12), 
+        axis.text.y = element_text(size=12)) +   
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -917,7 +988,8 @@ ma.cor.eff <- ggplot(datplot, aes(eff.so.z, eff.sc.z, label = as.numeric(author)
   expand_limits(x = c(0, 0.45), y = c(0, 0.45)) +
   theme(legend.position="none")+
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+  theme(axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14)) +
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -947,11 +1019,12 @@ ma.cor.ci <- ggplot(datplot, aes(ci.so.z, ci.sc.z, label = as.numeric(author))) 
   geom_point() +
   geom_label_repel() +
   scale_y_continuous("Reproduced confidence interval", breaks=number_ticks(6)) +
-  scale_x_continuous("Original pooled MA effect size CI, difference lower and upper bound (Fisher's z)", breaks=number_ticks(6)) +
+  scale_x_continuous("Original pooled MA effect size CI, difference CIlb and CIub (Fisher's z)", breaks=number_ticks(6)) +
   expand_limits(x = c(0, 0.45), y = c(0, 0.45)) +
   theme(legend.position="none")+
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+  theme(axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14)) +
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -985,7 +1058,8 @@ ma.cor.tau <- ggplot(datplot, aes(tau2.so.z, tau2.sc.z, label = as.numeric(autho
   expand_limits(x = c(0, 0.06), y = c(0, 0.06)) +
   theme(legend.position="none")+
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
+  theme(axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14)) +
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))

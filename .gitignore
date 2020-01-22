@@ -5,13 +5,10 @@
 /dependency/
 
 # writing files
-/writing/
+/submission/
 
 # individual codebooks 
 /codebooks/individual/
-
-# sort
-/sort/
 
 # misc files
 *.txt
