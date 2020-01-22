@@ -959,11 +959,17 @@ ma.smd.tau <- ggplot(datplot, aes(tau2.so.g, tau2.sc.g, label = as.numeric(autho
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
 
+# Save Figure 5 as .pdf
+pdf("../figures/fig5.pdf", width=8.6, height=12.3, compress=F)
+ggarrange(ma.smd.eff, ma.smd.ci, ma.smd.tau, 
+          labels = c("(a)", "(b)", "(c)"),
+          ncol = 1, nrow = 3)
+dev.off()
+
 # Figure 6 panel a: average meta-analytic effect --------------------------
 datplot <- subset(datm,efftype=="r" | efftype=="z")
 
-# Data points are different shapes and colors
-
+# Data points are different shapes and colors:
 #ma.cor.eff <- ggplot(datplot, aes(eff.so.z, eff.sc.z, col = factor(author))) + 
 #  geom_point(aes(shape = factor(author)), alpha = 0.8, size = 8, stroke=0.9) +
 #  geom_abline() + 
@@ -997,8 +1003,7 @@ ma.cor.eff <- ggplot(datplot, aes(eff.so.z, eff.sc.z, label = as.numeric(author)
 
 # Figure 6 panel b: confidence interval of MA effect ----------------------
 
-# Data points are different shapes and colors
-
+# Data points are different shapes and colors:
 #ma.cor.ci <- ggplot(datplot, aes(ci.so.z, ci.sc.z, col = factor(author))) + 
 #  geom_point(aes(shape = factor(author)), alpha = 0.8, size = 9, stroke=0.9) +
 #  geom_abline() + 
@@ -1032,8 +1037,7 @@ ma.cor.ci <- ggplot(datplot, aes(ci.so.z, ci.sc.z, label = as.numeric(author))) 
 
 # Figure 6 panel c: tau2 cor ----------------------------------------------
 
-# Data points are different shapes and colors
-
+# Data points are different shapes and colors:
 #ma.cor.tau <- ggplot(datplot, aes(tau2.so.z, tau2.sc.z, col = factor(author))) + 
 #  geom_point(aes(shape = factor(author)), alpha = 0.8, size = 9, stroke=0.6) +
 #  geom_abline() + 
@@ -1063,3 +1067,10 @@ ma.cor.tau <- ggplot(datplot, aes(tau2.so.z, tau2.sc.z, label = as.numeric(autho
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
+
+# Save Figure 6 as .pdf
+#pdf("../figures/fig6.pdf", width=8.6, height=12.3, compress=F)
+#ggarrange(ma.cor.eff, ma.cor.ci, ma.cor.tau, 
+#          labels = c("(a)", "(b)", "(c)"),
+#          ncol = 1, nrow = 3)
+#dev.off()
