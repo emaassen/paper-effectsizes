@@ -8,7 +8,6 @@
 /codebooks/individual/
 
 # writing files
-!/submission/
 /submission/*
 !*/submission/manuscript-effectsizes.Rmd
 !*/submission/references-effectsizes.bib
