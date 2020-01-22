@@ -10,9 +10,9 @@
 # writing files
 !/submission/
 /submission/*
-!/submission/manuscript-effectsizes.Rmd
-!/submission/references-effectsizes.bib
-!/submission/apa6-meta-analysis.csl
+!*/submission/manuscript-effectsizes.Rmd
+!*/submission/references-effectsizes.bib
+!*/submission/apa6-meta-analysis.csl
 
 # misc files
 *.txt
