@@ -11,6 +11,7 @@
 !/submission/manuscript-effectsizes.Rmd
 !/submission/references-effectsizes.bib
 !/submission/apa6-meta-analysis.csl
+
 /submission/*
 
 # misc files
