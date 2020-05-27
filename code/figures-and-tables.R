@@ -1,8 +1,8 @@
 # Configuring settings and loading packages and datasets ------------------
 # rm(list = ls()) #clean workspace
 oldw <- getOption("warn")                                         # temporarily surpress warning messages so it doesnt print in Rmd file
-options(warn = -1)                                                # temporarily surpress warning messages so it doesnt print in Rmd file
-options(warn = oldw, scipen=999)                                  # turn warning messages back on, no scientifc notiation
+options(warn = -1, scipen=999)                                                # temporarily surpress warning messages so it doesnt print in Rmd file
+#options(warn = oldw, scipen=999)                                  # turn warning messages back on, no scientifc notiation
 number_ticks <- function(n) {function(limits) pretty(limits, n)}  # Number of ticks in figures
 # libraries (loaded in the main .Rmd file)
 packages <- c("kableExtra","citr","ggplot2","ggrepel","viridis","metafor","data.table","dplyr","reshape2","ggpubr")
@@ -150,6 +150,96 @@ scatter.cor <- ggplot(df.cor, aes(z.reported, z.reproduced, col=discrepancy, alp
 #        panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
 #dev.off()
 
+
+# Study 1 Multiple Effects ------------------------------------------------
+
+# I've copied these numbers from the results at line 301/302 in study-1-results.R
+
+# Table 1
+table.1 <- data.frame(matrix(ncol = 4, nrow = 5))
+row <- c("Reproducible","Incorrect","Incomplete","Ambiguous","Total")
+col <- c("Single effect size","","Combined effect", "sizes")
+colnames(table.1) <- col
+rownames(table.1) <- row
+
+table.1[1,1] <- 208
+table.1[1,2] <- c(paste0("(",round((208/(353)*100),0),"%)"))
+table.1[2,1] <- 47
+table.1[2,2] <- c(paste0("(",round((47/(353)*100),0),"%)"))
+table.1[3,1] <- 52
+table.1[3,2] <- c(paste0("(",round((52/(353)*100),0),"%)"))
+table.1[4,1] <- 46
+table.1[4,2] <- c(paste0("(",round((46/(353)*100),0),"%)"))
+table.1[5,1] <- sum(table.1[1,1],table.1[2,1],table.1[3,1],table.1[4,1])
+table.1[5,2] <- c(paste0("(",round((353/353*100),0),"%)"))
+table.1[1,3] <- 68 
+table.1[1,4] <- c(paste0("(",round((68/(147)*100),0),"%)"))
+table.1[2,3] <- 27
+table.1[2,4] <- c(paste0("(",round((27/(147)*100),0),"%)"))
+table.1[3,3] <- 2
+table.1[3,4] <- c(paste0("(",round((2/(147)*100),0),"%)"))
+table.1[4,3] <- 50
+table.1[4,4] <- c(paste0("(",round((50/(147)*100),0),"%)"))
+table.1[5,3] <- sum(table.1[1,3],table.1[2,3],table.1[3,3],table.1[4,3])
+table.1[5,4] <- c(paste0("(",round((147/147*100),0),"%)"))
+
+
+
+
+# table.1[1,1] <- 208
+# table.1[1,2] <- c(paste0("(",round((208/(353)*100),0),"%)"))
+# table.1[1,3] <- 47
+# table.1[1,4] <- c(paste0("(",round((47/(353)*100),0),"%)"))
+# table.1[1,5] <- 52
+# table.1[1,6] <- c(paste0("(",round((52/(353)*100),0),"%)"))
+# table.1[1,7] <- 46
+# table.1[1,8] <- c(paste0("(",round((46/(353)*100),0),"%)"))
+# table.1[1,9] <- sum(table.1[1,1],table.1[1,3],table.1[1,5],table.1[1,7])
+# table.1[1,10] <- c(paste0("(",round((353/353*100),0),"%)"))
+# table.1[2,1] <- 68 
+# table.1[2,2] <- c(paste0("(",round((68/(147)*100),0),"%)"))
+# table.1[2,3] <- 27
+# table.1[2,4] <- c(paste0("(",round((27/(147)*100),0),"%)"))
+# table.1[2,5] <- 2
+# table.1[2,6] <- c(paste0("(",round((2/(147)*100),0),"%)"))
+# table.1[2,7] <- 50
+# table.1[2,8] <- c(paste0("(",round((50/(147)*100),0),"%)"))
+# table.1[2,9] <- sum(table.1[2,1],table.1[2,3],table.1[2,5],table.1[2,7])
+# table.1[2,10] <- c(paste0("(",round((147/147*100),0),"%)"))
+
+
+
+# table.1[1,1] <- 208
+# table.1[1,2] <- c(paste0("(",round((208/(208+68)*100),0),"%)"))
+# table.1[1,3] <- 47
+# table.1[1,4] <- c(paste0("(",round((47/(47+27)*100),0),"%)"))
+# table.1[1,5] <- 52
+# table.1[1,6] <- c(paste0("(",round((52/(52+2)*100),0),"%)"))
+# table.1[1,7] <- 46
+# table.1[1,8] <- c(paste0("(",round((46/(46+50)*100),0),"%)"))
+# table.1[1,9] <- sum(table.1[1,1],table.1[1,3],table.1[1,5],table.1[1,7])
+# table.1[1,10] <- c(paste0("(",round((table.1[1,9]/500*100),0),"%)"))
+# table.1[2,1] <- 68 
+# table.1[2,2] <- c(paste0("(",round((68/(208+68)*100),0),"%)"))
+# table.1[2,3] <- 27
+# table.1[2,4] <- c(paste0("(",round((27/(47+27)*100),0),"%)"))
+# table.1[2,5] <- 2
+# table.1[2,6] <- c(paste0("(",round((2/(52+2)*100),0),"%)"))
+# table.1[2,7] <- 50
+# table.1[2,8] <- c(paste0("(",round((50/(46+50)*100),0),"%)"))
+# table.1[2,9] <- sum(table.1[2,1],table.1[2,3],table.1[2,5],table.1[2,7])
+# table.1[2,10] <- c(paste0("(",round((table.1[2,9]/500*100),0),"%)"))
+# table.1[3,1] <- sum(table.1[1,1],table.1[2,1])
+# table.1[3,2] <- c(paste0("(",round((table.1[3,1]/500*100),0),"%)"))
+# table.1[3,3] <- sum(table.1[1,3],table.1[2,3])
+# table.1[3,4] <- c(paste0("(",round((table.1[3,3]/500*100),0),"%)"))
+# table.1[3,5] <- sum(table.1[1,5],table.1[2,5])
+# table.1[3,6] <- c(paste0("(",round((table.1[3,5]/500*100),0),"%)"))
+# table.1[3,7] <- sum(table.1[1,7],table.1[2,7])
+# table.1[3,8] <- c(paste0("(",round((table.1[3,7]/500*100),0),"%)"))
+# table.1[3,9] <- sum(table.1[1,9],table.1[2,9])
+# table.1[3,10] <- c(paste0("(100%)"))
+
 # Study 1 Frequency table -------------------------------------------------
 # Type of effect
 typeof.info <- table(df$efftype,df$info)
@@ -175,49 +265,49 @@ pub.nodisc <- sum(pub.info[1,1])
 npub.disc <- sum(pub.info[2,2:4])
 npub.nodisc <- sum(pub.info[2,1])
 
-# Table 1
-table.1 <- data.frame(matrix(ncol = 6, nrow = 6))
+# Table 2
+table.2 <- data.frame(matrix(ncol = 6, nrow = 6))
 row <- c("SMD", "correlation", "outlier", "non-outlier", "published","unpublished")
 col <- c("Irreproducible","","Reproducible","","Total","")
-colnames(table.1) <- col
-rownames(table.1) <- row
+colnames(table.2) <- col
+rownames(table.2) <- row
 
-table.1[1,1] <- smds.disc;
-table.1[1,2] <- c(paste0("(",round((smds.disc/(smds.disc+smds.nodisc))*100,0),"%)"))
-table.1[1,3] <- smds.nodisc; 
-table.1[1,4] <- c(paste0("(",round((smds.nodisc/(smds.disc+smds.nodisc))*100,0),"%)"))
-table.1[1,5] <- smds.disc+smds.nodisc;
-table.1[1,6] <- c("(100%)")
-table.1[2,1] <- cors.disc; 
-table.1[2,2] <- c(paste0("(",round((cors.disc/(cors.disc+cors.nodisc))*100,0),"%)"))
-table.1[2,3] <- cors.nodisc; 
-table.1[2,4] <- c(paste0("(",round((cors.nodisc/(cors.disc+cors.nodisc))*100,0),"%)"))
-table.1[2,5] <- cors.disc+cors.nodisc;
-table.1[2,6] <- c("(100%)")
-table.1[3,1] <- out.disc;  
-table.1[3,2] <- c(paste0("(",round((out.disc/(out.disc+out.nodisc))*100,0),"%)"))
-table.1[3,3] <- out.nodisc;
-table.1[3,4] <- c(paste0("(",round((out.nodisc/(out.disc+out.nodisc))*100,0),"%)"))
-table.1[3,5] <- out.disc+out.nodisc;
-table.1[3,6] <- c("(100%)")
-table.1[4,1] <- nout.disc; 
-table.1[4,2] <- c(paste0("(",round((nout.disc/(nout.disc+nout.nodisc))*100,0),"%)"))
-table.1[4,3] <- nout.nodisc; 
-table.1[4,4] <- c(paste0("(",round((nout.nodisc/(nout.disc+nout.nodisc))*100,0),"%)"))
-table.1[4,5] <- nout.disc+nout.nodisc;
-table.1[4,6] <- c("(100%)")
-table.1[5,1] <- pub.disc;  
-table.1[5,2] <- c(paste0("(",round((pub.disc/(pub.disc+pub.nodisc))*100,0),"%)"))
-table.1[5,3] <- pub.nodisc;  
-table.1[5,4] <- c(paste0("(",round((pub.nodisc/(pub.disc+pub.nodisc))*100,0),"%)"))
-table.1[5,5] <- pub.disc+pub.nodisc;
-table.1[5,6] <- c("(100%)")
-table.1[6,1] <- npub.disc; 
-table.1[6,2] <- c(paste0("(",round((npub.disc/(npub.disc+npub.nodisc))*100,0),"%)"))
-table.1[6,3] <- npub.nodisc; 
-table.1[6,4] <- c(paste0("(",round((npub.nodisc/(npub.disc+npub.nodisc))*100,0),"%)"))
-table.1[6,5] <- npub.disc+npub.nodisc;
-table.1[6,6] <- c("(100%)")
+table.2[1,1] <- smds.disc;
+table.2[1,2] <- c(paste0("(",round((smds.disc/(smds.disc+smds.nodisc))*100,0),"%)"))
+table.2[1,3] <- smds.nodisc; 
+table.2[1,4] <- c(paste0("(",round((smds.nodisc/(smds.disc+smds.nodisc))*100,0),"%)"))
+table.2[1,5] <- smds.disc+smds.nodisc;
+table.2[1,6] <- c("(100%)")
+table.2[2,1] <- cors.disc; 
+table.2[2,2] <- c(paste0("(",round((cors.disc/(cors.disc+cors.nodisc))*100,0),"%)"))
+table.2[2,3] <- cors.nodisc; 
+table.2[2,4] <- c(paste0("(",round((cors.nodisc/(cors.disc+cors.nodisc))*100,0),"%)"))
+table.2[2,5] <- cors.disc+cors.nodisc;
+table.2[2,6] <- c("(100%)")
+table.2[3,1] <- out.disc;  
+table.2[3,2] <- c(paste0("(",round((out.disc/(out.disc+out.nodisc))*100,0),"%)"))
+table.2[3,3] <- out.nodisc;
+table.2[3,4] <- c(paste0("(",round((out.nodisc/(out.disc+out.nodisc))*100,0),"%)"))
+table.2[3,5] <- out.disc+out.nodisc;
+table.2[3,6] <- c("(100%)")
+table.2[4,1] <- nout.disc; 
+table.2[4,2] <- c(paste0("(",round((nout.disc/(nout.disc+nout.nodisc))*100,0),"%)"))
+table.2[4,3] <- nout.nodisc; 
+table.2[4,4] <- c(paste0("(",round((nout.nodisc/(nout.disc+nout.nodisc))*100,0),"%)"))
+table.2[4,5] <- nout.disc+nout.nodisc;
+table.2[4,6] <- c("(100%)")
+table.2[5,1] <- pub.disc;  
+table.2[5,2] <- c(paste0("(",round((pub.disc/(pub.disc+pub.nodisc))*100,0),"%)"))
+table.2[5,3] <- pub.nodisc;  
+table.2[5,4] <- c(paste0("(",round((pub.nodisc/(pub.disc+pub.nodisc))*100,0),"%)"))
+table.2[5,5] <- pub.disc+pub.nodisc;
+table.2[5,6] <- c("(100%)")
+table.2[6,1] <- npub.disc; 
+table.2[6,2] <- c(paste0("(",round((npub.disc/(npub.disc+npub.nodisc))*100,0),"%)"))
+table.2[6,3] <- npub.nodisc; 
+table.2[6,4] <- c(paste0("(",round((npub.nodisc/(npub.disc+npub.nodisc))*100,0),"%)"))
+table.2[6,5] <- npub.disc+npub.nodisc;
+table.2[6,6] <- c("(100%)")
 
 
 # Study 1 Barplot ---------------------------------------------------------
@@ -232,17 +322,27 @@ three <- df %>% group_by(meta) %>% summarise(discrepancy = sum(discrepancy == 3)
 df <- cbind(metaauthors,three[,2],one[,2],two[,2],zero[,2])
 colnames(df) <- c("MA","Ambiguous effect","Different effect","Not enough information","No discrepancy")
 
+# add percentages
+#df[,6] <- rowSums(df[,2:5])
+sums <- round(rowSums(df[,2:5]),2)
 dfma <- melt(df, id.var="MA")
 dfma$MA <- factor(dfma$MA, levels=unique(sort(dfma$MA)))
 dfma$MAnum <- as.character(as.numeric(dfma$MA))
 dfma$variable <- factor(dfma$variable)
+dfma$perc <- paste0(round(dfma$value / sums * 100,0),'%')
 colnames(dfma)[colnames(dfma)=="value"] <- "Frequency"
+
+# we don't need to plot the 0%
+dfma <-dfma %>% 
+  mutate(perc = replace(perc, perc == "0%", NA))
 
 barplot.ma <- dfma %>%
   arrange(MAnum) %>%
   mutate(MAnum=factor(MAnum, levels=1:33)) %>% 
-  ggplot(aes(x = MAnum, y = Frequency, fill = variable)) +
+  ggplot(aes(x = MAnum, y = Frequency, fill = variable, label = perc)) +
   geom_bar(stat = "identity") +
+  geom_text(aes(x = MAnum, label = perc),
+            colour = "#777777", position=position_stack(vjust=0.5), size =3) + 
   theme(legend.title=element_blank()) +
   ylab("Primary study frequency") + 
   xlab("Meta-analysis") +
@@ -258,6 +358,7 @@ barplot.ma <- dfma %>%
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
 
 # To make it horizontal, add + coord_flip()
+
 
 # Save figure to pdf
 #pdf("../figures/fig4.pdf", width=9, height=5, compress=F)
@@ -882,8 +983,8 @@ ma.smd.eff <- ggplot(datplot, aes(eff.so.g, eff.sc.g, label = as.numeric(author)
   expand_limits(x = c(-0.5, 2.5), y = c(-0.5, 2.5)) +
   theme(legend.position="none") +
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=12), 
-        axis.text.y = element_text(size=12)) +
+  theme(axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14)) +
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -917,8 +1018,8 @@ ma.smd.ci <- ggplot(datplot, aes(ci.so.g, ci.sc.g, label = as.numeric(author))) 
   expand_limits(x = c(-0.5, 2.5), y = c(-0.5, 2.5)) +
   theme(legend.position="none") +
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=12), 
-        axis.text.y = element_text(size=12)) + 
+  theme(axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14)) + 
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
@@ -953,18 +1054,23 @@ ma.smd.tau <- ggplot(datplot, aes(tau2.so.g, tau2.sc.g, label = as.numeric(autho
   expand_limits(x = c(-0.5, 0.12), y = c(-0.5, 0.12)) +
   theme(legend.position="none") +
   theme(axis.title=element_text(size=16)) +
-  theme(axis.text.x = element_text(size=12), 
-        axis.text.y = element_text(size=12)) +   
+  theme(axis.text.x = element_text(size=14), 
+        axis.text.y = element_text(size=14)) +   
   theme(panel.background = element_rect(fill = "#C0C0C0"),
         panel.grid.major = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"),
         panel.grid.minor = element_line(size = 0.2, linetype = 'solid', colour = "#a0a0a0"))
 
 # Save Figure 5 as .pdf
-pdf("../figures/fig5.pdf", width=8.6, height=12.3, compress=F)
-ggarrange(ma.smd.eff, ma.smd.ci, ma.smd.tau, 
-          labels = c("(a)", "(b)", "(c)"),
-          ncol = 1, nrow = 3)
-dev.off()
+#pdf("../figures/fig5.pdf", width=8.6, height=12.3, compress=F)
+#tiff("../submission/Fig5.tiff", units="in", width=5, height=7.7, res=300, pointsize = 6)
+#ggarrange(ma.smd.eff, ma.smd.ci, ma.smd.tau, 
+#          labels = c("(a)", "(b)", "(c)"),
+#          font.label = list(size = 8),
+#          ncol = 1, nrow = 3)
+#dev.off()
+
+
+
 
 # Figure 6 panel a: average meta-analytic effect --------------------------
 datplot <- subset(datm,efftype=="r" | efftype=="z")
@@ -1070,7 +1176,13 @@ ma.cor.tau <- ggplot(datplot, aes(tau2.so.z, tau2.sc.z, label = as.numeric(autho
 
 # Save Figure 6 as .pdf
 #pdf("../figures/fig6.pdf", width=8.6, height=12.3, compress=F)
+#tiff("../submission/Fig6.tiff", units="in", width=5, height=7.75, res=300, pointsize = 6)
 #ggarrange(ma.cor.eff, ma.cor.ci, ma.cor.tau, 
 #          labels = c("(a)", "(b)", "(c)"),
+#          font.label = list(size = 7.5),
 #          ncol = 1, nrow = 3)
 #dev.off()
+
+
+
+options(warn = oldw, scipen=999)                                  # turn warning messages back on, no scientifc notiation
